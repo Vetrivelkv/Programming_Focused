@@ -27,7 +27,9 @@ export default function LessonPage() {
         <h1>{lesson.title}</h1>
         <p>Read the lesson carefully. A perfect quiz score unlocks the next module.</p>
       </header>
-      {lesson.image && <img className="lesson-image" src={lesson.image} alt="" />}
+      {lesson.image && (
+        <img className="lesson-image" src={lesson.image} alt={`${lesson.title} visual guide`} />
+      )}
       <article className="lesson-content">
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}

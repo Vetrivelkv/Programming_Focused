@@ -39,7 +39,7 @@ export default function CoursesPage() {
             <p>{course.description}</p>
             <div className="course-stats">
               <span><Layers3 /> {course.moduleCount} modules</span>
-              <span><Trophy /> {course.roundCount} challenges</span>
+              <span><Trophy /> {course.roundCount} {course.roundCount === 1 ? "challenge" : "challenges"}</span>
             </div>
             <div className="course-dates" aria-label="Course dates">
               <span><CalendarDays /> Created {formatCourseDate(course.createdAt)}</span>

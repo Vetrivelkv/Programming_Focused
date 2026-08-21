@@ -57,6 +57,20 @@
               "explanation": "A deliberate prediction-and-test loop turns diagnostics into reusable understanding."
             },
             {
+              "type": "mcq",
+              "question": "What does `raw as number` do when `raw` is actually the string `\"100\"` at runtime?",
+              "options": ["It only changes what the checker assumes; it does not convert the string", "It converts the string to 100", "It validates every future form value", "It changes the browser's FormData implementation"],
+              "correct_option_index": 0,
+              "explanation": "A type assertion has no runtime conversion behaviour. Use Number(raw) and validate the result."
+            },
+            {
+              "type": "mcq",
+              "question": "Which file should a normal browser script tag load after compiling `calculator.ts`?",
+              "options": ["The emitted calculator.js", "The tsconfig.json file", "The package-lock.json file", "The TypeScript declaration only"],
+              "correct_option_index": 0,
+              "explanation": "Browsers execute the emitted JavaScript; TypeScript source is checked and transformed first."
+            },
+            {
               "type": "fib",
               "question": "Complete the command that compiles a configured TypeScript project: npx ____",
               "answer": "tsc",

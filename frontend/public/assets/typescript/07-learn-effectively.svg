@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="background" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#08141f"/>
+      <stop offset="1" stop-color="#102a36"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" x2="1">
+      <stop offset="0" stop-color="#2dd4bf"/>
+      <stop offset="1" stop-color="#60a5fa"/>
+    </linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="20" stdDeviation="22" flood-color="#020617" flood-opacity="0.5"/></filter>
+  </defs>
+  <rect width="1280" height="720" rx="34" fill="url(#background)"/>
+  <circle cx="1100" cy="70" r="230" fill="#2dd4bf" opacity="0.055"/>
+  <circle cx="1180" cy="690" r="330" fill="#60a5fa" opacity="0.055"/>
+  <rect x="68" y="58" width="160" height="5" rx="2.5" fill="url(#accent)"/>
+  <text x="68" y="113" fill="#8bd5ca" font-size="20" font-weight="700" font-family="Arial, sans-serif" letter-spacing="3">GETTING STARTED · 07</text>
+  <text x="68" y="190" fill="#f8fafc" font-size="48" font-weight="700" font-family="Arial, sans-serif">Watching introduces it.</text>
+  <text x="68" y="247" fill="#f8fafc" font-size="48" font-weight="700" font-family="Arial, sans-serif">Practice makes it yours.</text>
+  <text x="68" y="329" fill="#9fb3c8" font-size="24" font-family="Arial, sans-serif">Follow the curriculum first, then change</text>
+  <text x="68" y="365" fill="#9fb3c8" font-size="24" font-family="Arial, sans-serif">examples and build small experiments.</text>
+  <rect x="68" y="410" width="520" height="170" rx="24" fill="#122c38" stroke="#25495a"/>
+  <text x="100" y="458" fill="#60718f" font-size="17" font-family="Arial, sans-serif" letter-spacing="2">KEY IDEA</text>
+  <text x="100" y="492" fill="#d9e7ff" font-size="21" font-family="Arial, sans-serif">Do not copy perfectly—deviate deliberately</text>
+  <text x="100" y="523" fill="#d9e7ff" font-size="21" font-family="Arial, sans-serif">and explain what changed.</text>
+  <g filter="url(#shadow)">
+    <rect x="680" y="144" width="530" height="470" rx="24" fill="#07111b" stroke="#274052"/>
+    <rect x="680" y="144" width="530" height="58" rx="24" fill="#12202d"/>
+    <circle cx="715" cy="173" r="7" fill="#fb7185"/>
+    <circle cx="739" cy="173" r="7" fill="#f5c76b"/>
+    <circle cx="763" cy="173" r="7" fill="#4ade80"/>
+    <text x="800" y="180" fill="#8fa5ba" font-size="18" font-family="Consolas, monospace">the active-learning loop</text>
+    <text x="735" y="273" fill="#60718f" font-size="18" font-family="Consolas, monospace">1</text>
+      <text x="785" y="273" fill="#8bd5ca" font-size="21" font-family="Consolas, monospace">Watch with intention</text>
+      <text x="735" y="326" fill="#60718f" font-size="18" font-family="Consolas, monospace">2</text>
+      <text x="785" y="326" fill="#93c5fd" font-size="21" font-family="Consolas, monospace">Code along from memory</text>
+      <text x="735" y="379" fill="#60718f" font-size="18" font-family="Consolas, monospace">3</text>
+      <text x="785" y="379" fill="#f5c76b" font-size="21" font-family="Consolas, monospace">Change one assumption</text>
+      <text x="735" y="432" fill="#60718f" font-size="18" font-family="Consolas, monospace">4</text>
+      <text x="785" y="432" fill="#c4b5fd" font-size="21" font-family="Consolas, monospace">Predict the diagnostic</text>
+      <text x="735" y="485" fill="#60718f" font-size="18" font-family="Consolas, monospace">5</text>
+      <text x="785" y="485" fill="#a7f3d0" font-size="21" font-family="Consolas, monospace">Use it in a small project</text>
+      <text x="735" y="538" fill="#60718f" font-size="18" font-family="Consolas, monospace">↻</text>
+      <text x="785" y="538" fill="#67e8f9" font-size="21" font-family="Consolas, monospace">Revisit difficult ideas</text>
+  </g>
+  <text x="68" y="660" fill="#60718f" font-size="17" font-family="Arial, sans-serif">PROGRAMMING FOCUSED  /  ORIGINAL LESSON VISUAL</text>
+</svg>
