@@ -1,0 +1,70 @@
+{
+  "topics": [
+    {
+      "name": "Section 1 · Getting Started",
+      "rounds": [
+        {
+          "round_number": 1,
+          "title": "Getting Started Mastery Challenge",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "A teammate says TypeScript is a new runtime that replaces JavaScript. What is the best correction?",
+              "options": ["TypeScript checks typed source and normally emits JavaScript for an existing runtime", "TypeScript only runs inside a database", "TypeScript replaces Node.js with CSS", "TypeScript is a browser extension"],
+              "correct_option_index": 0,
+              "explanation": "TypeScript is principally a language and development toolchain; the emitted JavaScript runs in browsers or Node.js."
+            },
+            {
+              "type": "mcq",
+              "question": "Which defect is most likely to be caught before runtime by TypeScript?",
+              "options": ["Passing a number to a parameter declared as string", "A remote API returning misleading data", "A server losing network access", "A user forgetting a password"],
+              "correct_option_index": 0,
+              "explanation": "A parameter type mismatch is visible to static analysis, while external runtime events require other safeguards."
+            },
+            {
+              "type": "mcq",
+              "question": "Why prefer a project-local TypeScript dependency?",
+              "options": ["It records a reproducible compiler version for the project", "It removes package.json", "It makes tests unnecessary", "It automatically hosts the application"],
+              "correct_option_index": 0,
+              "explanation": "A local dependency keeps the compiler version explicit and consistent across environments."
+            },
+            {
+              "type": "mcq",
+              "question": "Which command creates the initial compiler configuration?",
+              "options": ["npx tsc --init", "node --delete", "npm css --init", "git tsc --deploy"],
+              "correct_option_index": 0,
+              "explanation": "The TypeScript compiler's --init option creates tsconfig.json."
+            },
+            {
+              "type": "mcq",
+              "question": "You receive JSON from an unknown API. What is the safest approach?",
+              "options": ["Validate it at runtime before trusting its shape", "Assume a TypeScript annotation changes the response", "Cast it to any and skip checks", "Rename the file to .ts"],
+              "correct_option_index": 0,
+              "explanation": "Static types cannot guarantee the shape of external values that arrive while the program runs."
+            },
+            {
+              "type": "mcq",
+              "question": "Which project layout separates authored code from generated output?",
+              "options": ["TypeScript in src and emitted JavaScript in dist", "Everything inside .git", "Source files inside node_modules", "JavaScript in src and passwords in dist"],
+              "correct_option_index": 0,
+              "explanation": "The src/dist convention makes the boundary between source and generated output clear."
+            },
+            {
+              "type": "mcq",
+              "question": "What learning behaviour makes compiler feedback most valuable?",
+              "options": ["Read the mismatch, predict a fix, and test a small change", "Replace every type with any", "Ignore all diagnostics", "Copy the first search result without testing"],
+              "correct_option_index": 0,
+              "explanation": "A deliberate prediction-and-test loop turns diagnostics into reusable understanding."
+            },
+            {
+              "type": "fib",
+              "question": "Complete the command that compiles a configured TypeScript project: npx ____",
+              "answer": "tsc",
+              "explanation": "tsc is the TypeScript compiler command, and npx resolves the local project version."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

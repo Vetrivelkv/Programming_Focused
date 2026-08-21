@@ -5,21 +5,15 @@ import { fileURLToPath } from "node:url";
 const dataDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "data");
 
 export const COURSE_DEFINITIONS = {
-  existing_english: {
-    id: "existing_english",
-    title: "Existing English Class",
-    description: "Continue your English learning path with complete Noun, Pronoun, and Verb modules.",
-    curriculum: "curriculum.json",
-    questions: "questions.json",
+  understanding_typescript: {
+    id: "understanding_typescript",
+    title: "Understanding TypeScript",
+    description: "Build a strong TypeScript foundation—from why static types matter to a working local toolchain and project workflow.",
+    curriculum: "typescript_curriculum.json",
+    questions: "typescript_questions.json",
     accent: "teal",
-  },
-  udemy_scott_mendoza: {
-    id: "udemy_scott_mendoza",
-    title: "Udemy Scott Mendoza English Course",
-    description: "Study the Scott Mendoza course through detailed lessons, subclass quizzes, and challenge rounds.",
-    curriculum: "udemy_scott_mendoza_curriculum.json",
-    questions: "udemy_scott_mendoza_questions.json",
-    accent: "violet",
+    createdAt: "2026-08-21",
+    updatedAt: "2026-08-21",
   },
 };
 

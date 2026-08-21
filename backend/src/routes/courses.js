@@ -40,7 +40,13 @@ export default function registerCourseRoutes(app) {
       getChallengeProgress(request.user.id, request.params.courseId),
     ]);
     response.json({
-      course: { id: definition.id, title: definition.title, description: definition.description },
+      course: {
+        id: definition.id,
+        title: definition.title,
+        description: definition.description,
+        createdAt: definition.createdAt,
+        updatedAt: definition.updatedAt,
+      },
       learningTopics: curriculum.topics.map((topic) => ({
         name: topic.name,
         modules: topic.subtopics.map((module) => ({

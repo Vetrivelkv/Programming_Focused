@@ -1,0 +1,177 @@
+{
+  "topics": [
+    {
+      "name": "Section 1 · Getting Started",
+      "subtopics": [
+        {
+          "id": "ts_getting_started_01",
+          "title": "Welcome to TypeScript",
+          "content": "# Welcome to TypeScript\n\nTypeScript helps you build JavaScript applications with clearer contracts and earlier feedback. It adds a type system during development, then compiles to JavaScript that browsers and Node.js can run.\n\n## What you will learn\n\n- How TypeScript relates to JavaScript\n- How types expose mistakes before runtime\n- How to install the compiler and configure a project\n- How to turn a `.ts` file into runnable JavaScript\n\n> TypeScript is a development tool, not a separate runtime. Your final program is still JavaScript.\n\nStart with small experiments. Read compiler errors carefully—they are part of the learning loop, not a sign that you have failed.",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What does TypeScript normally produce for browsers or Node.js to execute?",
+              "options": ["JavaScript", "Java bytecode", "CSS", "SQL"],
+              "correct": 0,
+              "explanation": "The TypeScript compiler transforms TypeScript source into JavaScript."
+            },
+            {
+              "type": "mcq",
+              "question": "When is TypeScript's type system most useful?",
+              "options": ["During development and compilation", "Only after deployment", "Only inside a database", "While rendering CSS"],
+              "correct": 0,
+              "explanation": "Type checking gives feedback while you write and compile the program."
+            }
+          ]
+        },
+        {
+          "id": "ts_getting_started_02",
+          "title": "What Is TypeScript?",
+          "content": "# What Is TypeScript?\n\nTypeScript is a typed superset of JavaScript. Valid JavaScript is generally valid TypeScript, while TypeScript adds syntax for describing the shapes and relationships in your data.\n\n```ts\nfunction greet(name: string): string {\n  return `Hello, ${name}`;\n}\n\ngreet(42); // The compiler reports a type mismatch.\n```\n\nThe annotation `name: string` is checked before the program runs. Type annotations are removed from the emitted JavaScript, so they do not validate untrusted runtime input on their own.\n\n## The mental model\n\n1. Write JavaScript plus type information.\n2. Let TypeScript analyse the program.\n3. Fix useful diagnostics.\n4. Emit and run JavaScript.",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "Which description of TypeScript is most accurate?",
+              "options": ["A typed superset of JavaScript", "A database query language", "A replacement for HTML", "A Java virtual machine"],
+              "correct": 0,
+              "explanation": "TypeScript extends JavaScript with a static type system and related tooling."
+            },
+            {
+              "type": "mcq",
+              "question": "What happens to most type annotations after compilation?",
+              "options": ["They are erased", "They become CSS", "They are stored in a database", "They encrypt the source"],
+              "correct": 0,
+              "explanation": "Type annotations guide analysis but do not normally exist in the emitted JavaScript."
+            }
+          ]
+        },
+        {
+          "id": "ts_getting_started_03",
+          "title": "Why Use TypeScript?",
+          "content": "# Why Use TypeScript?\n\nJavaScript is flexible, but that flexibility can hide incorrect assumptions until a line of code runs. TypeScript makes many assumptions explicit.\n\n## Practical benefits\n\n- **Earlier feedback:** catch misspelled properties and invalid arguments before shipping.\n- **Safer refactoring:** see every place affected by a change.\n- **Better editor help:** receive completion, navigation, and inline documentation.\n- **Clearer collaboration:** function inputs and outputs become visible contracts.\n\nTypes do not replace tests or runtime validation. API responses, form values, and other external data can still be wrong at runtime, so validate them at the boundary. TypeScript and tests solve different parts of the reliability problem.",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "Which task is TypeScript especially helpful with?",
+              "options": ["Finding code affected by a refactor", "Replacing all automated tests", "Validating every network response at runtime", "Hosting a web server by itself"],
+              "correct": 0,
+              "explanation": "Type information lets editors and the compiler trace affected code more safely."
+            },
+            {
+              "type": "mcq",
+              "question": "Why should external data still be validated at runtime?",
+              "options": ["Types are erased and external values can violate assumptions", "TypeScript cannot describe objects", "JavaScript cannot read JSON", "Runtime validation makes compilation faster"],
+              "correct": 0,
+              "explanation": "Static types do not inspect values arriving from outside the program while it runs."
+            }
+          ]
+        },
+        {
+          "id": "ts_getting_started_04",
+          "title": "Installing & Using TypeScript",
+          "content": "# Installing & Using TypeScript\n\nInstall a current Node.js release first; it includes npm. Then keep TypeScript local to the project so every contributor uses the declared version.\n\n```bash\nnpm init -y\nnpm install --save-dev typescript\nnpx tsc --init\n```\n\nCreate `src/index.ts`, then compile it with `npx tsc`. The `npx` command runs the project-local compiler.\n\nUseful checks:\n\n```bash\nnode --version\nnpm --version\nnpx tsc --version\n```\n\nA global installation can be convenient, but it can also hide version differences between projects. A local development dependency makes the toolchain reproducible.",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "Which command installs TypeScript as a project development dependency?",
+              "options": ["npm install --save-dev typescript", "npm install react --global", "node typescript", "git install typescript"],
+              "correct": 0,
+              "explanation": "The --save-dev flag records TypeScript in the project's development dependencies."
+            },
+            {
+              "type": "mcq",
+              "question": "What does `npx tsc --init` create?",
+              "options": ["A TypeScript configuration file", "A production database", "A React component", "A GitHub repository"],
+              "correct": 0,
+              "explanation": "The command creates a tsconfig.json file with compiler configuration."
+            }
+          ]
+        },
+        {
+          "id": "ts_getting_started_05",
+          "title": "Editor & Project Setup",
+          "content": "# Editor & Project Setup\n\nOpen the project folder—not just one file—in an editor with TypeScript language support. Visual Studio Code includes this support, and many other editors provide it through their language-server integration.\n\nA small project can begin with this shape:\n\n```text\nmy-typescript-app/\n├─ src/\n│  └─ index.ts\n├─ package.json\n└─ tsconfig.json\n```\n\nUse `src` for source files and configure an output directory such as `dist` for compiled JavaScript. Keep the editor's Problems panel and an integrated terminal visible: one explains type errors, and the other lets you compile and run the project without losing context.",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "Why is it useful to open the whole project folder in the editor?",
+              "options": ["The editor can understand configuration and files together", "It automatically deploys the app", "It removes the need for Node.js", "It converts JavaScript into CSS"],
+              "correct": 0,
+              "explanation": "Project-wide context lets the editor apply tsconfig settings and navigate relationships."
+            },
+            {
+              "type": "mcq",
+              "question": "Which directory convention commonly holds TypeScript source files?",
+              "options": ["src", "dist", "node_modules/.cache", ".git/objects"],
+              "correct": 0,
+              "explanation": "The src directory commonly contains authored source, while dist contains generated output."
+            }
+          ]
+        },
+        {
+          "id": "ts_getting_started_06",
+          "title": "How This Course Works",
+          "content": "# How This Course Works\n\nEach module follows a deliberate loop: learn the idea, inspect a small example, answer the knowledge check, and apply it in the challenge. Modules unlock in sequence so that later work can rely on earlier concepts.\n\n## A productive loop\n\n1. Read once for the main idea.\n2. Type the example yourself.\n3. Change one value and predict the result.\n4. Explain the compiler message in your own words.\n5. Complete the knowledge check without guessing.\n\nA perfect knowledge-check score unlocks the next module. If an answer is wrong, use the explanation as a pointer, return to the example, and retry.",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What is the strongest way to use a code example?",
+              "options": ["Type it, change it, and predict the outcome", "Memorise its punctuation only", "Skip directly to the answer", "Copy it without running it"],
+              "correct": 0,
+              "explanation": "Active experiments reveal how the concept behaves and strengthen recall."
+            },
+            {
+              "type": "mcq",
+              "question": "What should you do after an incorrect knowledge-check answer?",
+              "options": ["Review the explanation and retry", "Disable type checking", "Delete the project", "Always select the longest option"],
+              "correct": 0,
+              "explanation": "Feedback is most useful when you connect it back to the lesson and try again."
+            }
+          ]
+        },
+        {
+          "id": "ts_getting_started_07",
+          "title": "Learn TypeScript Effectively",
+          "content": "# Learn TypeScript Effectively\n\nTreat the compiler as a pair-programming partner. Before changing code, read the entire diagnostic: it usually names the value TypeScript received, the value it expected, and the location where the mismatch matters.\n\nUse small experiments to test one assumption at a time. Prefer precise types and let inference do routine work. Reaching for `any` too early silences the exact feedback that helps you learn.\n\n## Practice habits\n\n- Recreate examples without looking.\n- Predict whether code will compile before running it.\n- Keep experiments small enough to understand completely.\n- Revisit a concept after a day, not only immediately after learning it.\n\nProgress comes from reasoning about code, not merely watching it.",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "Why should a beginner avoid using `any` as the default type?",
+              "options": ["It suppresses useful type feedback", "It makes every file read-only", "It prevents JavaScript output", "It requires a database"],
+              "correct": 0,
+              "explanation": "The any type opts out of many checks, hiding learning opportunities and defects."
+            },
+            {
+              "type": "mcq",
+              "question": "What should you look for first in a compiler diagnostic?",
+              "options": ["The received type, expected type, and relevant location", "The screen brightness", "The Git branch colour", "The browser history"],
+              "correct": 0,
+              "explanation": "Those details explain the mismatch TypeScript found and where to investigate it."
+            }
+          ]
+        },
+        {
+          "id": "ts_getting_started_08",
+          "title": "Course Setup & Starter Code",
+          "content": "# Course Setup & Starter Code\n\nCreate a clean practice project and verify the full write-check-run cycle.\n\n```bash\nmkdir typescript-lab\ncd typescript-lab\nnpm init -y\nnpm install --save-dev typescript\nnpx tsc --init\n```\n\nAdd `src/index.ts`:\n\n```ts\nconst course: string = \"TypeScript Foundations\";\nconst lessonCount: number = 8;\n\nconsole.log(`${course}: ${lessonCount} lessons`);\n```\n\nConfigure `rootDir` as `src` and `outDir` as `dist` in `tsconfig.json`, run `npx tsc`, then execute `node dist/index.js`.\n\nYou now have the essential pipeline: TypeScript source, static checking, JavaScript output, and a runtime that executes the output.",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "Which command runs the compiled starter program?",
+              "options": ["node dist/index.js", "npm init index.ts", "git run tsconfig.json", "css dist/index.js"],
+              "correct": 0,
+              "explanation": "Node.js executes the JavaScript emitted into the dist directory."
+            },
+            {
+              "type": "mcq",
+              "question": "What is the correct order in the starter workflow?",
+              "options": ["Write TypeScript, compile it, run JavaScript", "Run CSS, compile HTML, write SQL", "Deploy first, then create source", "Run TypeScript directly in every browser"],
+              "correct": 0,
+              "explanation": "The compiler checks TypeScript and emits JavaScript for the runtime."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
