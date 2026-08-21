@@ -1,0 +1,15 @@
+services:
+  rethinkdb:
+    build:
+      context: ./docker/rethinkdb
+    image: programming-focused-rethinkdb:2.4.4-local
+    container_name: programming-focused-rethinkdb
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:39015:28015"
+      - "127.0.0.1:39080:8080"
+    volumes:
+      - programming-focused-rethinkdb-data:/data
+
+volumes:
+  programming-focused-rethinkdb-data:

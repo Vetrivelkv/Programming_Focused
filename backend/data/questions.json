@@ -1,0 +1,2569 @@
+{
+    "topics": [
+        {
+            "name": "Noun",
+            "rounds": [
+                {
+                    "round_number": 1,
+                    "title": "Basic Nouns (Common & Proper)",
+                    "questions": [
+                        {
+                            "type": "mcq",
+                            "question": "Which of the following words is a common noun?",
+                            "options": [
+                                "Paris",
+                                "Dog",
+                                "Eiffel Tower",
+                                "Monday"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "'Dog' is a general name for an animal (Common Noun). The others are specific names (Proper Nouns)."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Identify the proper noun in this sentence: 'The boy traveled to London.'",
+                            "options": [
+                                "boy",
+                                "traveled",
+                                "to",
+                                "London"
+                            ],
+                            "correct_option_index": 3,
+                            "explanation": "'London' is the specific name of a city, so it is a Proper Noun. It always starts with a capital letter."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "What type of noun is 'Teacher'?",
+                            "options": [
+                                "Abstract Noun",
+                                "Proper Noun",
+                                "Common Noun",
+                                "Collective Noun"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "'Teacher' refers to a general profession or person, making it a Common Noun."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which word is a noun in the sentence: 'The red car is fast.'?",
+                            "options": [
+                                "The",
+                                "red",
+                                "fast",
+                                "car"
+                            ],
+                            "correct_option_index": 3,
+                            "explanation": "'Car' is the name of a thing, making it a noun. 'Red' is an adjective, and 'fast' is an adjective/adverb here."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which of the following should ALWAYS be capitalized?",
+                            "options": [
+                                "Proper nouns",
+                                "Common nouns",
+                                "All nouns",
+                                "Animal names"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Proper nouns name specific people, places, or things and must always start with a capital letter (e.g., John, India)."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "A noun is a naming word for a person, place, or _____.",
+                            "answer": "thing",
+                            "explanation": "Nouns name people, places, things, and ideas."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "The specific name given to a person or place is called a _____ noun.",
+                            "answer": "proper",
+                            "explanation": "Proper nouns give a specific name to a common noun (e.g., City -> New York)."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "In the sentence 'Mary is happy', the proper noun is _____.",
+                            "answer": "Mary",
+                            "explanation": "'Mary' is a specific name of a person."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "General names for things like 'chair' or 'table' are known as _____ nouns.",
+                            "answer": "common",
+                            "explanation": "Common nouns do not specify a unique entity."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "In the sentence 'I saw a huge elephant', the noun is _____.",
+                            "answer": "elephant",
+                            "explanation": "'Elephant' is the name of an animal, which is a noun."
+                        }
+                    ]
+                },
+                {
+                    "round_number": 2,
+                    "title": "Singular and Plural Nouns",
+                    "questions": [
+                        {
+                            "type": "mcq",
+                            "question": "What is the plural of 'Box'?",
+                            "options": [
+                                "Boxs",
+                                "Boxes",
+                                "Boxies",
+                                "Boxen"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Nouns ending in s, x, z, ch, sh usually add 'es' to become plural."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "What is the correct plural form of 'Child'?",
+                            "options": [
+                                "Children",
+                                "Childs",
+                                "Childrens",
+                                "Childes"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "'Child' is an irregular noun. Its plural completely changes to 'Children'."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which of the following nouns is plural?",
+                            "options": [
+                                "Mouse",
+                                "Woman",
+                                "Teeth",
+                                "Foot"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "'Teeth' is the plural form of 'Tooth'."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "What is the singular form of 'Leaves'?",
+                            "options": [
+                                "Leafe",
+                                "Leaf",
+                                "Leaff",
+                                "Leave"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Nouns ending in 'f' often change the 'f' to 'v' and add 'es'. So, Leaf -> Leaves."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which of these words stays the same in both singular and plural forms?",
+                            "options": [
+                                "Sheep",
+                                "Cow",
+                                "Dog",
+                                "Bird"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "'Sheep' is both singular (one sheep) and plural (many sheep)."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "The plural of 'man' is _____.",
+                            "answer": "men",
+                            "explanation": "'Man' is an irregular noun where the vowel changes."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "The plural of 'baby' is _____.",
+                            "answer": "babies",
+                            "explanation": "When a noun ends in a consonant + y, change the 'y' to 'i' and add 'es'."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "To make 'cat' plural, you just add the letter _____ at the end.",
+                            "answer": "s",
+                            "explanation": "Most regular nouns just take an 's' at the end."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "The plural of 'foot' is _____.",
+                            "answer": "feet",
+                            "explanation": "'Foot' changes its vowels 'oo' to 'ee'."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "If you have more than one mouse, you have _____.",
+                            "answer": "mice",
+                            "explanation": "'Mouse' completely changes to 'mice' in plural form."
+                        }
+                    ]
+                },
+                {
+                    "round_number": 3,
+                    "title": "Abstract and Collective Nouns",
+                    "questions": [
+                        {
+                            "type": "mcq",
+                            "question": "Which of the following is an Abstract Noun?",
+                            "options": [
+                                "Table",
+                                "Honesty",
+                                "Apple",
+                                "Car"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Abstract nouns refer to ideas, qualities, or feelings that you cannot physically touch (like Honesty)."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "What do we call a group of cows?",
+                            "options": [
+                                "A flock",
+                                "A swarm",
+                                "A herd",
+                                "A school"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "A 'herd' is the collective noun used for a group of cattle or cows."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Identify the collective noun: 'A flock of birds flew across the sky.'",
+                            "options": [
+                                "birds",
+                                "sky",
+                                "flew",
+                                "flock"
+                            ],
+                            "correct_option_index": 3,
+                            "explanation": "'Flock' is the word used to describe a group of birds."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which word is an abstract noun in: 'His bravery saved the day.'",
+                            "options": [
+                                "bravery",
+                                "day",
+                                "saved",
+                                "His"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "'Bravery' is a quality you cannot touch or see physically; it is an idea/concept."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "What is a group of fish called?",
+                            "options": [
+                                "A pack",
+                                "A school",
+                                "A bunch",
+                                "A team"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "A group of fish is called a 'school' or a 'shoal'."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "A _____ of wolves hunted in the forest. (Hint: group name)",
+                            "answer": "pack",
+                            "explanation": "The collective noun for wolves or dogs is 'pack'."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "'Love', 'Anger', and 'Joy' are all examples of _____ nouns.",
+                            "answer": "abstract",
+                            "explanation": "These are emotions and ideas, making them abstract nouns."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "A group of bees is called a _____.",
+                            "answer": "swarm",
+                            "explanation": "The collective noun for flying insects like bees is 'swarm'."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "The noun 'Knowledge' is an _____ noun because you cannot touch it.",
+                            "answer": "abstract",
+                            "explanation": "Concepts of the mind are abstract nouns."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "A group of players is called a _____.",
+                            "answer": "team",
+                            "explanation": "The collective noun for players playing together is a 'team'."
+                        }
+                    ]
+                },
+                {
+                    "round_number": 4,
+                    "title": "Countable vs Uncountable Challenge",
+                    "questions": [
+                        {
+                            "type": "mcq",
+                            "question": "Which of these is an uncountable noun?",
+                            "options": [
+                                "apple",
+                                "water",
+                                "car",
+                                "dog"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Water cannot be counted individually."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which of these is a countable noun?",
+                            "options": [
+                                "information",
+                                "knowledge",
+                                "book",
+                                "rice"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "You can count books (one book, two books)."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Identify the correct usage:",
+                            "options": [
+                                "two milks",
+                                "some milk",
+                                "a milk",
+                                "many milks"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Milk is uncountable, so we say 'some milk'."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which word takes 'much' instead of 'many'?",
+                            "options": [
+                                "time",
+                                "clocks",
+                                "minutes",
+                                "hours"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "'Time' is an uncountable concept."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which sentence is correct?",
+                            "options": [
+                                "I have many homeworks.",
+                                "I have much homework.",
+                                "I have a homework.",
+                                "I have two homeworks."
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Homework is uncountable."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "He gave me a good piece of ___.",
+                            "answer": "advice",
+                            "explanation": "Advice is uncountable, so we say 'a piece of advice'."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "How ___ money do you have?",
+                            "answer": "much",
+                            "explanation": "Money is uncountable."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "How ___ dollars do you have?",
+                            "answer": "many",
+                            "explanation": "Dollars are countable."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "I bought three ___ of bread.",
+                            "answer": "loaves",
+                            "explanation": "Bread is uncountable, but 'loaves' are countable units."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "The ___ is terrible today. (weather / weathers)",
+                            "answer": "weather",
+                            "explanation": "Weather is uncountable."
+                        }
+                    ]
+                },
+                {
+                    "round_number": 5,
+                    "title": "Compound Nouns Mastery",
+                    "questions": [
+                        {
+                            "type": "mcq",
+                            "question": "Which is a compound noun?",
+                            "options": [
+                                "running",
+                                "quickly",
+                                "sunflower",
+                                "beautiful"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "sun + flower"
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which is a hyphenated compound noun?",
+                            "options": [
+                                "ice cream",
+                                "mother-in-law",
+                                "bedroom",
+                                "football"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "It uses hyphens."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "What two words make 'breakfast'?",
+                            "options": [
+                                "break + fast",
+                                "brave + fast",
+                                "break + first",
+                                "bread + fast"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Breaking the fast."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which sentence has a compound noun?",
+                            "options": [
+                                "The cat is black.",
+                                "I lost my toothbrush.",
+                                "He is very tall.",
+                                "She sings well."
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "tooth + brush"
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Plural of 'passer-by' is:",
+                            "options": [
+                                "passer-bys",
+                                "passers-by",
+                                "passers-bys",
+                                "passer-byes"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Pluralize the main word 'passer'."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "A board with keys is a ___.",
+                            "answer": "keyboard",
+                            "explanation": "key + board"
+                        },
+                        {
+                            "type": "fib",
+                            "question": "A room for a bed is a ___.",
+                            "answer": "bedroom",
+                            "explanation": "bed + room"
+                        },
+                        {
+                            "type": "fib",
+                            "question": "The print of a foot is a ___.",
+                            "answer": "footprint",
+                            "explanation": "foot + print"
+                        },
+                        {
+                            "type": "fib",
+                            "question": "A brush for hair is a ___.",
+                            "answer": "hairbrush",
+                            "explanation": "hair + brush"
+                        },
+                        {
+                            "type": "fib",
+                            "question": "The light from the moon is ___.",
+                            "answer": "moonlight",
+                            "explanation": "moon + light"
+                        }
+                    ]
+                },
+                {
+                    "round_number": 6,
+                    "title": "Noun Genders Challenge",
+                    "questions": [
+                        {
+                            "type": "mcq",
+                            "question": "Which is a feminine noun?",
+                            "options": [
+                                "actor",
+                                "actress",
+                                "doctor",
+                                "king"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Female form of actor."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which is a masculine noun?",
+                            "options": [
+                                "aunt",
+                                "queen",
+                                "uncle",
+                                "niece"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "Male relative."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which is a common gender noun?",
+                            "options": [
+                                "lion",
+                                "lioness",
+                                "cub",
+                                "teacher"
+                            ],
+                            "correct_option_index": 3,
+                            "explanation": "Teacher can be male or female."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which is a neuter noun?",
+                            "options": [
+                                "table",
+                                "brother",
+                                "sister",
+                                "baby"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Table is an inanimate object."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Feminine of 'hero' is:",
+                            "options": [
+                                "heros",
+                                "heroine",
+                                "shero",
+                                "heron"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Heroine is the female hero."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "The male version of queen is ___.",
+                            "answer": "king",
+                            "explanation": "King is masculine."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "The female version of brother is ___.",
+                            "answer": "sister",
+                            "explanation": "Sister is feminine."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "The male version of wife is ___.",
+                            "answer": "husband",
+                            "explanation": "Husband is masculine."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "The female version of nephew is ___.",
+                            "answer": "niece",
+                            "explanation": "Niece is feminine."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "A non-living thing like a car has a ___ gender.",
+                            "answer": "neuter",
+                            "explanation": "Neuter means neither male nor female."
+                        }
+                    ]
+                },
+                {
+                    "round_number": 7,
+                    "title": "Subjective & Objective Cases",
+                    "questions": [
+                        {
+                            "type": "mcq",
+                            "question": "In 'The dog bit the man', 'dog' is:",
+                            "options": [
+                                "Subjective",
+                                "Objective",
+                                "Possessive",
+                                "None"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Dog is doing the action."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "In 'The dog bit the man', 'man' is:",
+                            "options": [
+                                "Subjective",
+                                "Objective",
+                                "Possessive",
+                                "None"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Man is receiving the action."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "In 'John's car is fast', 'John's' is:",
+                            "options": [
+                                "Subjective",
+                                "Objective",
+                                "Possessive",
+                                "None"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "Shows ownership."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Subjective case is also called:",
+                            "options": [
+                                "Nominative",
+                                "Accusative",
+                                "Genitive",
+                                "Dative"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Nominative means subject."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which sentence has an objective noun?",
+                            "options": [
+                                "I sleep.",
+                                "She cries.",
+                                "He kicked the ball.",
+                                "They laugh."
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "The ball receives the kick."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "A noun that DOES the action is in the ___ case.",
+                            "answer": "subjective",
+                            "explanation": "Subject does the action."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "A noun that RECEIVES the action is in the ___ case.",
+                            "answer": "objective",
+                            "explanation": "Object receives the action."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "A noun showing OWNERSHIP is in the ___ case.",
+                            "answer": "possessive",
+                            "explanation": "Possessive means ownership."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "In 'She likes cats', 'cats' is in the ___ case.",
+                            "answer": "objective",
+                            "explanation": "Cats receive the liking."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "In 'Birds fly', 'Birds' is in the ___ case.",
+                            "answer": "subjective",
+                            "explanation": "Birds do the flying."
+                        }
+                    ]
+                },
+                {
+                    "round_number": 8,
+                    "title": "Appositives Mastery",
+                    "questions": [
+                        {
+                            "type": "mcq",
+                            "question": "What is an appositive?",
+                            "options": [
+                                "A verb",
+                                "A noun renaming another noun",
+                                "An adjective",
+                                "A pronoun"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Appositives rename nouns."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Find the appositive: 'My friend, Tom, is here.'",
+                            "options": [
+                                "My",
+                                "friend",
+                                "Tom",
+                                "here"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "Tom renames friend."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Find the appositive: 'We visited Paris, the capital of France.'",
+                            "options": [
+                                "We",
+                                "visited",
+                                "Paris",
+                                "the capital of France"
+                            ],
+                            "correct_option_index": 3,
+                            "explanation": "Renames Paris."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Appositives are often separated by:",
+                            "options": [
+                                "Periods",
+                                "Commas",
+                                "Hyphens",
+                                "Question marks"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Commas surround non-essential appositives."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Does this sentence have an appositive? 'The car is red.'",
+                            "options": [
+                                "Yes",
+                                "No",
+                                "Maybe",
+                                "Only in British English"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "No noun renaming another noun."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "An appositive ___ another noun right next to it.",
+                            "answer": "renames",
+                            "explanation": "It provides a second name/description."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "In 'The insect, a bee, stung me', the appositive is 'a ___'.",
+                            "answer": "bee",
+                            "explanation": "Bee renames insect."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "In 'My brother Jack is tall', the appositive is ___.",
+                            "answer": "Jack",
+                            "explanation": "Jack renames brother."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "Appositives add extra ___ about the noun.",
+                            "answer": "information",
+                            "explanation": "Provides clarity or description."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "In 'Our planet, Earth, is round', the appositive is ___.",
+                            "answer": "Earth",
+                            "explanation": "Earth renames our planet."
+                        }
+                    ]
+                },
+                {
+                    "round_number": 9,
+                    "title": "Gerunds (Verbal Nouns)",
+                    "questions": [
+                        {
+                            "type": "mcq",
+                            "question": "What is a gerund?",
+                            "options": [
+                                "A noun ending in -ed",
+                                "A verb ending in -ing acting as a noun",
+                                "An adjective",
+                                "An adverb"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Verbal noun."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Find the gerund: 'Running is fun.'",
+                            "options": [
+                                "Running",
+                                "is",
+                                "fun",
+                                "None"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Running acts as the subject noun."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Is there a gerund here? 'She is running.'",
+                            "options": [
+                                "Yes, She",
+                                "Yes, running",
+                                "Yes, is",
+                                "No"
+                            ],
+                            "correct_option_index": 3,
+                            "explanation": "Running is just a verb here, not a noun."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Find the gerund: 'I love painting.'",
+                            "options": [
+                                "I",
+                                "love",
+                                "painting",
+                                "None"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "Painting is the object noun."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Gerunds always end in:",
+                            "options": [
+                                "-ed",
+                                "-s",
+                                "-ly",
+                                "-ing"
+                            ],
+                            "correct_option_index": 3,
+                            "explanation": "Always -ing."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "Because they come from verbs, gerunds are called ___ nouns.",
+                            "answer": "verbal",
+                            "explanation": "Verbal nouns."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "In 'Swimming is great', the gerund is ___.",
+                            "answer": "Swimming",
+                            "explanation": "Swimming is the subject."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "In 'He enjoys reading', the gerund is ___.",
+                            "answer": "reading",
+                            "explanation": "Reading is the object."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "Gerunds function exactly like ___ in a sentence.",
+                            "answer": "nouns",
+                            "explanation": "They can be subjects or objects."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "In 'Smoking is bad', the gerund is ___.",
+                            "answer": "Smoking",
+                            "explanation": "Smoking acts as a noun."
+                        }
+                    ]
+                },
+                {
+                    "round_number": 10,
+                    "title": "Ultimate Nouns Boss Battle",
+                    "questions": [
+                        {
+                            "type": "mcq",
+                            "question": "Identify the proper noun:",
+                            "options": [
+                                "city",
+                                "London",
+                                "town",
+                                "village"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Capitalized specific place."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Identify the collective noun:",
+                            "options": [
+                                "team",
+                                "players",
+                                "game",
+                                "stadium"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Group of individuals."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Identify the abstract noun:",
+                            "options": [
+                                "apple",
+                                "table",
+                                "happiness",
+                                "car"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "Cannot be touched/seen."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Plural of 'mouse':",
+                            "options": [
+                                "mouses",
+                                "mice",
+                                "meese",
+                                "mouse"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Irregular plural."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Identify the compound noun:",
+                            "options": [
+                                "sunlight",
+                                "quickly",
+                                "running",
+                                "happily"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "sun + light"
+                        },
+                        {
+                            "type": "fib",
+                            "question": "A noun that renames another is an ___.",
+                            "answer": "appositive",
+                            "explanation": "Appositive renames."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "Water is a/an ___ noun. (countable / uncountable)",
+                            "answer": "uncountable",
+                            "explanation": "Cannot be counted."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "The case showing ownership is ___.",
+                            "answer": "possessive",
+                            "explanation": "Possessive shows ownership."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "A verb ending in -ing acting as a noun is a ___.",
+                            "answer": "gerund",
+                            "explanation": "Definition of gerund."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "A ___ noun always starts with a capital letter.",
+                            "answer": "proper",
+                            "explanation": "Proper nouns are capitalized."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Pronoun",
+            "rounds": [
+                {
+                    "round_number": 1,
+                    "title": "Pronoun Basics Challenge",
+                    "questions": [
+                        {
+                            "type": "mcq",
+                            "question": "What does a pronoun replace?",
+                            "options": [
+                                "Verb",
+                                "Noun",
+                                "Adjective",
+                                "Adverb"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Pronouns replace nouns."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which is a pronoun?",
+                            "options": [
+                                "Apple",
+                                "Quickly",
+                                "They",
+                                "Happy"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "'They' is a pronoun."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Why do we use pronouns?",
+                            "options": [
+                                "To make sentences longer",
+                                "To avoid repeating nouns",
+                                "To show action",
+                                "To describe things"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Avoids repetition."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Replace 'Mary' in 'Mary runs fast':",
+                            "options": [
+                                "He",
+                                "She",
+                                "It",
+                                "They"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Mary is female."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Replace 'The dog' in 'The dog barks':",
+                            "options": [
+                                "He",
+                                "She",
+                                "It",
+                                "They"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "Animals without known gender take 'it'."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "Instead of 'The cars', we can use the pronoun ___.",
+                            "answer": "they",
+                            "explanation": "They is used for plural things."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "I saw John. I waved at ___.",
+                            "answer": "him",
+                            "explanation": "Him is the object pronoun for a male."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "My friends are here. ___ brought pizza.",
+                            "answer": "They",
+                            "explanation": "They replaces 'My friends'."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "Where is the book? ___ is on the table.",
+                            "answer": "It",
+                            "explanation": "It replaces book."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "A ___ is a word that takes the place of a noun.",
+                            "answer": "pronoun",
+                            "explanation": "Definition of a pronoun."
+                        }
+                    ]
+                },
+                {
+                    "round_number": 2,
+                    "title": "Personal Pronouns Challenge",
+                    "questions": [
+                        {
+                            "type": "mcq",
+                            "question": "Which is a 1st person plural pronoun?",
+                            "options": [
+                                "I",
+                                "We",
+                                "They",
+                                "You"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "We includes the speaker."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which pronoun is 2nd person?",
+                            "options": [
+                                "He",
+                                "She",
+                                "You",
+                                "It"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "You is spoken to."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Replace 'My brother and I':",
+                            "options": [
+                                "They",
+                                "We",
+                                "You",
+                                "Us"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "We includes the speaker."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which pronoun is singular?",
+                            "options": [
+                                "They",
+                                "We",
+                                "I",
+                                "Ours"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "I is one person."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Find the pronoun: 'She likes to read.'",
+                            "options": [
+                                "She",
+                                "likes",
+                                "to",
+                                "read"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "She is a personal pronoun."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "___ am going to the store.",
+                            "answer": "I",
+                            "explanation": "'am' goes with I."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "Where are ___ going? (asking a friend)",
+                            "answer": "you",
+                            "explanation": "You is 2nd person."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "Sarah is my sister. ___ is very smart.",
+                            "answer": "She",
+                            "explanation": "She replaces Sarah."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "Mark is late. ___ missed the bus.",
+                            "answer": "He",
+                            "explanation": "He replaces Mark."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "The students are studying. ___ have a test.",
+                            "answer": "They",
+                            "explanation": "They replaces students."
+                        }
+                    ]
+                },
+                {
+                    "round_number": 3,
+                    "title": "Subject & Object Pronouns",
+                    "questions": [
+                        {
+                            "type": "mcq",
+                            "question": "Which is a subject pronoun?",
+                            "options": [
+                                "Me",
+                                "Him",
+                                "They",
+                                "Us"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "They does the action."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which is an object pronoun?",
+                            "options": [
+                                "I",
+                                "She",
+                                "We",
+                                "Them"
+                            ],
+                            "correct_option_index": 3,
+                            "explanation": "Them receives the action."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Choose the correct word: 'He gave it to ___.'",
+                            "options": [
+                                "I",
+                                "me",
+                                "he",
+                                "they"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Me is the object of the preposition."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Choose the correct word: '___ love pizza.'",
+                            "options": [
+                                "Us",
+                                "Them",
+                                "Me",
+                                "We"
+                            ],
+                            "correct_option_index": 3,
+                            "explanation": "We is the subject."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which acts as both subject and object?",
+                            "options": [
+                                "I",
+                                "He",
+                                "You",
+                                "We"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "You remains unchanged."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "My mom called ___. (I/me)",
+                            "answer": "me",
+                            "explanation": "Me is the object."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "___ went to the park. (Us/We)",
+                            "answer": "We",
+                            "explanation": "We is the subject."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "I saw ___ at the mall. (he/him)",
+                            "answer": "him",
+                            "explanation": "Him is the object."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "___ are my best friends. (They/Them)",
+                            "answer": "They",
+                            "explanation": "They is the subject."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "Can you help ___? (we/us)",
+                            "answer": "us",
+                            "explanation": "Us is the object."
+                        }
+                    ]
+                },
+                {
+                    "round_number": 4,
+                    "title": "Possessive Pronouns",
+                    "questions": [
+                        {
+                            "type": "mcq",
+                            "question": "Which is a possessive pronoun?",
+                            "options": [
+                                "mine",
+                                "my",
+                                "me",
+                                "I"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Mine stands alone."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Complete: 'This book is ___.'",
+                            "options": [
+                                "her",
+                                "hers",
+                                "she",
+                                "it"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Hers stands alone."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Complete: 'The victory is ___.'",
+                            "options": [
+                                "us",
+                                "our",
+                                "ours",
+                                "we"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "Ours stands alone."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which pronoun means 'belonging to them'?",
+                            "options": [
+                                "their",
+                                "they",
+                                "them",
+                                "theirs"
+                            ],
+                            "correct_option_index": 3,
+                            "explanation": "Theirs is the possessive pronoun."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Is 'yours' a possessive pronoun?",
+                            "options": [
+                                "Yes",
+                                "No",
+                                "Only plural",
+                                "Only singular"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Yes, it stands alone."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "That car belongs to me. It is ___.",
+                            "answer": "mine",
+                            "explanation": "Shows my ownership."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "Those shoes belong to him. They are ___.",
+                            "answer": "his",
+                            "explanation": "Shows his ownership."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "This house belongs to us. It is ___.",
+                            "answer": "ours",
+                            "explanation": "Shows our ownership."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "The money belongs to them. It is ___.",
+                            "answer": "theirs",
+                            "explanation": "Shows their ownership."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "Is this phone ___? (belonging to you)",
+                            "answer": "yours",
+                            "explanation": "Shows your ownership."
+                        }
+                    ]
+                },
+                {
+                    "round_number": 5,
+                    "title": "Possessive Adjectives vs Pronouns",
+                    "questions": [
+                        {
+                            "type": "mcq",
+                            "question": "In 'my car', 'my' is a:",
+                            "options": [
+                                "Possessive Adjective",
+                                "Possessive Pronoun",
+                                "Noun",
+                                "Verb"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "It precedes a noun."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "In 'the car is mine', 'mine' is a:",
+                            "options": [
+                                "Possessive Adjective",
+                                "Possessive Pronoun",
+                                "Noun",
+                                "Verb"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "It stands alone."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which sentence is correct?",
+                            "options": [
+                                "This is mine book.",
+                                "This is my book.",
+                                "This book is my.",
+                                "This book is me."
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "My is an adjective followed by book."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which word acts as BOTH adjective and pronoun?",
+                            "options": [
+                                "my",
+                                "his",
+                                "her",
+                                "our"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "His book / The book is his."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Choose the correct word: 'I lost ___ keys.'",
+                            "options": [
+                                "mine",
+                                "my",
+                                "me",
+                                "I"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "My is followed by keys."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "That is ___ dog. (my/mine)",
+                            "answer": "my",
+                            "explanation": "Adjective modifying dog."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "That dog is ___. (my/mine)",
+                            "answer": "mine",
+                            "explanation": "Pronoun standing alone."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "Where is ___ house? (your/yours)",
+                            "answer": "your",
+                            "explanation": "Adjective modifying house."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "Is this house ___? (your/yours)",
+                            "answer": "yours",
+                            "explanation": "Pronoun standing alone."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "___ team won the game! (Our/Ours)",
+                            "answer": "Our",
+                            "explanation": "Adjective modifying team."
+                        }
+                    ]
+                },
+                {
+                    "round_number": 6,
+                    "title": "Reflexive Pronouns",
+                    "questions": [
+                        {
+                            "type": "mcq",
+                            "question": "Reflexive pronouns end in:",
+                            "options": [
+                                "-ly",
+                                "-ed",
+                                "-self / -selves",
+                                "-ing"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "They reflect back to the subject."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Complete: 'I cut ___.'",
+                            "options": [
+                                "me",
+                                "mine",
+                                "myself",
+                                "I"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "Subject and object are the same (I)."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Plural of yourself is:",
+                            "options": [
+                                "yourselfs",
+                                "yourselves",
+                                "your",
+                                "yours"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Change f to v and add es."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Complete: 'They built it ___.'",
+                            "options": [
+                                "themselfs",
+                                "theirselves",
+                                "themselves",
+                                "them"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "Themselves is the correct form."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Is 'hisself' a real word?",
+                            "options": [
+                                "Yes",
+                                "No",
+                                "Only in British English",
+                                "Only in slang"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "The correct word is 'himself'."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "She looked at ___ in the mirror.",
+                            "answer": "herself",
+                            "explanation": "Reflects back to she."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "We cooked dinner all by ___.",
+                            "answer": "ourselves",
+                            "explanation": "Reflects back to we."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "He taught ___ how to code.",
+                            "answer": "himself",
+                            "explanation": "Reflects back to he."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "The cat washed ___.",
+                            "answer": "itself",
+                            "explanation": "Reflects back to cat (it)."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "Did you make this ___? (talking to one person)",
+                            "answer": "yourself",
+                            "explanation": "Singular you."
+                        }
+                    ]
+                },
+                {
+                    "round_number": 7,
+                    "title": "Demonstrative Pronouns",
+                    "questions": [
+                        {
+                            "type": "mcq",
+                            "question": "Which points to a singular object near you?",
+                            "options": [
+                                "This",
+                                "That",
+                                "These",
+                                "Those"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "This = singular, near."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which points to plural objects far away?",
+                            "options": [
+                                "This",
+                                "That",
+                                "These",
+                                "Those"
+                            ],
+                            "correct_option_index": 3,
+                            "explanation": "Those = plural, far."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which pair is plural?",
+                            "options": [
+                                "This, That",
+                                "These, Those",
+                                "This, These",
+                                "That, Those"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "These and Those are plural."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Complete: '___ is my favorite song.'",
+                            "options": [
+                                "This",
+                                "These",
+                                "Those",
+                                "Them"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Song is singular."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "In 'That is cool', 'That' is a:",
+                            "options": [
+                                "Demonstrative Adjective",
+                                "Demonstrative Pronoun",
+                                "Noun",
+                                "Verb"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "It stands alone as a pronoun."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "___ are my shoes right here.",
+                            "answer": "These",
+                            "explanation": "Plural and near."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "Look at ___ stars up in the sky!",
+                            "answer": "those",
+                            "explanation": "Plural and far."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "Was ___ your brother who just left?",
+                            "answer": "that",
+                            "explanation": "Singular and far (left)."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "Hold ___ for a second. (handing an object)",
+                            "answer": "this",
+                            "explanation": "Singular and near."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "___ is the best pizza I've ever had!",
+                            "answer": "This",
+                            "explanation": "Singular and currently eating it."
+                        }
+                    ]
+                },
+                {
+                    "round_number": 8,
+                    "title": "Interrogative Pronouns",
+                    "questions": [
+                        {
+                            "type": "mcq",
+                            "question": "Which asks about a person doing an action?",
+                            "options": [
+                                "What",
+                                "Which",
+                                "Who",
+                                "Whose"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "Who is the subject."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which asks about ownership?",
+                            "options": [
+                                "Who",
+                                "Whom",
+                                "Whose",
+                                "What"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "Whose means 'belonging to who'."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which is used for making a choice?",
+                            "options": [
+                                "What",
+                                "Which",
+                                "Who",
+                                "Whom"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Which of these two?"
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which asks about a person receiving an action?",
+                            "options": [
+                                "Who",
+                                "Whom",
+                                "Whose",
+                                "What"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Whom is the object."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Identify the interrogative pronoun: 'What is that?'",
+                            "options": [
+                                "What",
+                                "is",
+                                "that",
+                                "None"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "What asks the question."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "___ is at the door?",
+                            "answer": "Who",
+                            "explanation": "Asking for a person."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "___ did you call last night?",
+                            "answer": "Whom",
+                            "explanation": "Object of the calling."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "___ shoes are these?",
+                            "answer": "Whose",
+                            "explanation": "Asking ownership."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "___ is your favorite color?",
+                            "answer": "What",
+                            "explanation": "Asking for a thing."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "___ of these two shirts is better?",
+                            "answer": "Which",
+                            "explanation": "Making a choice."
+                        }
+                    ]
+                },
+                {
+                    "round_number": 9,
+                    "title": "Indefinite Pronouns",
+                    "questions": [
+                        {
+                            "type": "mcq",
+                            "question": "Which is an indefinite pronoun?",
+                            "options": [
+                                "He",
+                                "Someone",
+                                "Which",
+                                "Myself"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Does not specify exactly who."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Are pronouns ending in -body usually singular or plural?",
+                            "options": [
+                                "Singular",
+                                "Plural",
+                                "Both",
+                                "Neither"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Everybody IS here."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Complete: 'Everyone ___ happy.'",
+                            "options": [
+                                "is",
+                                "are",
+                                "am",
+                                "be"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Everyone takes a singular verb."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which means 'no people'?",
+                            "options": [
+                                "Nothing",
+                                "Nobody",
+                                "Nowhere",
+                                "None"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "No + body (person)."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which means 'no things'?",
+                            "options": [
+                                "Nothing",
+                                "Nobody",
+                                "Nowhere",
+                                "None"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "No + thing."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "I have looked ___ for my phone.",
+                            "answer": "everywhere",
+                            "explanation": "All places."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "Does ___ have a pencil?",
+                            "answer": "anyone",
+                            "explanation": "Any person."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "I have ___ to wear!",
+                            "answer": "nothing",
+                            "explanation": "Zero things."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "___ is perfect.",
+                            "answer": "Nobody",
+                            "explanation": "Zero people."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "Is there ___ good on TV?",
+                            "answer": "anything",
+                            "explanation": "Any thing."
+                        }
+                    ]
+                },
+                {
+                    "round_number": 10,
+                    "title": "Relative Pronouns",
+                    "questions": [
+                        {
+                            "type": "mcq",
+                            "question": "Which relative pronoun is used ONLY for people?",
+                            "options": [
+                                "Which",
+                                "That",
+                                "Who",
+                                "What"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "Who refers to people."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which is used ONLY for things/animals?",
+                            "options": [
+                                "Who",
+                                "Whom",
+                                "Which",
+                                "Whose"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "Which refers to things."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which can be used for BOTH people and things?",
+                            "options": [
+                                "Who",
+                                "Which",
+                                "That",
+                                "Whom"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "The man that... The car that..."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Complete: 'The boy ___ dog ran away is sad.'",
+                            "options": [
+                                "who",
+                                "which",
+                                "whose",
+                                "whom"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "Whose shows ownership of the dog."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Identify the relative pronoun: 'The book that I read was good.'",
+                            "options": [
+                                "The",
+                                "book",
+                                "that",
+                                "good"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "That connects the clauses."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "The woman ___ won the lottery is rich.",
+                            "answer": "who",
+                            "explanation": "Refers to the woman."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "The car ___ I bought is blue.",
+                            "answer": "which",
+                            "explanation": "Refers to the car."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "The girl ___ purse was stolen cried.",
+                            "answer": "whose",
+                            "explanation": "Ownership of the purse."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "He is the only one ___ can save us.",
+                            "answer": "who",
+                            "explanation": "Refers to the person."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "I found the keys ___ I lost yesterday.",
+                            "answer": "that",
+                            "explanation": "Refers to the keys (things)."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Verb",
+            "rounds": [
+                {
+                    "round_number": 1,
+                    "title": "Verbs Basics",
+                    "questions": [
+                        {
+                            "type": "mcq",
+                            "question": "What part of speech shows action or state of being?",
+                            "options": [
+                                "Noun",
+                                "Pronoun",
+                                "Verb",
+                                "Adjective"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "Verbs show action/being."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which is an action verb?",
+                            "options": [
+                                "is",
+                                "am",
+                                "run",
+                                "were"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "Run is physical."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which is a state of being verb?",
+                            "options": [
+                                "are",
+                                "eat",
+                                "jump",
+                                "sleep"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Are shows existence."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Find the verb: 'He writes fast.'",
+                            "options": [
+                                "He",
+                                "writes",
+                                "fast",
+                                "None"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Writes is the action."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Find the verb: 'They were late.'",
+                            "options": [
+                                "They",
+                                "were",
+                                "late",
+                                "None"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Were is the state of being."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "She ___ a great singer. (is/jump)",
+                            "options": [
+                                "is",
+                                "jump",
+                                "she",
+                                "singer"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "'is' describes her state."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "I ___ to the music. (listen/am)",
+                            "options": [
+                                "listen",
+                                "am",
+                                "music",
+                                "I"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Listen is an action."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "The dog ___ loudly. (barked/was)",
+                            "options": [
+                                "barked",
+                                "was",
+                                "dog",
+                                "loudly"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Barked is an action."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "We ___ happy today. (are/play)",
+                            "options": [
+                                "are",
+                                "play",
+                                "we",
+                                "happy"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "'are' connects we to happy."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "The sun ___ brightly. (shines/is)",
+                            "options": [
+                                "shines",
+                                "is",
+                                "sun",
+                                "brightly"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Shines is the action."
+                        }
+                    ]
+                },
+                {
+                    "round_number": 2,
+                    "title": "Action vs Linking",
+                    "questions": [
+                        {
+                            "type": "mcq",
+                            "question": "What does a linking verb do?",
+                            "options": [
+                                "Shows action",
+                                "Connects subject to describing word",
+                                "Acts as object",
+                                "Ends a sentence"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "It links subject to a noun/adjective."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "In 'The cake tastes good', 'tastes' is:",
+                            "options": [
+                                "Action",
+                                "Linking",
+                                "Helping",
+                                "None"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Cake = good."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "In 'I tasted the cake', 'tasted' is:",
+                            "options": [
+                                "Action",
+                                "Linking",
+                                "Helping",
+                                "None"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Physical action done by I."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which is ALWAYS a linking verb?",
+                            "options": [
+                                "feel",
+                                "smell",
+                                "is",
+                                "appear"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "'is' never shows action."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Identify the linking verb: 'She seems tired.'",
+                            "options": [
+                                "She",
+                                "seems",
+                                "tired",
+                                "None"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Seems connects she to tired."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "The soup ___ delicious. (smells/eats)",
+                            "options": [
+                                "smells",
+                                "eats",
+                                "soup",
+                                "delicious"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Smells is linking here."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "He ___ the ball. (threw/was)",
+                            "options": [
+                                "threw",
+                                "was",
+                                "he",
+                                "ball"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Threw is an action."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "I ___ cold. (feel/run)",
+                            "options": [
+                                "feel",
+                                "run",
+                                "I",
+                                "cold"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Feel is linking here."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "They ___ best friends. (became/walked)",
+                            "options": [
+                                "became",
+                                "walked",
+                                "they",
+                                "friends"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Became is linking."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "She ___ beautiful today. (looks/sees)",
+                            "options": [
+                                "looks",
+                                "sees",
+                                "she",
+                                "beautiful"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Looks is linking here."
+                        }
+                    ]
+                },
+                {
+                    "round_number": 3,
+                    "title": "Helping Verbs",
+                    "questions": [
+                        {
+                            "type": "mcq",
+                            "question": "What comes BEFORE the main verb to show tense?",
+                            "options": [
+                                "Noun",
+                                "Adjective",
+                                "Helping Verb",
+                                "Adverb"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "Helping verbs assist main verbs."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "In 'I am eating', what is 'am'?",
+                            "options": [
+                                "Main Verb",
+                                "Helping Verb",
+                                "Noun",
+                                "Pronoun"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "It helps eating."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "In 'She has left', what is the main verb?",
+                            "options": [
+                                "She",
+                                "has",
+                                "left",
+                                "None"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "Left is the main action."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which is a helping verb in 'He will win'?",
+                            "options": [
+                                "He",
+                                "will",
+                                "win",
+                                "None"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Will helps win."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Can 'is' be a helping verb?",
+                            "options": [
+                                "Yes",
+                                "No",
+                                "Only main",
+                                "Never"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Yes, e.g., 'He is running'."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "They ___ playing soccer. (are/jump)",
+                            "options": [
+                                "are",
+                                "jump",
+                                "they",
+                                "playing"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Are is the helping verb."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "I ___ not see him. (did/running)",
+                            "options": [
+                                "did",
+                                "running",
+                                "I",
+                                "not"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Did helps see."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "We ___ been waiting. (have/are)",
+                            "options": [
+                                "have",
+                                "are",
+                                "we",
+                                "waiting"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Have helps been waiting."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "She ___ be sleeping. (could/went)",
+                            "options": [
+                                "could",
+                                "went",
+                                "she",
+                                "sleeping"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Could helps be sleeping."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "The dog ___ barking loudly. (was/barked)",
+                            "options": [
+                                "was",
+                                "barked",
+                                "dog",
+                                "loudly"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Was helps barking."
+                        }
+                    ]
+                },
+                {
+                    "round_number": 4,
+                    "title": "Transitive vs Intransitive",
+                    "questions": [
+                        {
+                            "type": "mcq",
+                            "question": "A transitive verb must have a ___.",
+                            "options": [
+                                "Subject",
+                                "Direct Object",
+                                "Adverb",
+                                "Adjective"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "It transfers action to an object."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "In 'He read a book', 'read' is:",
+                            "options": [
+                                "Transitive",
+                                "Intransitive",
+                                "Linking",
+                                "Helping"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Read what? A book."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "In 'The baby cried', 'cried' is:",
+                            "options": [
+                                "Transitive",
+                                "Intransitive",
+                                "Linking",
+                                "Helping"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "No direct object."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Identify the direct object: 'She painted the wall.'",
+                            "options": [
+                                "She",
+                                "painted",
+                                "the",
+                                "wall"
+                            ],
+                            "correct_option_index": 3,
+                            "explanation": "The wall receives the paint."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which sentence is intransitive?",
+                            "options": [
+                                "I eat lunch.",
+                                "He drove a car.",
+                                "They arrived.",
+                                "She wrote a poem."
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "Arrived has no object."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "I bought a car. 'Bought' is ___. (transitive / intransitive)",
+                            "options": [
+                                "transitive",
+                                "intransitive",
+                                "I",
+                                "car"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Bought what? A car."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "He laughed loudly. 'Laughed' is ___. (transitive / intransitive)",
+                            "options": [
+                                "transitive",
+                                "intransitive",
+                                "he",
+                                "loudly"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "No object."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "She baked a cake. 'Baked' is ___. (transitive / intransitive)",
+                            "options": [
+                                "transitive",
+                                "intransitive",
+                                "she",
+                                "cake"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Baked what? A cake."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "The sun set. 'Set' is ___. (transitive / intransitive)",
+                            "options": [
+                                "transitive",
+                                "intransitive",
+                                "sun",
+                                "set"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "No object."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "Transitive verbs answer the question '___?'",
+                            "options": [
+                                "Why",
+                                "Where",
+                                "What",
+                                "When"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "What or who."
+                        }
+                    ]
+                },
+                {
+                    "round_number": 5,
+                    "title": "Regular vs Irregular Verbs",
+                    "questions": [
+                        {
+                            "type": "mcq",
+                            "question": "Regular verbs in past tense end in:",
+                            "options": [
+                                "-ing",
+                                "-s",
+                                "-ed",
+                                "-ly"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "Standard rule is -ed."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which is a regular verb?",
+                            "options": [
+                                "eat",
+                                "go",
+                                "jump",
+                                "see"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "Jumped."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Which is an irregular verb?",
+                            "options": [
+                                "walk",
+                                "talk",
+                                "run",
+                                "look"
+                            ],
+                            "correct_option_index": 2,
+                            "explanation": "Ran."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Past tense of 'buy':",
+                            "options": [
+                                "buyed",
+                                "bought",
+                                "bring",
+                                "brought"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Bought."
+                        },
+                        {
+                            "type": "mcq",
+                            "question": "Past tense of 'catch':",
+                            "options": [
+                                "catched",
+                                "caught",
+                                "cot",
+                                "catch"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Caught."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "Past tense of 'work' is ___. (regular)",
+                            "options": [
+                                "worked",
+                                "worken",
+                                "wrought",
+                                "working"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Worked."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "Past tense of 'sing' is ___. (irregular)",
+                            "options": [
+                                "singed",
+                                "sang",
+                                "sung",
+                                "singing"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Sang."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "Past tense of 'go' is ___.",
+                            "options": [
+                                "goed",
+                                "went",
+                                "gone",
+                                "going"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Went."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "Past tense of 'close' is ___.",
+                            "options": [
+                                "closed",
+                                "cloze",
+                                "close",
+                                "closing"
+                            ],
+                            "correct_option_index": 0,
+                            "explanation": "Closed."
+                        },
+                        {
+                            "type": "fib",
+                            "question": "Past tense of 'think' is ___.",
+                            "options": [
+                                "thinked",
+                                "thought",
+                                "thunk",
+                                "think"
+                            ],
+                            "correct_option_index": 1,
+                            "explanation": "Thought."
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

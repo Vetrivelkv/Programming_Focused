@@ -1,0 +1,20 @@
+{
+  "name": "@programming-focused/backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "check": "node --check src/server.js && node --check src/config/rethinkdb.js && node --check src/init/database.js && node --check src/logic/auth.js && node --check src/logic/courses.js && node --check src/models/progress.js && node --check src/models/settings.js && node --check src/routes/auth.js && node --check src/routes/courses.js && node --check src/routes/profile.js && node --check src/routes/settings.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.3",
+    "rethinkdbdash": "^2.3.31"
+  }
+}
