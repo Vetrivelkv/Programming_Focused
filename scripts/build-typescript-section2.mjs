@@ -12,7 +12,7 @@ const module = (number, slug, title, content, questions) => ({
   id: `ts_basics_${String(number).padStart(2, "0")}`,
   title,
   image: `/assets/typescript/basics/${String(number).padStart(2, "0")}-${slug}.png`,
-  content,
+  content: content.replaceAll("\\`", "`"),
   questions,
 });
 
@@ -261,6 +261,15 @@ type User = {
 function canEdit(role: Role): boolean {
   return role === 'admin' || role === 'editor';
 }
+\`\`\`
+
+Literal types can also constrain tuple positions. Here each result must be exactly \`1\` or \`-1\`:
+
+\`\`\`ts
+type Comparison = [1 | -1, 1 | -1];
+
+const comparison: Comparison = [1, -1];
+// const invalid: Comparison = [0, 1];
 \`\`\`
 
 Literal unions are type-only: they add no runtime lookup object. They are ideal for existing strings from HTML, JSON, and APIs.`, [
