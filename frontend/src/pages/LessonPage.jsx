@@ -1,4 +1,4 @@
-import { ArrowLeft, BookOpenText } from "lucide-react";
+import { ArrowLeft, BookOpenText, Check, Copy } from "lucide-react";
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Link, useParams } from "react-router-dom";
@@ -6,6 +6,32 @@ import remarkGfm from "remark-gfm";
 import { apiJson } from "../api";
 import LoadingState from "../components/LoadingState";
 import QuizForm from "../components/QuizForm";
+
+function CodeBlock({ children }) {
+  const [copied, setCopied] = useState(false);
+  const code = children?.props?.children ?? "";
+  const className = children?.props?.className ?? "";
+  const language = className.replace("language-", "") || "code";
+
+  const copyCode = async () => {
+    await navigator.clipboard.writeText(String(code).replace(/\n$/, ""));
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1600);
+  };
+
+  return (
+    <div className="markdown-code-block">
+      <div className="markdown-code-toolbar">
+        <span>{language}</span>
+        <button type="button" onClick={copyCode} aria-label="Copy code snippet">
+          {copied ? <Check /> : <Copy />}
+          {copied ? "Copied" : "Copy"}
+        </button>
+      </div>
+      <pre>{children}</pre>
+    </div>
+  );
+}
 
 export default function LessonPage() {
   const { courseId, topic, moduleId } = useParams();
@@ -34,6 +60,7 @@ export default function LessonPage() {
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={{
+            pre: CodeBlock,
             table: ({ children }) => (
               <div className="markdown-table-wrap">
                 <table>{children}</table>

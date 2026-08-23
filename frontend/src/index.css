@@ -317,8 +317,66 @@ h2 { font-size: clamp(1.65rem, 3vw, 2.55rem); }
   background: #eef4ef;
   font-size: .9em;
 }
-.lesson-content pre { overflow-x: auto; margin: 1.5rem 0; padding: 1rem; border-radius: 12px; background: #17332c; }
-.lesson-content pre code { padding: 0; border: 0; color: #eff7f1; background: transparent; }
+.markdown-code-block {
+  overflow: hidden;
+  margin: 1.7rem 0;
+  border: 1px solid #294a40;
+  border-radius: 15px;
+  background: #102a24;
+  box-shadow: 0 16px 36px rgba(17, 45, 37, .18);
+}
+.markdown-code-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 42px;
+  padding: .45rem .55rem .45rem 1rem;
+  border-bottom: 1px solid rgba(205, 229, 217, .14);
+  color: #9ec5b4;
+  background: #173a31;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.markdown-code-toolbar button {
+  display: inline-flex;
+  align-items: center;
+  gap: .38rem;
+  padding: .42rem .7rem;
+  border: 1px solid rgba(208, 233, 220, .18);
+  border-radius: 8px;
+  color: #e7f4ed;
+  background: rgba(255, 255, 255, .07);
+  font: inherit;
+  letter-spacing: .02em;
+  text-transform: none;
+  cursor: pointer;
+}
+.markdown-code-toolbar button:hover { background: rgba(255, 255, 255, .13); }
+.markdown-code-toolbar button:focus-visible { outline: 3px solid #efc66a; outline-offset: 2px; }
+.markdown-code-toolbar svg { width: 14px; height: 14px; }
+.lesson-content .markdown-code-block pre {
+  overflow-x: auto;
+  margin: 0;
+  padding: 1.25rem 1.35rem 1.4rem;
+  border-radius: 0;
+  background: #102a24;
+  scrollbar-color: #547b6d #102a24;
+}
+.lesson-content .markdown-code-block pre code {
+  display: block;
+  min-width: max-content;
+  padding: 0;
+  border: 0;
+  color: #eef8f2;
+  background: transparent;
+  font-family: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+  font-size: clamp(.78rem, 1.8vw, .9rem);
+  line-height: 1.72;
+  tab-size: 2;
+}
 .lesson-content hr { margin: 2.5rem 0; border: 0; border-top: 1px solid var(--line); }
 .markdown-table-wrap {
   overflow-x: auto;
@@ -477,6 +535,8 @@ th { color: #718078; }
 :root[data-theme="dark"] .lesson-content blockquote { background: #1c332a; }
 :root[data-theme="dark"] .lesson-content blockquote p { color: #c2d8ce; }
 :root[data-theme="dark"] .lesson-content code { border-color: #3a5047; color: #a9dec7; background: #20342c; }
+:root[data-theme="dark"] .markdown-code-block { border-color: #49685c; box-shadow: 0 18px 42px rgba(0, 0, 0, .24); }
+:root[data-theme="dark"] .markdown-code-toolbar { background: #10271f; }
 :root[data-theme="dark"] .markdown-table-wrap { border-color: #35483f; background: #18231e; box-shadow: 0 8px 24px rgba(0,0,0,.2); scrollbar-color: #547466 #1b2923; }
 :root[data-theme="dark"] .lesson-content th, :root[data-theme="dark"] .lesson-content td { border-color: #35463f; }
 :root[data-theme="dark"] .lesson-content thead th { color: #eaf4ef; background: #285746; }

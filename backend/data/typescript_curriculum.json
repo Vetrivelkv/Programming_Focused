@@ -12,14 +12,24 @@
             {
               "type": "mcq",
               "question": "What does TypeScript normally produce for browsers or Node.js to execute?",
-              "options": ["JavaScript", "Java bytecode", "CSS", "SQL"],
+              "options": [
+                "JavaScript",
+                "Java bytecode",
+                "CSS",
+                "SQL"
+              ],
               "correct": 0,
               "explanation": "The TypeScript compiler transforms TypeScript source into JavaScript."
             },
             {
               "type": "mcq",
               "question": "When is TypeScript's type system most useful?",
-              "options": ["During development and compilation", "Only after deployment", "Only inside a database", "While rendering CSS"],
+              "options": [
+                "During development and compilation",
+                "Only after deployment",
+                "Only inside a database",
+                "While rendering CSS"
+              ],
               "correct": 0,
               "explanation": "Type checking gives feedback while you write and compile the program."
             }
@@ -34,14 +44,24 @@
             {
               "type": "mcq",
               "question": "Which description of TypeScript is most accurate?",
-              "options": ["A typed superset of JavaScript", "A database query language", "A replacement for HTML", "A Java virtual machine"],
+              "options": [
+                "A typed superset of JavaScript",
+                "A database query language",
+                "A replacement for HTML",
+                "A Java virtual machine"
+              ],
               "correct": 0,
               "explanation": "TypeScript extends JavaScript with a static type system and related tooling."
             },
             {
               "type": "mcq",
               "question": "What happens to most type annotations after compilation?",
-              "options": ["They are erased", "They become CSS", "They are stored in a database", "They encrypt the source"],
+              "options": [
+                "They are erased",
+                "They become CSS",
+                "They are stored in a database",
+                "They encrypt the source"
+              ],
               "correct": 0,
               "explanation": "Type annotations guide analysis but do not normally exist in the emitted JavaScript."
             }
@@ -56,14 +76,24 @@
             {
               "type": "mcq",
               "question": "Which task is TypeScript especially helpful with?",
-              "options": ["Finding code affected by a refactor", "Replacing all automated tests", "Validating every network response at runtime", "Hosting a web server by itself"],
+              "options": [
+                "Finding code affected by a refactor",
+                "Replacing all automated tests",
+                "Validating every network response at runtime",
+                "Hosting a web server by itself"
+              ],
               "correct": 0,
               "explanation": "Type information lets editors and the compiler trace affected code more safely."
             },
             {
               "type": "mcq",
               "question": "Why should external data still be validated at runtime?",
-              "options": ["Types are erased and external values can violate assumptions", "TypeScript cannot describe objects", "JavaScript cannot read JSON", "Runtime validation makes compilation faster"],
+              "options": [
+                "Types are erased and external values can violate assumptions",
+                "TypeScript cannot describe objects",
+                "JavaScript cannot read JSON",
+                "Runtime validation makes compilation faster"
+              ],
               "correct": 0,
               "explanation": "Static types do not inspect values arriving from outside the program while it runs."
             }
@@ -78,14 +108,24 @@
             {
               "type": "mcq",
               "question": "Which command installs TypeScript as a project development dependency?",
-              "options": ["npm install --save-dev typescript", "npm install react --global", "node typescript", "git install typescript"],
+              "options": [
+                "npm install --save-dev typescript",
+                "npm install react --global",
+                "node typescript",
+                "git install typescript"
+              ],
               "correct": 0,
               "explanation": "The --save-dev flag records TypeScript in the project's development dependencies."
             },
             {
               "type": "mcq",
               "question": "What does `npx tsc --init` create?",
-              "options": ["A TypeScript configuration file", "A production database", "A React component", "A GitHub repository"],
+              "options": [
+                "A TypeScript configuration file",
+                "A production database",
+                "A React component",
+                "A GitHub repository"
+              ],
               "correct": 0,
               "explanation": "The command creates a tsconfig.json file with compiler configuration."
             }
@@ -100,14 +140,24 @@
             {
               "type": "mcq",
               "question": "Why is it useful to open the whole project folder in the editor?",
-              "options": ["The editor can understand configuration and files together", "It automatically deploys the app", "It removes the need for Node.js", "It converts JavaScript into CSS"],
+              "options": [
+                "The editor can understand configuration and files together",
+                "It automatically deploys the app",
+                "It removes the need for Node.js",
+                "It converts JavaScript into CSS"
+              ],
               "correct": 0,
               "explanation": "Project-wide context lets the editor apply tsconfig settings and navigate relationships."
             },
             {
               "type": "mcq",
               "question": "Which directory convention commonly holds TypeScript source files?",
-              "options": ["src", "dist", "node_modules/.cache", ".git/objects"],
+              "options": [
+                "src",
+                "dist",
+                "node_modules/.cache",
+                ".git/objects"
+              ],
               "correct": 0,
               "explanation": "The src directory commonly contains authored source, while dist contains generated output."
             }
@@ -122,14 +172,24 @@
             {
               "type": "mcq",
               "question": "What is the strongest way to use a code example?",
-              "options": ["Type it, change it, and predict the outcome", "Memorise its punctuation only", "Skip directly to the answer", "Copy it without running it"],
+              "options": [
+                "Type it, change it, and predict the outcome",
+                "Memorise its punctuation only",
+                "Skip directly to the answer",
+                "Copy it without running it"
+              ],
               "correct": 0,
               "explanation": "Active experiments reveal how the concept behaves and strengthen recall."
             },
             {
               "type": "mcq",
               "question": "What should you do after an incorrect knowledge-check answer?",
-              "options": ["Review the explanation and retry", "Disable type checking", "Delete the project", "Always select the longest option"],
+              "options": [
+                "Review the explanation and retry",
+                "Disable type checking",
+                "Delete the project",
+                "Always select the longest option"
+              ],
               "correct": 0,
               "explanation": "Feedback is most useful when you connect it back to the lesson and try again."
             }
@@ -144,14 +204,24 @@
             {
               "type": "mcq",
               "question": "Why should a beginner avoid using `any` as the default type?",
-              "options": ["It suppresses useful type feedback", "It makes every file read-only", "It prevents JavaScript output", "It requires a database"],
+              "options": [
+                "It suppresses useful type feedback",
+                "It makes every file read-only",
+                "It prevents JavaScript output",
+                "It requires a database"
+              ],
               "correct": 0,
               "explanation": "The any type opts out of many checks, hiding learning opportunities and defects."
             },
             {
               "type": "mcq",
               "question": "What should you look for first in a compiler diagnostic?",
-              "options": ["The received type, expected type, and relevant location", "The screen brightness", "The Git branch colour", "The browser history"],
+              "options": [
+                "The received type, expected type, and relevant location",
+                "The screen brightness",
+                "The Git branch colour",
+                "The browser history"
+              ],
               "correct": 0,
               "explanation": "Those details explain the mismatch TypeScript found and where to investigate it."
             }
@@ -166,16 +236,543 @@
             {
               "type": "mcq",
               "question": "Which command runs the compiled starter program?",
-              "options": ["node dist/index.js", "npm init index.ts", "git run tsconfig.json", "css dist/index.js"],
+              "options": [
+                "node dist/index.js",
+                "npm init index.ts",
+                "git run tsconfig.json",
+                "css dist/index.js"
+              ],
               "correct": 0,
               "explanation": "Node.js executes the JavaScript emitted into the dist directory."
             },
             {
               "type": "mcq",
               "question": "What is the correct order in the starter workflow?",
-              "options": ["Write TypeScript, compile it, run JavaScript", "Run CSS, compile HTML, write SQL", "Deploy first, then create source", "Run TypeScript directly in every browser"],
+              "options": [
+                "Write TypeScript, compile it, run JavaScript",
+                "Run CSS, compile HTML, write SQL",
+                "Deploy first, then create source",
+                "Run TypeScript directly in every browser"
+              ],
               "correct": 0,
               "explanation": "The compiler checks TypeScript and emits JavaScript for the runtime."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Section 2 · TypeScript Basics & Basic Types",
+      "subtopics": [
+        {
+          "id": "ts_basics_01",
+          "title": "Set Up the TypeScript Essentials Lab",
+          "image": "/assets/typescript/basics/01-setup.png",
+          "content": "# Set Up the TypeScript Essentials Lab\n\nThis section uses small files so each type rule is visible. Node.js runs the emitted JavaScript; it does not make TypeScript types exist at runtime.\n\n\\`\\`\\`bash\nmkdir ts-essentials\ncd ts-essentials\nnpm init -y\nnpm install --save-dev typescript\nnpx tsc --init\n\\`\\`\\`\n\nCreate \\`src/basics.ts\\`, compile it, then run the output:\n\n\\`\\`\\`ts\nconsole.log('TypeScript essentials ready');\n\\`\\`\\`\n\n\\`\\`\\`bash\nnpx tsc\nnode dist/basics.js\n\\`\\`\\`\n\nKeep source and output separate. Your editor analyses \\`.ts\\`; Node executes \\`.js\\`. When experimenting with a single file, \\`npx tsc src/basics.ts\\` is enough, but a configured project gives every file the same strict rules.",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "Which file does Node.js normally execute in this workflow?",
+              "options": [
+                "The emitted JavaScript file",
+                "tsconfig.json",
+                "The TypeScript source as a browser stylesheet",
+                "package-lock.json only"
+              ],
+              "correct": 0,
+              "explanation": "TypeScript is checked and emitted before Node executes JavaScript."
+            },
+            {
+              "type": "mcq",
+              "question": "Why use a project-local TypeScript dependency?",
+              "options": [
+                "It keeps the compiler version reproducible",
+                "It removes Node.js",
+                "It turns types into runtime values",
+                "It deploys automatically"
+              ],
+              "correct": 0,
+              "explanation": "The compiler version is recorded with the project."
+            }
+          ]
+        },
+        {
+          "id": "ts_basics_02",
+          "title": "Primitive Types & Type Inference",
+          "image": "/assets/typescript/basics/02-primitives-inference.png",
+          "content": "# Primitive Types & Type Inference\n\nThe everyday primitive types are \\`string\\`, \\`number\\`, and \\`boolean\\`. Lowercase names describe JavaScript values; uppercase \\`String\\` and \\`Number\\` describe wrapper objects and are rarely what application code wants.\n\n\\`\\`\\`ts\nlet userName: string;\nlet userAge = 38;       // inferred as number\nlet isInstructor = true; // inferred as boolean\n\nuserName = 'Mira';\nuserAge = 39;\n// userAge = '39'; // error: string is not assignable to number\n\\`\\`\\`\n\nInference is not weaker than an annotation. TypeScript reads the initializer and remembers its type. Add annotations when a variable has no useful initializer or when an exported boundary deserves explicit documentation; otherwise let obvious local values speak for themselves.\n\nJavaScript also has runtime types: \\`typeof userName\\` returns \\`'string'\\`. TypeScript uses static knowledge before execution, while \\`typeof\\` inspects the current runtime value.",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What type is inferred for `let count = 3`?",
+              "options": [
+                "number",
+                "string",
+                "any",
+                "Number[]"
+              ],
+              "correct": 0,
+              "explanation": "A numeric initializer gives the variable the number type."
+            },
+            {
+              "type": "mcq",
+              "question": "Which annotation normally describes text values?",
+              "options": [
+                "string",
+                "String",
+                "text",
+                "char[]"
+              ],
+              "correct": 0,
+              "explanation": "Use the lowercase primitive type string."
+            }
+          ]
+        },
+        {
+          "id": "ts_basics_03",
+          "title": "Function Parameters, Defaults & `any`",
+          "image": "/assets/typescript/basics/03-functions-any.png",
+          "content": "# Function Parameters, Defaults & any\n\nParameters need types unless inference comes from a contextual function type. Defaults are values, so TypeScript can infer from them.\n\n\\`\\`\\`ts\nfunction add(a: number, b = 5): number {\n  return a + b;\n}\n\nadd(10);\nadd(10, 6);\n// add('10');\n\\`\\`\\`\n\nAn untyped value can become \\`any\\`. \\`any\\` permits almost every operation and then spreads through later expressions:\n\n\\`\\`\\`ts\nlet payload: any = JSON.parse('{\"score\": 9}');\npayload.missing.deep.call(); // checker stays silent\n\\`\\`\\`\n\nUse \\`any\\` only at deliberate escape hatches while migrating or integrating genuinely untyped code. Prefer \\`unknown\\` for external data because it forces proof before use.",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "Why does parameter `b = 5` not need `: number`?",
+              "options": [
+                "The default value allows inference",
+                "All parameters are numbers",
+                "Defaults disable checking",
+                "Node assigns the type"
+              ],
+              "correct": 0,
+              "explanation": "The numeric default supplies enough information."
+            },
+            {
+              "type": "mcq",
+              "question": "What is the main cost of `any`?",
+              "options": [
+                "It opts out of useful checking",
+                "It prevents JavaScript emission",
+                "It makes values immutable",
+                "It only accepts strings"
+              ],
+              "correct": 0,
+              "explanation": "Any allows unsafe operations and can spread lost type information."
+            }
+          ]
+        },
+        {
+          "id": "ts_basics_04",
+          "title": "Union Types: One Value, Several Possibilities",
+          "image": "/assets/typescript/basics/04-unions.png",
+          "content": "# Union Types\n\nA union describes every value a variable may legitimately hold.\n\n\\`\\`\\`ts\nlet age: number | string = 36;\nage = '37';\n// age = false;\n\\`\\`\\`\n\nBefore using a member-specific operation, narrow the union:\n\n\\`\\`\\`ts\nfunction normalizeId(id: number | string): string {\n  if (typeof id === 'number') {\n    return id.toFixed(0);\n  }\n  return id.trim().toLowerCase();\n}\n\\`\\`\\`\n\nDo not add union members merely to silence errors. Each member should reflect a real domain state, and every consumer should handle those states.",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What does `string | number` mean?",
+              "options": [
+                "The value may be a string or a number",
+                "The value is both at runtime",
+                "The value is always any",
+                "The value is an array"
+              ],
+              "correct": 0,
+              "explanation": "A union lists valid alternatives."
+            },
+            {
+              "type": "mcq",
+              "question": "Why use `typeof` inside `normalizeId`?",
+              "options": [
+                "To narrow the union",
+                "To cast at runtime",
+                "To compile the file",
+                "To create a tuple"
+              ],
+              "correct": 0,
+              "explanation": "The check proves which operations are safe in each branch."
+            }
+          ]
+        },
+        {
+          "id": "ts_basics_05",
+          "title": "Arrays & Generic Array Syntax",
+          "image": "/assets/typescript/basics/05-arrays.png",
+          "content": "# Arrays & Generic Array Syntax\n\nTypeScript infers an array's element type from its initial values.\n\n\\`\\`\\`ts\nlet hobbies = ['cycling', 'cooking']; // string[]\nhobbies.push('reading');\n// hobbies.push(10);\n\\`\\`\\`\n\nAnnotate an initially empty or deliberately mixed array:\n\n\\`\\`\\`ts\nlet results: (string | number)[] = [];\nresults = [1, 'pass'];\n\nlet history: Array<string | number> = ['start', 1];\n\\`\\`\\`\n\n\\`T[]\\` and \\`Array<T>\\` express the same array type. Parentheses matter in \\`(string | number)[]\\`: without them, the brackets would attach only to the nearest type. The generic syntax is often easier to read for complex element types.",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "Which type accepts an array containing strings and numbers?",
+              "options": [
+                "(string | number)[]",
+                "string | number[]",
+                "[string, number, boolean]",
+                "Record<string, number>"
+              ],
+              "correct": 0,
+              "explanation": "The parentheses make the union the element type."
+            },
+            {
+              "type": "mcq",
+              "question": "How does `Array<string>` relate to `string[]`?",
+              "options": [
+                "They describe the same array type",
+                "It creates a tuple",
+                "It disables inference",
+                "It describes a string object"
+              ],
+              "correct": 0,
+              "explanation": "They are alternative type syntaxes."
+            }
+          ]
+        },
+        {
+          "id": "ts_basics_06",
+          "title": "Tuples: Fixed Positions with Meaning",
+          "image": "/assets/typescript/basics/06-tuples.png",
+          "content": "# Tuples\n\nA tuple describes a fixed sequence where each position has its own type.\n\n\\`\\`\\`ts\ntype MatchResult = [number, number];\n\nconst score: MatchResult = [3, 1];\nconst home = score[0];\nconst away = score[1];\n// const broken: MatchResult = [3, 1, 0];\n\\`\\`\\`\n\nTuples are useful for compact pairs such as coordinates or success/error results. Prefer an object when callers need named fields or the record will grow:\n\n\\`\\`\\`ts\ntype Score = { home: number; away: number };\n\\`\\`\\`\n\nAn ordinary \\`(number | string)[]\\` does not guarantee order or length; a tuple does.",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What does `[number, string]` guarantee?",
+              "options": [
+                "Two ordered positions with those types",
+                "Any number of mixed values",
+                "A key-value record",
+                "A numeric array only"
+              ],
+              "correct": 0,
+              "explanation": "A tuple fixes position, length, and member types."
+            },
+            {
+              "type": "mcq",
+              "question": "When is an object clearer than a tuple?",
+              "options": [
+                "When fields benefit from names",
+                "When order matters",
+                "When there are exactly two values",
+                "Never"
+              ],
+              "correct": 0,
+              "explanation": "Named properties communicate domain meaning and scale better."
+            }
+          ]
+        },
+        {
+          "id": "ts_basics_07",
+          "title": "Object Types, Nested Shapes & the `{}` Trap",
+          "image": "/assets/typescript/basics/07-objects.png",
+          "content": "# Object Types & Nested Shapes\n\nObject types describe the properties code may read and write.\n\n\\`\\`\\`ts\ntype User = {\n  name: string;\n  age: number | string;\n  hobbies: string[];\n  role: { id: number; description: string };\n};\n\nconst user: User = {\n  name: 'Mira',\n  age: 38,\n  hobbies: ['coding'],\n  role: { id: 5, description: 'admin' },\n};\n\\`\\`\\`\n\nThe type \\`{}\\` does **not** mean “an empty object”. It means any value except \\`null\\` and \\`undefined\\`, so strings and numbers fit it. Use a specific object shape when properties are known, \\`object\\` for a non-primitive object, or \\`Record\\` for dynamic keys.",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What does TypeScript's `{}` type exclude?",
+              "options": [
+                "null and undefined",
+                "All strings",
+                "All numbers",
+                "Every object with a property"
+              ],
+              "correct": 0,
+              "explanation": "The empty object type accepts any non-nullish value."
+            },
+            {
+              "type": "mcq",
+              "question": "Why extract a `User` alias?",
+              "options": [
+                "It gives a reusable name to the object contract",
+                "It validates network data",
+                "It creates a class instance",
+                "It emits a database table"
+              ],
+              "correct": 0,
+              "explanation": "Aliases reduce repetition and communicate intent."
+            }
+          ]
+        },
+        {
+          "id": "ts_basics_08",
+          "title": "Flexible Objects with `Record`",
+          "image": "/assets/typescript/basics/08-record.png",
+          "content": "# Flexible Objects with Record\n\nUse \\`Record<Key, Value>\\` when property names are not known in advance but every value follows a rule.\n\n\\`\\`\\`ts\ntype Metric = number | string;\nlet metrics: Record<string, Metric>;\n\nmetrics = {\n  requests: 120,\n  region: 'ap-south',\n};\n\\`\\`\\`\n\nThe first generic argument constrains keys; the second constrains values. A record is more honest than inventing placeholder properties, but a named object type is better when fields have distinct meanings.\n\n\\`\\`\\`ts\ntype Permission = 'read' | 'write';\ntype Grants = Record<Permission, boolean>;\n\\`\\`\\`\n\nThis second example also proves that every required permission key is present.",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What does `Record<string, number>` describe?",
+              "options": [
+                "String keys with numeric values",
+                "A tuple",
+                "Only one named property",
+                "A function type"
+              ],
+              "correct": 0,
+              "explanation": "Record maps the allowed key type to a value type."
+            },
+            {
+              "type": "mcq",
+              "question": "When is a named object shape preferable?",
+              "options": [
+                "When properties have different meanings and types",
+                "Whenever keys are dynamic",
+                "Only for empty objects",
+                "Never"
+              ],
+              "correct": 0,
+              "explanation": "Explicit properties better document fixed domain fields."
+            }
+          ]
+        },
+        {
+          "id": "ts_basics_09",
+          "title": "Enums & Runtime Choices",
+          "image": "/assets/typescript/basics/09-enums.png",
+          "content": "# Enums\n\nEnums create named choices and also emit a JavaScript object.\n\n\\`\\`\\`ts\nenum Role {\n  Admin,\n  Editor,\n  Guest,\n}\n\nconst currentRole = Role.Editor;\n\\`\\`\\`\n\nNumeric members default to \\`0\\`, \\`1\\`, \\`2\\`, though explicit string values are clearer at network or storage boundaries:\n\n\\`\\`\\`ts\nenum Status {\n  Draft = 'draft',\n  Published = 'published',\n}\n\\`\\`\\`\n\nBecause enums have runtime output, use them when that named runtime object is valuable. Literal unions often produce simpler JavaScript and interoperate naturally with JSON.",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What is distinctive about a regular enum?",
+              "options": [
+                "It produces a runtime object",
+                "It is erased exactly like every type alias",
+                "It accepts every string",
+                "It can only contain booleans"
+              ],
+              "correct": 0,
+              "explanation": "Enums differ from type-only constructs because code is emitted."
+            },
+            {
+              "type": "mcq",
+              "question": "Why might string enum values be preferable at a boundary?",
+              "options": [
+                "They are readable and stable in serialized data",
+                "They disable checking",
+                "They become tuples",
+                "They remove JavaScript"
+              ],
+              "correct": 0,
+              "explanation": "Descriptive string values are easier to inspect and exchange."
+            }
+          ]
+        },
+        {
+          "id": "ts_basics_10",
+          "title": "Literal Types & Reusable Aliases",
+          "image": "/assets/typescript/basics/10-literals-aliases.png",
+          "content": "# Literal Types & Type Aliases\n\nA literal type allows one exact value. Combine literals into a finite vocabulary:\n\n\\`\\`\\`ts\ntype Role = 'admin' | 'editor' | 'guest' | 'reader';\n\nlet userRole: Role = 'admin';\nuserRole = 'guest';\n// userRole = 'owner';\n\\`\\`\\`\n\nAliases can name larger contracts and reuse the literal union:\n\n\\`\\`\\`ts\ntype User = {\n  name: string;\n  age: number;\n  role: Role;\n  permissions: string[];\n};\n\nfunction canEdit(role: Role): boolean {\n  return role === 'admin' || role === 'editor';\n}\n\\`\\`\\`\n\nLiteral unions are type-only: they add no runtime lookup object. They are ideal for existing strings from HTML, JSON, and APIs.",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "Which value fits the type `'open' | 'closed'`?",
+              "options": [
+                "'open'",
+                "'pending'",
+                "true",
+                "0"
+              ],
+              "correct": 0,
+              "explanation": "Only the listed literal values are accepted."
+            },
+            {
+              "type": "mcq",
+              "question": "Do type aliases create runtime JavaScript objects?",
+              "options": [
+                "No, they are erased",
+                "Yes, always",
+                "Only in Node.js",
+                "Only for strings"
+              ],
+              "correct": 0,
+              "explanation": "Aliases describe types for the checker and are not emitted."
+            }
+          ]
+        },
+        {
+          "id": "ts_basics_11",
+          "title": "Return Types, `void` & `never`",
+          "image": "/assets/typescript/basics/11-returns.png",
+          "content": "# Return Types, void & never\n\nTypeScript normally infers a function's return type. An explicit annotation documents an exported contract or verifies intent.\n\n\\`\\`\\`ts\nfunction add(a: number, b: number): number {\n  return a + b;\n}\n\nfunction log(message: string): void {\n  console.log(message);\n}\n\nfunction fail(message: string): never {\n  throw new Error(message);\n}\n\\`\\`\\`\n\n\\`void\\` means callers should not rely on a returned value. \\`never\\` means normal completion is impossible: the function always throws or loops forever. \\`undefined\\` is an actual value; it is not interchangeable with \\`never\\`.",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "Which return type fits a function that always throws?",
+              "options": [
+                "never",
+                "void",
+                "undefined",
+                "any[]"
+              ],
+              "correct": 0,
+              "explanation": "No reachable normal return produces a value."
+            },
+            {
+              "type": "mcq",
+              "question": "What does `void` communicate?",
+              "options": [
+                "The return value should not be used",
+                "The function cannot execute",
+                "The function always throws",
+                "The parameter is optional"
+              ],
+              "correct": 0,
+              "explanation": "Void describes an intentionally ignored return result."
+            }
+          ]
+        },
+        {
+          "id": "ts_basics_12",
+          "title": "Functions as Types & Safe Callbacks",
+          "image": "/assets/typescript/basics/12-function-types.png",
+          "content": "# Functions as Types\n\nFunction types describe parameters and results, not merely “some function”.\n\n\\`\\`\\`ts\ntype Logger = (message: string) => void;\n\nconst logMessage: Logger = (message) => {\n  console.log(message);\n};\n\nfunction performJob(callback: Logger): void {\n  callback('Job done');\n}\n\\`\\`\\`\n\nMethods use the same idea inside object types:\n\n\\`\\`\\`ts\ntype User = {\n  name: string;\n  greet: () => string;\n};\n\nconst user: User = {\n  name: 'Mira',\n  greet() { return this.name; },\n};\n\\`\\`\\`\n\nAvoid the broad \\`Function\\` type: it does not tell callers which arguments or return value are safe.",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What does `(message: string) => void` describe?",
+              "options": [
+                "A function accepting a string whose result is ignored",
+                "An array of strings",
+                "A string alias",
+                "A class"
+              ],
+              "correct": 0,
+              "explanation": "The arrow separates parameters from the return type."
+            },
+            {
+              "type": "mcq",
+              "question": "Why avoid the `Function` type?",
+              "options": [
+                "It loses the callable signature",
+                "It cannot represent callbacks",
+                "It only works in browsers",
+                "It forces every function to throw"
+              ],
+              "correct": 0,
+              "explanation": "A precise signature protects both callers and implementations."
+            }
+          ]
+        },
+        {
+          "id": "ts_basics_13",
+          "title": "`null`, `undefined` & Type Narrowing",
+          "image": "/assets/typescript/basics/13-null-narrowing.png",
+          "content": "# null, undefined & Narrowing\n\nWith strict null checks, absence must be part of the type.\n\n\\`\\`\\`ts\nlet label: string | null = 'Ready';\nlabel = null;\n\nfunction printLength(value: string | null) {\n  if (value === null) return;\n  console.log(value.length); // narrowed to string\n}\n\\`\\`\\`\n\n\\`null\\` is deliberate absence; \\`undefined\\` commonly means a value was not supplied or a property was not found. Inferred \\`null\\` stays narrow under strict settings, so annotate a wider union when later assignment is intended.\n\nTruthiness can narrow, but it also rejects valid empty strings and zero. Prefer an explicit nullish comparison when those values matter.",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What happens after `if (value === null) return`?",
+              "options": [
+                "The remaining branch sees value as string",
+                "Value becomes any",
+                "Null is converted to an empty string",
+                "The function becomes never"
+              ],
+              "correct": 0,
+              "explanation": "Control-flow analysis removes the handled union member."
+            },
+            {
+              "type": "mcq",
+              "question": "Why can a truthiness check be too broad?",
+              "options": [
+                "It also rejects values such as empty string and zero",
+                "It cannot check null",
+                "It changes runtime types",
+                "It creates an enum"
+              ],
+              "correct": 0,
+              "explanation": "Falsy values are not always missing values."
+            }
+          ]
+        },
+        {
+          "id": "ts_basics_14",
+          "title": "Optional Chaining & Non-Null Assertions",
+          "image": "/assets/typescript/basics/14-optional-chain.png",
+          "content": "# Optional Chaining & Non-Null Assertions\n\nDOM lookups and nested data can be absent. Optional chaining stops safely and returns \\`undefined\\`.\n\n\\`\\`\\`ts\nconst input = document.getElementById('user-name') as HTMLInputElement | null;\nconsole.log(input?.value);\n\\`\\`\\`\n\nThe non-null assertion tells the checker absence is impossible:\n\n\\`\\`\\`ts\nconst form = document.querySelector('form')!;\nform.addEventListener('submit', handleSubmit);\n\\`\\`\\`\n\n\\`!\\` performs no runtime check. Use it only when another invariant truly guarantees the value. For reusable code, an explicit guard gives both safety and a useful failure message:\n\n\\`\\`\\`ts\nif (!input) throw new Error('User-name input is missing');\nconsole.log(input.value);\n\\`\\`\\`\n",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What can `input?.value` produce when input is null?",
+              "options": [
+                "undefined",
+                "A guaranteed string",
+                "never",
+                "A compiler crash"
+              ],
+              "correct": 0,
+              "explanation": "Optional chaining returns undefined instead of accessing the missing value."
+            },
+            {
+              "type": "mcq",
+              "question": "What runtime validation does postfix `!` add?",
+              "options": [
+                "None",
+                "A null check",
+                "A string conversion",
+                "An exception automatically"
+              ],
+              "correct": 0,
+              "explanation": "The assertion changes only the checker's assumption."
+            }
+          ]
+        },
+        {
+          "id": "ts_basics_15",
+          "title": "Type Assertions & the `unknown` Type",
+          "image": "/assets/typescript/basics/15-casting-unknown.png",
+          "content": "# Type Assertions & unknown\n\nAn assertion supplies more specific static knowledge; it does not convert a value.\n\n\\`\\`\\`ts\nconst input = document.getElementById('user-name') as HTMLInputElement | null;\n\\`\\`\\`\n\nUse \\`unknown\\` for data whose type is not yet proven:\n\n\\`\\`\\`ts\nfunction process(value: unknown): void {\n  if (\n    typeof value === 'object' &&\n    value !== null &&\n    'log' in value &&\n    typeof value.log === 'function'\n  ) {\n    value.log();\n  }\n}\n\\`\\`\\`\n\nThe checks progress from broad to specific: object, non-null, property exists, property is callable. This is safer than \\`any\\`, which would allow \\`value.log()\\` immediately. Assertions belong where you possess real knowledge the compiler cannot derive; otherwise narrow or validate.",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What does `as HTMLInputElement` do at runtime?",
+              "options": [
+                "Nothing; it changes static analysis",
+                "It creates an input element",
+                "It validates the DOM",
+                "It converts a string"
+              ],
+              "correct": 0,
+              "explanation": "Assertions are erased during compilation."
+            },
+            {
+              "type": "mcq",
+              "question": "Why is `unknown` safer than `any`?",
+              "options": [
+                "It requires narrowing before operations",
+                "It accepts fewer runtime values",
+                "It emits a validator",
+                "It is always a string"
+              ],
+              "correct": 0,
+              "explanation": "Unknown preserves uncertainty until code proves capabilities."
+            }
+          ]
+        },
+        {
+          "id": "ts_basics_16",
+          "title": "Optional Values & Nullish Coalescing",
+          "image": "/assets/typescript/basics/16-optional-nullish.png",
+          "content": "# Optional Values & Nullish Coalescing\n\n\\`?\\` marks a parameter or property as optional, which introduces \\`undefined\\`.\n\n\\`\\`\\`ts\nfunction generateError(message?: string): never {\n  throw new Error(message ?? 'Unknown error');\n}\n\ntype User = {\n  name: string;\n  role?: 'admin' | 'guest';\n};\n\\`\\`\\`\n\nNullish coalescing uses its right side only for \\`null\\` or \\`undefined\\`:\n\n\\`\\`\\`ts\nconst rawInput = '';\nconst withOr = rawInput || 'fallback'; // 'fallback'\nconst withNullish = rawInput ?? 'fallback'; // ''\n\\`\\`\\`\n\nUse \\`??\\` when empty string, \\`0\\`, or \\`false\\` are legitimate values. Use \\`||\\` when every falsy value should trigger the fallback. Parentheses clarify mixed expressions because JavaScript restricts combining \\`??\\` directly with \\`&&\\` or \\`||\\`.",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What type does `message?: string` imply?",
+              "options": [
+                "string | undefined",
+                "string | null only",
+                "any",
+                "never"
+              ],
+              "correct": 0,
+              "explanation": "An omitted optional parameter has the value undefined."
+            },
+            {
+              "type": "mcq",
+              "question": "When does `value ?? fallback` use the fallback?",
+              "options": [
+                "Only when value is null or undefined",
+                "For every falsy value",
+                "Only for empty strings",
+                "Only for zero"
+              ],
+              "correct": 0,
+              "explanation": "Nullish coalescing preserves valid falsy values."
             }
           ]
         }
