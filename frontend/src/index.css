@@ -362,7 +362,7 @@ h2 { font-size: clamp(1.65rem, 3vw, 2.55rem); }
   margin: 0;
   padding: 1.25rem 1.35rem 1.4rem;
   border-radius: 0;
-  background: #102a24;
+  background: #07151f !important;
   scrollbar-color: #547b6d #102a24;
 }
 .lesson-content .markdown-code-block pre code {
@@ -377,6 +377,31 @@ h2 { font-size: clamp(1.65rem, 3vw, 2.55rem); }
   line-height: 1.72;
   tab-size: 2;
 }
+.numbered-code code { counter-reset: code-line; }
+.code-line {
+  display: grid;
+  grid-template-columns: 3rem minmax(max-content, 1fr);
+  min-height: 1.72em;
+  margin: 0 -1.35rem;
+  padding: 0 1.35rem 0 0;
+  border-left: 3px solid transparent;
+}
+.code-line:hover {
+  border-left-color: #f2c86d;
+  background: rgba(76, 201, 167, .08);
+}
+.code-line-number {
+  position: sticky;
+  left: -1.35rem;
+  z-index: 1;
+  margin-right: 1rem;
+  padding-right: .85rem;
+  color: #55758b;
+  background: #07151f;
+  text-align: right;
+  user-select: none;
+}
+.code-line-content { padding-left: .15rem; white-space: pre; }
 .lesson-content hr { margin: 2.5rem 0; border: 0; border-top: 1px solid var(--line); }
 .markdown-table-wrap {
   overflow-x: auto;
