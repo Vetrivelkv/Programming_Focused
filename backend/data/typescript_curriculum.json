@@ -777,6 +777,464 @@
           ]
         }
       ]
+    },
+    {
+      "name": "Section 3 · The TypeScript Compiler & Configuration",
+      "subtopics": [
+        {
+          "id": "ts_compiler_01",
+          "title": "Create a Configured TypeScript Project",
+          "image": "/assets/typescript/ts_compiler/01-project-setup.png",
+          "content": "# Create a Configured TypeScript Project\n\nRunning `npx tsc file.ts` compiles one file with command-line defaults. A `tsconfig.json` turns a folder into a project: the editor, CI, and every developer share one compiler contract.\n\n```bash\nmkdir compiler-lab\ncd compiler-lab\nnpm init -y\nnpm install --save-dev typescript\nnpx tsc --init\nmkdir src\n```\n\nPut authored files in `src` and emitted JavaScript in `dist`. From this point, run `npx tsc` without a filename so the compiler discovers the project configuration.\n\n## Complete subclass code — `tsconfig.json`\n\n```json\n{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"module\": \"NodeNext\",\n    \"moduleResolution\": \"NodeNext\",\n    \"rootDir\": \"./src\",\n    \"outDir\": \"./dist\",\n    \"strict\": true,\n    \"noEmitOnError\": true\n  },\n  \"include\": [\"src\"]\n}\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What makes TypeScript treat a folder as a configured project?",
+              "options": [
+                "tsconfig.json",
+                "index.html",
+                "README.md",
+                ".gitignore"
+              ],
+              "correct": 0,
+              "explanation": "The compiler searches for tsconfig.json to establish project-wide settings."
+            },
+            {
+              "type": "mcq",
+              "question": "Why run `npx tsc` without a filename here?",
+              "options": [
+                "It loads the project configuration",
+                "It skips type checking",
+                "It runs Node.js",
+                "It deletes dist"
+              ],
+              "correct": 0,
+              "explanation": "Passing no filename lets tsc compile the configured project."
+            }
+          ]
+        },
+        {
+          "id": "ts_compiler_02",
+          "title": "Choose `target` and Runtime Libraries",
+          "image": "/assets/typescript/ts_compiler/02-target-libs.png",
+          "content": "# Choose target and Runtime Libraries\n\n`target` controls the JavaScript syntax TypeScript emits. `lib` controls the built-in APIs the checker knows about. They answer different questions: “What syntax can the runtime execute?” and “Which platform globals are available?”\n\n```ts\nconst scores = [10, 20, 30];\nconst latest = scores.at(-1);\n\ndocument.querySelector('#output')?.append(String(latest));\n```\n\n`ES2022` supplies modern JavaScript declarations such as `Array.prototype.at`; `DOM` supplies browser declarations such as `document`. A Node-only project normally omits `DOM` and installs Node type declarations instead.\n\n## Complete subclass code — `tsconfig.json`\n\n```json\n{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"lib\": [\"ES2022\", \"DOM\", \"DOM.Iterable\"],\n    \"module\": \"ESNext\",\n    \"rootDir\": \"./src\",\n    \"outDir\": \"./dist\",\n    \"strict\": true\n  },\n  \"include\": [\"src\"]\n}\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What does `target` primarily control?",
+              "options": [
+                "Emitted JavaScript syntax",
+                "Which source files are included",
+                "npm package versions",
+                "Git branches"
+              ],
+              "correct": 0,
+              "explanation": "Target selects the JavaScript language level for emitted output."
+            },
+            {
+              "type": "mcq",
+              "question": "Why add `DOM` to `lib`?",
+              "options": [
+                "To type browser APIs such as document",
+                "To install a browser",
+                "To enable Node imports",
+                "To create HTML"
+              ],
+              "correct": 0,
+              "explanation": "Library declaration files describe platform APIs to the checker."
+            }
+          ]
+        },
+        {
+          "id": "ts_compiler_03",
+          "title": "Control File Input & Emitted Output",
+          "image": "/assets/typescript/ts_compiler/03-input-emission.png",
+          "content": "# Control File Input & Emitted Output\n\n`rootDir` and `outDir` preserve a clean source/output boundary. Top-level `include` and `exclude` decide which files belong to the program; they are not compiler options.\n\n```text\ncompiler-lab/\n├─ src/app.ts\n├─ src/app.test.ts\n├─ dist/app.js\n└─ tsconfig.json\n```\n\nSource maps connect a debugger's generated JavaScript location back to TypeScript. `noEmitOnError` prevents stale or invalid builds from becoming deployable output.\n\n## Complete subclass code — `tsconfig.json`\n\n```json\n{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"module\": \"NodeNext\",\n    \"moduleResolution\": \"NodeNext\",\n    \"rootDir\": \"./src\",\n    \"outDir\": \"./dist\",\n    \"sourceMap\": true,\n    \"removeComments\": true,\n    \"noEmitOnError\": true,\n    \"strict\": true\n  },\n  \"include\": [\"src/**/*.ts\"],\n  \"exclude\": [\"src/**/*.test.ts\", \"node_modules\"]\n}\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "Where do `include` and `exclude` belong?",
+              "options": [
+                "At the top level of tsconfig.json",
+                "Inside compilerOptions",
+                "Inside package-lock.json",
+                "Inside every source file"
+              ],
+              "correct": 0,
+              "explanation": "They select the program's file set and are siblings of compilerOptions."
+            },
+            {
+              "type": "mcq",
+              "question": "What does `noEmitOnError` prevent?",
+              "options": [
+                "Output when type errors exist",
+                "Editor diagnostics",
+                "Source maps",
+                "npm installation"
+              ],
+              "correct": 0,
+              "explanation": "The compiler withholds generated files when checking fails."
+            }
+          ]
+        },
+        {
+          "id": "ts_compiler_04",
+          "title": "Configure Strict Type Checking",
+          "image": "/assets/typescript/ts_compiler/04-strict-checking.png",
+          "content": "# Configure Strict Type Checking\n\n`strict` enables a coordinated family of checks, including implicit-any detection and null awareness. Start new projects with it enabled; loosening one rule should be an explicit migration choice.\n\n```ts\ntype User = { name: string; nickname?: string };\n\nfunction displayName(user: User): string {\n  return user.nickname?.trim() || user.name;\n}\n```\n\n`noUncheckedIndexedAccess` adds `undefined` when an index might be missing. `exactOptionalPropertyTypes` distinguishes an omitted property from a present property whose value is `undefined`.\n\n## Complete subclass code — `tsconfig.json`\n\n```json\n{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"module\": \"NodeNext\",\n    \"moduleResolution\": \"NodeNext\",\n    \"rootDir\": \"./src\",\n    \"outDir\": \"./dist\",\n    \"strict\": true,\n    \"noUncheckedIndexedAccess\": true,\n    \"exactOptionalPropertyTypes\": true,\n    \"useUnknownInCatchVariables\": true,\n    \"noEmitOnError\": true\n  },\n  \"include\": [\"src\"]\n}\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What does `strict` do?",
+              "options": [
+                "Enables a family of strict type checks",
+                "Minifies JavaScript",
+                "Runs tests",
+                "Installs declaration packages"
+              ],
+              "correct": 0,
+              "explanation": "Strict is the umbrella setting for multiple safety checks."
+            },
+            {
+              "type": "mcq",
+              "question": "What does `noUncheckedIndexedAccess` add to uncertain indexed reads?",
+              "options": [
+                "undefined",
+                "never",
+                "any",
+                "null only"
+              ],
+              "correct": 0,
+              "explanation": "An array or record index may not exist at runtime."
+            }
+          ]
+        },
+        {
+          "id": "ts_compiler_05",
+          "title": "Enable Code-Quality Diagnostics",
+          "image": "/assets/typescript/ts_compiler/05-quality-checks.png",
+          "content": "# Enable Code-Quality Diagnostics\n\nType correctness and code quality overlap but are not identical. Compiler quality checks reveal abandoned variables, forgotten returns, accidental switch fallthrough, and unsafe overrides.\n\n```ts\nfunction formatScore(score: number): string {\n  if (score >= 90) return 'excellent';\n  if (score >= 60) return 'pass';\n  return 'retry';\n}\n```\n\nThese checks work well in CI, but use them deliberately: library callback signatures sometimes require parameters you do not read, and generated files should be excluded rather than “fixed”.\n\n## Complete subclass code — `tsconfig.json`\n\n```json\n{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"module\": \"NodeNext\",\n    \"moduleResolution\": \"NodeNext\",\n    \"rootDir\": \"./src\",\n    \"outDir\": \"./dist\",\n    \"strict\": true,\n    \"noUnusedLocals\": true,\n    \"noUnusedParameters\": true,\n    \"noImplicitReturns\": true,\n    \"noFallthroughCasesInSwitch\": true,\n    \"noImplicitOverride\": true,\n    \"forceConsistentCasingInFileNames\": true,\n    \"noEmitOnError\": true\n  },\n  \"include\": [\"src\"]\n}\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "Which option reports a function path without an explicit result?",
+              "options": [
+                "noImplicitReturns",
+                "sourceMap",
+                "allowJs",
+                "target"
+              ],
+              "correct": 0,
+              "explanation": "It checks that return behaviour is consistent across reachable paths."
+            },
+            {
+              "type": "mcq",
+              "question": "Why enable casing consistency?",
+              "options": [
+                "Imports then work consistently across operating systems",
+                "It changes variable names",
+                "It minifies output",
+                "It installs Git"
+              ],
+              "correct": 0,
+              "explanation": "Case-sensitive and case-insensitive file systems otherwise disagree."
+            }
+          ]
+        },
+        {
+          "id": "ts_compiler_06",
+          "title": "Read a Production `tsconfig.json`",
+          "image": "/assets/typescript/ts_compiler/06-deep-dive.png",
+          "content": "# Read a Production tsconfig.json\n\nRead configuration by responsibility instead of memorising hundreds of switches: language environment, modules, JavaScript support, emission, interoperability, checking, and file selection.\n\nFor a modern Node project, `NodeNext` keeps module checking aligned with Node's package rules. `esModuleInterop` smooths CommonJS imports. `skipLibCheck` skips checking declaration-file internals, not your application code.\n\n## Complete subclass code — `tsconfig.json`\n\n```json\n{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"lib\": [\"ES2022\"],\n    \"module\": \"NodeNext\",\n    \"moduleResolution\": \"NodeNext\",\n    \"rootDir\": \"./src\",\n    \"outDir\": \"./dist\",\n    \"sourceMap\": true,\n    \"declaration\": true,\n    \"noEmitOnError\": true,\n    \"esModuleInterop\": true,\n    \"forceConsistentCasingInFileNames\": true,\n    \"strict\": true,\n    \"noUncheckedIndexedAccess\": true,\n    \"noImplicitReturns\": true,\n    \"skipLibCheck\": true\n  },\n  \"include\": [\"src/**/*.ts\"],\n  \"exclude\": [\"dist\", \"node_modules\", \"**/*.test.ts\"]\n}\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What does `skipLibCheck` skip?",
+              "options": [
+                "Checking declaration-file internals",
+                "Checking your application",
+                "Emitting JavaScript",
+                "Resolving imports"
+              ],
+              "correct": 0,
+              "explanation": "It applies to .d.ts library files, not ordinary project source."
+            },
+            {
+              "type": "mcq",
+              "question": "Why pair NodeNext module and resolution settings?",
+              "options": [
+                "To model Node's module rules consistently",
+                "To enable DOM APIs",
+                "To remove package.json",
+                "To run CSS"
+              ],
+              "correct": 0,
+              "explanation": "Both emission and lookup then follow Node's ESM/CommonJS semantics."
+            }
+          ]
+        },
+        {
+          "id": "ts_compiler_07",
+          "title": "Compile the Project & Use Watch Mode",
+          "image": "/assets/typescript/ts_compiler/07-compile-watch.png",
+          "content": "# Compile the Project & Use Watch Mode\n\n`npx tsc` performs one project build. `npx tsc --watch` keeps the compiler alive, watches included files, and rebuilds after changes.\n\n```bash\nnpm run build\nnpm run dev:types\nnode dist/app.js\n```\n\nWatch mode is feedback, not a production process manager. It does not automatically restart Node unless you pair it with another development tool.\n\n## Complete subclass code — `package.json`\n\n```json\n{\n  \"name\": \"compiler-lab\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": {\n    \"clean\": \"node -e \\\"require('fs').rmSync('dist',{recursive:true,force:true})\\\"\",\n    \"build\": \"tsc\",\n    \"dev:types\": \"tsc --watch\",\n    \"start\": \"node dist/app.js\"\n  },\n  \"devDependencies\": {\n    \"typescript\": \"^5.9.0\"\n  }\n}\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What does `tsc --watch` do?",
+              "options": [
+                "Recompiles when included files change",
+                "Restarts every server",
+                "Deploys to Railway",
+                "Installs packages"
+              ],
+              "correct": 0,
+              "explanation": "Watch mode monitors the configured program and rebuilds it."
+            },
+            {
+              "type": "mcq",
+              "question": "Why keep build commands in package.json?",
+              "options": [
+                "They give the team repeatable commands",
+                "They replace tsconfig",
+                "They disable strict mode",
+                "They hide errors"
+              ],
+              "correct": 0,
+              "explanation": "Scripts document and standardise the workflow."
+            }
+          ]
+        },
+        {
+          "id": "ts_compiler_08",
+          "title": "Install & Use Type Declaration Packages",
+          "image": "/assets/typescript/ts_compiler/08-type-packages.png",
+          "content": "# Install & Use Type Declaration Packages\n\nJavaScript libraries and runtimes need type descriptions. Packages may ship declarations themselves; otherwise the community often publishes them under `@types/*`.\n\n```bash\nnpm install --save-dev @types/node\n```\n\nNode's declarations teach TypeScript about `node:fs`, `process`, `Buffer`, and other runtime APIs. Types do not install the runtime or change behaviour—they describe APIs that already exist.\n\n## Complete subclass code — `src/app.ts`\n\n```ts\nimport fs from 'node:fs';\n\ntype Config = {\n  project: string;\n  strict: boolean;\n};\n\nconst config: Config = {\n  project: 'compiler-lab',\n  strict: true,\n};\n\nfs.writeFileSync('dist/config.json', JSON.stringify(config, null, 2));\nconsole.log(`Wrote configuration for ${config.project}`);\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What does `@types/node` provide?",
+              "options": [
+                "Type declarations for Node APIs",
+                "The Node runtime",
+                "A database",
+                "A bundler"
+              ],
+              "correct": 0,
+              "explanation": "It describes Node's existing modules and globals to TypeScript."
+            },
+            {
+              "type": "mcq",
+              "question": "When is a separate @types package unnecessary?",
+              "options": [
+                "When the library ships its own declarations",
+                "When strict is enabled",
+                "When code has functions",
+                "When using npm"
+              ],
+              "correct": 0,
+              "explanation": "Many modern packages include their own .d.ts files."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Section 4 · TypeScript Essentials Demo Project",
+      "subtopics": [
+        {
+          "id": "ts_demo_01",
+          "title": "Model the Investment Calculator",
+          "image": "/assets/typescript/ts_demo/01-first-steps.png",
+          "content": "# Model the Investment Calculator\n\nThe demo project turns four inputs into a year-by-year projection: initial amount, annual contribution, expected decimal return, and duration. Start by naming the data before writing the loop.\n\n```ts\nconst initialAmount = 5000;\nconst annualContribution = 500;\nconst expectedReturn = 0.08;\nconst duration = 10;\n```\n\nNode runs the emitted JavaScript: `npx tsc && node dist/calculator.js`. Keeping the example outside a browser isolates the language and compiler concepts.\n\n## Complete subclass code — `calculator.ts`\n\n```ts\nconst initialAmount: number = 5000;\nconst annualContribution: number = 500;\nconst expectedReturn: number = 0.08;\nconst duration: number = 10;\n\nconsole.log({ initialAmount, annualContribution, expectedReturn, duration });\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "How is an 8% expected return represented?",
+              "options": [
+                "0.08",
+                "8",
+                "'8%'",
+                "80"
+              ],
+              "correct": 0,
+              "explanation": "The calculation uses a decimal rate."
+            },
+            {
+              "type": "mcq",
+              "question": "Why run the emitted file with Node?",
+              "options": [
+                "Node executes JavaScript output",
+                "Node type-checks TypeScript",
+                "Node creates tsconfig",
+                "Node replaces npm"
+              ],
+              "correct": 0,
+              "explanation": "The compiler produces the JavaScript runtime input."
+            }
+          ]
+        },
+        {
+          "id": "ts_demo_02",
+          "title": "Create Reusable Investment Types",
+          "image": "/assets/typescript/ts_demo/02-custom-types.png",
+          "content": "# Create Reusable Investment Types\n\nGroup related inputs into one domain object. A custom alias prevents long parameter lists and gives callers a single contract.\n\n```ts\ntype InvestmentData = {\n  initialAmount: number;\n  annualContribution: number;\n  expectedReturn: number;\n  duration: number;\n};\n```\n\nThe output shape deserves its own type because every projected year carries the same fields.\n\n## Complete subclass code — `calculator.ts`\n\n```ts\ntype InvestmentData = {\n  initialAmount: number;\n  annualContribution: number;\n  expectedReturn: number;\n  duration: number;\n};\n\ntype InvestmentResult = {\n  year: string;\n  totalAmount: number;\n  totalContributions: number;\n  totalInterestEarned: number;\n};\n\nconst data: InvestmentData = {\n  initialAmount: 5000,\n  annualContribution: 500,\n  expectedReturn: 0.08,\n  duration: 10,\n};\n\nconst firstYear: InvestmentResult = {\n  year: 'Year 1',\n  totalAmount: 5940,\n  totalContributions: 500,\n  totalInterestEarned: 400,\n};\n\nconsole.log(data, firstYear);\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "Why use one InvestmentData object?",
+              "options": [
+                "It names and groups the function input contract",
+                "It validates user input automatically",
+                "It emits a database",
+                "It removes numbers"
+              ],
+              "correct": 0,
+              "explanation": "A domain object is easier to extend and safer to pass than positional arguments."
+            },
+            {
+              "type": "mcq",
+              "question": "What does InvestmentResult model?",
+              "options": [
+                "One projected year",
+                "The compiler configuration",
+                "An npm package",
+                "A DOM element"
+              ],
+              "correct": 0,
+              "explanation": "Each result stores the totals for a particular year."
+            }
+          ]
+        },
+        {
+          "id": "ts_demo_03",
+          "title": "Return Results or a Validation Message",
+          "image": "/assets/typescript/ts_demo/03-union-result.png",
+          "content": "# Return Results or a Validation Message\n\nInvalid inputs cannot produce a meaningful projection. Model that honestly as a union instead of returning a partially valid array.\n\n```ts\ntype CalculationResult = InvestmentResult[] | string;\n```\n\nThe caller must narrow the result before iterating. This makes the error path part of the function contract.\n\n## Complete subclass code — `calculator.ts`\n\n```ts\ntype InvestmentData = {\n  initialAmount: number;\n  annualContribution: number;\n  expectedReturn: number;\n  duration: number;\n};\n\ntype InvestmentResult = {\n  year: string;\n  totalAmount: number;\n  totalContributions: number;\n  totalInterestEarned: number;\n};\n\ntype CalculationResult = InvestmentResult[] | string;\n\nfunction validateInvestment(data: InvestmentData): CalculationResult {\n  if (data.initialAmount < 0) return 'Initial amount must be at least zero.';\n  if (data.duration <= 0) return 'Duration must be greater than zero.';\n  if (data.expectedReturn < 0) return 'Expected return must be at least zero.';\n  return [];\n}\n\nconst result = validateInvestment({\n  initialAmount: 5000,\n  annualContribution: 500,\n  expectedReturn: 0.08,\n  duration: 10,\n});\n\nconsole.log(result);\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What does CalculationResult require callers to handle?",
+              "options": [
+                "An array or an error string",
+                "Only an array",
+                "null only",
+                "A thrown syntax error"
+              ],
+              "correct": 0,
+              "explanation": "The union exposes both success and validation outcomes."
+            },
+            {
+              "type": "mcq",
+              "question": "How can a caller narrow this union?",
+              "options": [
+                "Use `typeof result === 'string'`",
+                "Use `as any`",
+                "Check tsconfig",
+                "Rename the function"
+              ],
+              "correct": 0,
+              "explanation": "The runtime string check narrows the other branch to InvestmentResult[]."
+            }
+          ]
+        },
+        {
+          "id": "ts_demo_04",
+          "title": "Build the Annual Projection Loop",
+          "image": "/assets/typescript/ts_demo/04-calculation-loop.png",
+          "content": "# Build the Annual Projection Loop\n\nFor each year, apply growth to the current total, calculate cumulative interest, add the annual contribution, and store an immutable snapshot.\n\n```ts\ntotal *= 1 + expectedReturn;\ntotalInterestEarned = total - totalContributions - initialAmount;\ntotalContributions += annualContribution;\ntotal += annualContribution;\n```\n\nThe order matters: moving the contribution before growth changes the business rule.\n\n## Complete subclass code — `calculator.ts`\n\n```ts\ntype InvestmentData = {\n  initialAmount: number;\n  annualContribution: number;\n  expectedReturn: number;\n  duration: number;\n};\n\ntype InvestmentResult = {\n  year: string;\n  totalAmount: number;\n  totalContributions: number;\n  totalInterestEarned: number;\n};\n\nfunction calculateInvestment(data: InvestmentData): InvestmentResult[] {\n  const { initialAmount, annualContribution, expectedReturn, duration } = data;\n  let total = initialAmount;\n  let totalContributions = 0;\n  let totalInterestEarned = 0;\n  const results: InvestmentResult[] = [];\n\n  for (let year = 1; year <= duration; year++) {\n    total *= 1 + expectedReturn;\n    totalInterestEarned = total - totalContributions - initialAmount;\n    totalContributions += annualContribution;\n    total += annualContribution;\n    results.push({\n      year: `Year ${year}`,\n      totalAmount: total,\n      totalContributions,\n      totalInterestEarned,\n    });\n  }\n\n  return results;\n}\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "Why push a new object on every loop?",
+              "options": [
+                "To preserve a snapshot for each year",
+                "To change tsconfig",
+                "To install types",
+                "To avoid numbers"
+              ],
+              "correct": 0,
+              "explanation": "Each object records the accumulated state at that year boundary."
+            },
+            {
+              "type": "mcq",
+              "question": "When is annual growth applied in this model?",
+              "options": [
+                "Before adding that year's contribution",
+                "After printing",
+                "Only in the last year",
+                "Never"
+              ],
+              "correct": 0,
+              "explanation": "The operation order defines the calculator's financial assumption."
+            }
+          ]
+        },
+        {
+          "id": "ts_demo_05",
+          "title": "Connect Calculation & Presentation",
+          "image": "/assets/typescript/ts_demo/05-connect-functions.png",
+          "content": "# Connect Calculation & Presentation\n\nKeep calculation and output separate. `calculateInvestment` returns data; `printResults` narrows the union and decides how to display it.\n\n```ts\nfunction printResults(results: CalculationResult): void {\n  if (typeof results === 'string') {\n    console.log(results);\n    return;\n  }\n\n  for (const result of results) console.log(result.year);\n}\n```\n\nThis boundary makes the calculation reusable in a CLI, web page, or API without embedding presentation work inside the math.\n\n## Complete subclass code — `calculator.ts`\n\n```ts\ntype InvestmentData = {\n  initialAmount: number;\n  annualContribution: number;\n  expectedReturn: number;\n  duration: number;\n};\n\ntype InvestmentResult = {\n  year: string;\n  totalAmount: number;\n  totalContributions: number;\n  totalInterestEarned: number;\n};\n\ntype CalculationResult = InvestmentResult[] | string;\n\nfunction calculateInvestment(data: InvestmentData): CalculationResult {\n  const { initialAmount, annualContribution, expectedReturn, duration } = data;\n\n  if (initialAmount < 0) return 'Initial amount must be at least zero.';\n  if (duration <= 0) return 'Duration must be greater than zero.';\n  if (expectedReturn < 0) return 'Expected return must be at least zero.';\n\n  let total = initialAmount;\n  let totalContributions = 0;\n  let totalInterestEarned = 0;\n  const annualResults: InvestmentResult[] = [];\n\n  for (let year = 1; year <= duration; year++) {\n    total *= 1 + expectedReturn;\n    totalInterestEarned = total - totalContributions - initialAmount;\n    totalContributions += annualContribution;\n    total += annualContribution;\n    annualResults.push({\n      year: `Year ${year}`,\n      totalAmount: total,\n      totalContributions,\n      totalInterestEarned,\n    });\n  }\n\n  return annualResults;\n}\n\nfunction printResults(results: CalculationResult): void {\n  if (typeof results === 'string') {\n    console.log(results);\n    return;\n  }\n\n  for (const result of results) {\n    console.log(result.year);\n    console.log(`Total: ${result.totalAmount.toFixed(0)}`);\n    console.log(`Contributions: ${result.totalContributions.toFixed(0)}`);\n    console.log(`Interest: ${result.totalInterestEarned.toFixed(0)}`);\n    console.log('----------------------');\n  }\n}\n\nconst data: InvestmentData = {\n  initialAmount: 5000,\n  annualContribution: 500,\n  expectedReturn: 0.08,\n  duration: 10,\n};\n\nprintResults(calculateInvestment(data));\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "Why separate calculateInvestment and printResults?",
+              "options": [
+                "To separate domain logic from presentation",
+                "To avoid return types",
+                "To disable Node",
+                "To create more errors"
+              ],
+              "correct": 0,
+              "explanation": "The calculation can then serve different output layers."
+            },
+            {
+              "type": "mcq",
+              "question": "What does the early return after logging an error achieve?",
+              "options": [
+                "It prevents iterating a string",
+                "It converts the string",
+                "It recompiles",
+                "It adds a year"
+              ],
+              "correct": 0,
+              "explanation": "After the branch returns, results is narrowed to the array type."
+            }
+          ]
+        },
+        {
+          "id": "ts_demo_06",
+          "title": "Compile & Execute the Complete Project",
+          "image": "/assets/typescript/ts_demo/06-compile-execute.png",
+          "content": "# Compile & Execute the Complete Project\n\nThe final workflow checks the entire configured project, emits only when it is valid, and runs the generated module.\n\n```bash\nnpx tsc\nnode dist/calculator.js\n```\n\nTry a negative return or zero duration to prove the validation path, then restore valid data and inspect every annual result. The final source below is complete and runnable.\n\n## Complete subclass code — `calculator.ts`\n\n```ts\ntype InvestmentData = {\n  initialAmount: number;\n  annualContribution: number;\n  expectedReturn: number;\n  duration: number;\n};\n\ntype InvestmentResult = {\n  year: string;\n  totalAmount: number;\n  totalContributions: number;\n  totalInterestEarned: number;\n};\n\ntype CalculationResult = InvestmentResult[] | string;\n\nfunction calculateInvestment(data: InvestmentData): CalculationResult {\n  const { initialAmount, annualContribution, expectedReturn, duration } = data;\n\n  if (initialAmount < 0) return 'Initial amount must be at least zero.';\n  if (duration <= 0) return 'Duration must be greater than zero.';\n  if (expectedReturn < 0) return 'Expected return must be at least zero.';\n\n  let total = initialAmount;\n  let totalContributions = 0;\n  let totalInterestEarned = 0;\n  const annualResults: InvestmentResult[] = [];\n\n  for (let year = 1; year <= duration; year++) {\n    total *= 1 + expectedReturn;\n    totalInterestEarned = total - totalContributions - initialAmount;\n    totalContributions += annualContribution;\n    total += annualContribution;\n    annualResults.push({\n      year: `Year ${year}`,\n      totalAmount: total,\n      totalContributions,\n      totalInterestEarned,\n    });\n  }\n\n  return annualResults;\n}\n\nfunction printResults(results: CalculationResult): void {\n  if (typeof results === 'string') {\n    console.log(results);\n    return;\n  }\n\n  for (const result of results) {\n    console.log(result.year);\n    console.log(`Total: ${result.totalAmount.toFixed(0)}`);\n    console.log(`Contributions: ${result.totalContributions.toFixed(0)}`);\n    console.log(`Interest: ${result.totalInterestEarned.toFixed(0)}`);\n    console.log('----------------------');\n  }\n}\n\nconst data: InvestmentData = {\n  initialAmount: 5000,\n  annualContribution: 500,\n  expectedReturn: 0.08,\n  duration: 10,\n};\n\nprintResults(calculateInvestment(data));\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What should happen before running dist/calculator.js?",
+              "options": [
+                "Compile the configured project",
+                "Run the TypeScript as CSS",
+                "Delete tsconfig",
+                "Install a browser"
+              ],
+              "correct": 0,
+              "explanation": "The JavaScript output must be produced from checked TypeScript."
+            },
+            {
+              "type": "mcq",
+              "question": "What is the best final verification?",
+              "options": [
+                "Exercise both valid and invalid inputs",
+                "Only inspect the file name",
+                "Disable noEmitOnError",
+                "Replace types with any"
+              ],
+              "correct": 0,
+              "explanation": "Both success and validation branches belong to the contract."
+            }
+          ]
+        }
+      ]
     }
   ]
 }

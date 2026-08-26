@@ -279,6 +279,220 @@
           ]
         }
       ]
+    },
+    {
+      "name": "Section 3 · The TypeScript Compiler & Configuration",
+      "rounds": [
+        {
+          "round_number": 1,
+          "title": "Compiler Configuration Mastery Challenge",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "Which setting determines emitted JavaScript syntax?",
+              "options": [
+                "target",
+                "lib",
+                "include",
+                "types"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Target selects the output language level."
+            },
+            {
+              "type": "mcq",
+              "question": "Which setting describes browser globals?",
+              "options": [
+                "lib including DOM",
+                "outDir",
+                "rootDir",
+                "sourceMap"
+              ],
+              "correct_option_index": 0,
+              "explanation": "DOM declaration libraries describe browser APIs."
+            },
+            {
+              "type": "mcq",
+              "question": "Where should include be placed?",
+              "options": [
+                "At the tsconfig top level",
+                "Inside compilerOptions",
+                "Inside src",
+                "Inside package.json scripts"
+              ],
+              "correct_option_index": 0,
+              "explanation": "File-selection settings are siblings of compilerOptions."
+            },
+            {
+              "type": "mcq",
+              "question": "What blocks output after type errors?",
+              "options": [
+                "noEmitOnError",
+                "allowJs",
+                "removeComments",
+                "skipLibCheck"
+              ],
+              "correct_option_index": 0,
+              "explanation": "It withholds emitted files on failed checking."
+            },
+            {
+              "type": "mcq",
+              "question": "Which option is the umbrella for strict checks?",
+              "options": [
+                "strict",
+                "sourceMap",
+                "declaration",
+                "module"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Strict activates a coordinated safety family."
+            },
+            {
+              "type": "mcq",
+              "question": "What does watch mode provide?",
+              "options": [
+                "Automatic recompilation",
+                "Automatic deployment",
+                "Automatic database migration",
+                "Automatic Node restart in every case"
+              ],
+              "correct_option_index": 0,
+              "explanation": "It watches program inputs and rebuilds them."
+            },
+            {
+              "type": "mcq",
+              "question": "Why install @types/node?",
+              "options": [
+                "To describe Node APIs",
+                "To install Node",
+                "To create JavaScript",
+                "To configure Git"
+              ],
+              "correct_option_index": 0,
+              "explanation": "The declaration package supplies static API information."
+            },
+            {
+              "type": "mcq",
+              "question": "Why generate source maps?",
+              "options": [
+                "To map runtime locations back to TypeScript",
+                "To type DOM APIs",
+                "To install packages",
+                "To choose included files"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Debuggers use maps to relate generated and authored code."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Section 4 · TypeScript Essentials Demo Project",
+      "rounds": [
+        {
+          "round_number": 1,
+          "title": "Investment Calculator Mastery Challenge",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What does InvestmentData group?",
+              "options": [
+                "All calculator inputs",
+                "Compiler options",
+                "Only errors",
+                "DOM elements"
+              ],
+              "correct_option_index": 0,
+              "explanation": "It is the input contract."
+            },
+            {
+              "type": "mcq",
+              "question": "Why return InvestmentResult[] | string?",
+              "options": [
+                "To model success and validation outcomes",
+                "To disable checking",
+                "To avoid functions",
+                "To install Node"
+              ],
+              "correct_option_index": 0,
+              "explanation": "The union exposes both valid result shapes."
+            },
+            {
+              "type": "mcq",
+              "question": "How is the result union narrowed?",
+              "options": [
+                "A typeof string check",
+                "A type assertion only",
+                "A package script",
+                "A source map"
+              ],
+              "correct_option_index": 0,
+              "explanation": "The runtime check distinguishes error text from the result array."
+            },
+            {
+              "type": "mcq",
+              "question": "Why store one result object per year?",
+              "options": [
+                "To preserve annual snapshots",
+                "To compile faster",
+                "To create tsconfig",
+                "To remove contributions"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Each object records a year-end state."
+            },
+            {
+              "type": "mcq",
+              "question": "Why keep printing outside calculation?",
+              "options": [
+                "To separate presentation from domain logic",
+                "To avoid return types",
+                "To force strings",
+                "To skip validation"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Separation makes the calculator reusable."
+            },
+            {
+              "type": "mcq",
+              "question": "Which command runs the complete emitted program?",
+              "options": [
+                "node dist/calculator.js",
+                "node calculator.ts",
+                "tsconfig start",
+                "npm css"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Node consumes the JavaScript generated in dist."
+            },
+            {
+              "type": "mcq",
+              "question": "What invalid duration should the calculator reject?",
+              "options": [
+                "Zero or less",
+                "Ten",
+                "One",
+                "Any number"
+              ],
+              "correct_option_index": 0,
+              "explanation": "A projection needs at least one year."
+            },
+            {
+              "type": "mcq",
+              "question": "What verifies the complete implementation?",
+              "options": [
+                "Test valid and invalid data",
+                "Ignore output",
+                "Disable strict",
+                "Use any"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Both branches must be exercised."
+            }
+          ]
+        }
+      ]
     }
   ]
 }
