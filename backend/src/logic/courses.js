@@ -60,8 +60,20 @@ export function findRound(courseId, topicName, roundNumber) {
   return { topic, round };
 }
 
+function shuffleArray(array) {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 export function sanitizeQuestion(question) {
   const { correct, correct_option_index, answer, explanation, ...safe } = question;
+  if (safe.options) {
+    safe.options = shuffleArray(safe.options);
+  }
   return safe;
 }
 
