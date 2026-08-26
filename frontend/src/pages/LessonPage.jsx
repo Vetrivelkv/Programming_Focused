@@ -39,7 +39,7 @@ function CodeBlock({ children }) {
           <pre className={`${highlightedClass} numbered-code`} style={style}>
             <code>
               {tokens.map((line, lineIndex) => (
-                <span key={lineIndex} className="code-line" {...getLineProps({ line })}>
+                <span key={lineIndex} {...getLineProps({ line, className: "code-line" })}>
                   <span className="code-line-number" aria-hidden="true">{lineIndex + 1}</span>
                   <span className="code-line-content">
                     {line.map((token, tokenIndex) => (
