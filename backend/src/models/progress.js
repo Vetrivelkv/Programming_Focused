@@ -43,3 +43,7 @@ export function saveChallengeProgress(userId, courseId, topicName, roundNumber, 
     { user_id: userId, course_id: courseId, topic_name: topicName, round_number: Number(roundNumber) },
     score, passed);
 }
+
+export async function deleteProgressRecord(table, id) {
+  return r.table(table).get(id).delete().run();
+}

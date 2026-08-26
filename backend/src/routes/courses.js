@@ -3,7 +3,7 @@ import {
   findModule, findRound, getCourse, gradeQuestions, listCourses, sanitizeQuestion,
 } from "../logic/courses.js";
 import {
-  getChallengeProgress, getLearningProgress, saveChallengeProgress, saveLearningProgress,
+  getChallengeProgress, getLearningProgress, saveChallengeProgress, saveLearningProgress, deleteProgressRecord
 } from "../models/progress.js";
 
 const decode = (value) => decodeURIComponent(value);
@@ -35,10 +35,46 @@ export default function registerCourseRoutes(app) {
 
   app.get("/api/courses/:courseId/dashboard", asyncRoute(async (request, response) => {
     const { definition, curriculum, challenges } = getCourse(request.params.courseId);
-    const [learningProgress, challengeProgress] = await Promise.all([
+    let [learningProgress, challengeProgress] = await Promise.all([
       getLearningProgress(request.user.id, request.params.courseId),
       getChallengeProgress(request.user.id, request.params.courseId),
     ]);
+
+    const validLearningProgress = [];
+    for (const record of learningProgress) {
+      let isValid = false;
+      const topic = curriculum.topics.find((t) => t.name === record.topic_name);
+      if (topic) {
+        const module = topic.subtopics.find((m) => m.id === record.subtopic_id);
+        if (module) {
+          const requiredScore = module.questions.length;
+          if (record.high_score <= requiredScore && (!record.passed || record.high_score === requiredScore)) {
+            isValid = true;
+          }
+        }
+      }
+      if (isValid) validLearningProgress.push(record);
+      else deleteProgressRecord("learning_progress", record.id); // asynchronously delete
+    }
+    learningProgress = validLearningProgress;
+
+    const validChallengeProgress = [];
+    for (const record of challengeProgress) {
+      let isValid = false;
+      const topic = challenges.topics.find((t) => t.name === record.topic_name);
+      if (topic) {
+        const round = topic.rounds.find((r) => r.round_number === record.round_number);
+        if (round) {
+          const requiredScore = round.questions.length;
+          if (record.high_score <= requiredScore && (!record.passed || record.high_score === requiredScore)) {
+            isValid = true;
+          }
+        }
+      }
+      if (isValid) validChallengeProgress.push(record);
+      else deleteProgressRecord("challenge_progress", record.id); // asynchronously delete
+    }
+    challengeProgress = validChallengeProgress;
     response.json({
       course: {
         id: definition.id,
