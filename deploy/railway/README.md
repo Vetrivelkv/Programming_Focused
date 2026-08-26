@@ -37,8 +37,8 @@ Railway variable reference.
 2. Name it `programming-focused-app`.
 3. Select the `main` branch and keep the repository root directory `/`.
 4. Railway reads `/railway.json` and builds `/Dockerfile`.
-5. Open **Variables -> RAW Editor** and paste the values from
-   `variables.example.env`.
+5. Open **Variables** and add the documented values individually. Avoid the Raw
+   Editor when unrelated secrets are already present.
 6. Generate a public Railway domain for the app.
 7. Set `CORS_ORIGIN` to that exact HTTPS domain and redeploy.
 
@@ -51,16 +51,23 @@ RETHINKDB_SERVERS=rethinkdb.railway.internal:28015
 RETHINKDB_DB=programming_focused
 RETHINKDB_USER=admin
 RETHINKDB_TIMEOUT=20
-RETHINKDB_INIT_MAX_ATTEMPTS=60
-RETHINKDB_INIT_RETRY_MS=2000
+RETHINKDB_IDLE_TIMEOUT_MS=30000
+RETHINKDB_INIT_MAX_ATTEMPTS=6
+RETHINKDB_INIT_RETRY_MS=500
+RETHINKDB_INIT_MAX_RETRY_MS=5000
+SHUTDOWN_TIMEOUT_MS=10000
+VITE_COLD_START_RETRY_MS=1500
 JWT_ACCESS_SECRET=<a-long-random-secret>
 JWT_REFRESH_SECRET=<a-different-long-random-secret>
 SESSION_HOURS=2
 CORS_ORIGIN=https://<your-generated-railway-domain>
 ```
 
-The backend initializes the database, tables, and indexes idempotently at
-startup. A separate migration job is not required.
+The HTTP process listens before the database is available. Database setup is
+idempotent, memoized, and bounded to six exponentially delayed attempts. A
+later API request starts a new bounded attempt after a failed sequence. The
+driver uses one lazy shared connection, disables pings, and closes the socket
+after 30 seconds without an active query.
 
 ## 3. Enable continuous deployment
 
@@ -71,6 +78,45 @@ In the `programming-focused-app` Railway service settings:
    `.github/workflows/ci.yml` succeeds.
 3. Keep the health check path `/api/health`; it is also declared in
    `/railway.json`.
+
+## 4. Enable Serverless for the web service
+
+After a successful deployment, open only the `programming-focused-app` service:
+
+**Service -> Settings -> Deploy -> Serverless -> Enable Serverless**
+
+Do not enable Serverless on `rethinkdb`. It is a continuously available
+database with a persistent volume. The application service is request-driven
+and safe to sleep; the database service is not.
+
+Use `/api/health` for deployment health checks. `/api/ready` reports database
+initialization and current connection state without opening a connection or
+querying RethinkDB. A `connected: false` response remains ready after successful
+initialization because the idle connection is intentionally released.
+
+## Cost profile
+
+- Keep the combined frontend/API in one service; Express already serves the
+  compiled Vite application and splitting it would add an idle service.
+- Start with one web replica and one database replica. A small installation can
+  evaluate 0.5 vCPU and 512 MB for each service, but change limits only after
+  checking Railway memory, CPU, and disk metrics.
+- Serverless can remove idle web-service compute. RethinkDB compute and its
+  persistent volume remain continuously billable.
+- Private-network database traffic counts as service activity. With pings and
+  pooling removed, only real requests and bounded initialization create that
+  traffic.
+- Cold starts can briefly produce 502/503/504 responses. The frontend retries
+  one idempotent request after `VITE_COLD_START_RETRY_MS`; it never retries
+  writes.
+- Configure Railway usage alerts. Exact savings depend on observed metrics and
+  cannot be guaranteed from repository configuration alone.
+
+No worker, queue poller, cron task, changefeed, analytics client, telemetry
+sender, external API poller, or service-to-service health poller exists in this
+repository. The only timers are request/session UI timers, the unreferenced
+database idle-close timer, bounded initialization delays, and a shutdown-only
+deadline.
 
 The release flow is:
 

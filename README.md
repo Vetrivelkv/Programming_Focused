@@ -60,5 +60,14 @@ npm run check
 ```
 
 This runs backend syntax checks, frontend linting, and a production frontend
-build. See [`deploy/railway/README.md`](deploy/railway/README.md) for deployment
-setup.
+build, plus focused backend and frontend tests. See
+[`deploy/railway/README.md`](deploy/railway/README.md) for deployment setup,
+sleep behavior, health/readiness endpoints, and cost guidance.
+
+## Runtime health
+
+- `GET /api/health` confirms only that the HTTP process is serving requests.
+- `GET /api/ready` reports database initialization and connection state without
+  waking the database.
+- Database-backed routes return `503 DATABASE_UNAVAILABLE` while RethinkDB is
+  unavailable and can start a fresh bounded initialization attempt later.

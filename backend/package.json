@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "node --watch src/server.js",
     "start": "node src/server.js",
-    "check": "node --check src/server.js && node --check src/config/rethinkdb.js && node --check src/init/database.js && node --check src/logic/auth.js && node --check src/logic/courses.js && node --check src/models/progress.js && node --check src/models/settings.js && node --check src/routes/auth.js && node --check src/routes/courses.js && node --check src/routes/profile.js && node --check src/routes/settings.js"
+    "check": "node --check src/server.js && node --check src/config/rethinkdb.js && node --check src/init/database.js && node --check src/lib/retry.js && node --check src/logic/auth.js && node --check src/logic/courses.js && node --check src/models/progress.js && node --check src/models/settings.js && node --check src/routes/auth.js && node --check src/routes/courses.js && node --check src/routes/profile.js && node --check src/routes/settings.js",
+    "test": "node --test test/*.test.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

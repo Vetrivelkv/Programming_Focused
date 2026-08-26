@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { r } from "../config/rethinkdb.js";
+import { r, runQuery } from "../config/rethinkdb.js";
 
 const ACCESS_COOKIE = "programming_focused_access";
 const REFRESH_COOKIE = "programming_focused_refresh";
@@ -27,15 +27,14 @@ const publicUser = (user) => user && ({
 });
 
 async function findByUsername(username) {
-  return r.table("users")
+  return runQuery(r.table("users")
     .getAll(username, { index: "username" })
     .nth(0)
-    .default(null)
-    .run();
+    .default(null), { retryRead: true });
 }
 
 async function findById(id) {
-  return r.table("users").get(id).run();
+  return runQuery(r.table("users").get(id), { retryRead: true });
 }
 
 function setCookies(response, user, sessionExpiresAt) {
@@ -62,13 +61,13 @@ export async function register(username, password) {
   if (await findByUsername(normalized)) {
     throw Object.assign(new Error("Username already exists."), { status: 409 });
   }
-  const result = await r.table("users").insert({
+  const result = await runQuery(r.table("users").insert({
     username: normalized,
     password_hash: await bcrypt.hash(password, 12),
     theme: "default",
     created_at: new Date(),
     updated_at: new Date(),
-  }, { returnChanges: true }).run();
+  }, { returnChanges: true }));
   return publicUser(result.changes[0].new_val);
 }
 
@@ -113,13 +112,17 @@ function readToken(request, response) {
 }
 
 export async function requireSession(request, response, next) {
-  const session = readToken(request, response);
-  const storedUser = session ? await findById(session.user.id) : null;
-  if (!session || !storedUser) {
-    clearSession(response);
-    return response.status(401).json({ code: "SESSION_EXPIRED", detail: "Your session has expired." });
+  try {
+    const session = readToken(request, response);
+    const storedUser = session ? await findById(session.user.id) : null;
+    if (!session || !storedUser) {
+      clearSession(response);
+      return response.status(401).json({ code: "SESSION_EXPIRED", detail: "Your session has expired." });
+    }
+    request.user = publicUser(storedUser);
+    request.sessionExpiresAt = session.expiresAt;
+    next();
+  } catch (error) {
+    next(error);
   }
-  request.user = publicUser(storedUser);
-  request.sessionExpiresAt = session.expiresAt;
-  next();
 }

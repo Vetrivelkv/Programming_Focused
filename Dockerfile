@@ -1,4 +1,6 @@
 FROM node:22-bookworm-slim AS frontend-build
+ARG VITE_COLD_START_RETRY_MS=1500
+ENV VITE_COLD_START_RETRY_MS=${VITE_COLD_START_RETRY_MS}
 WORKDIR /build/frontend
 COPY frontend/package*.json ./
 RUN npm ci
