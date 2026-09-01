@@ -493,6 +493,137 @@
           ]
         }
       ]
+    },
+    {
+      "name": "Section 5 · Next-generation JavaScript & TypeScript",
+      "rounds": [
+        {
+          "round_number": 1,
+          "title": "Modern JavaScript & TypeScript Challenge",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "Which declaration should be the default for a binding that will not be reassigned?",
+              "options": [
+                "const",
+                "var",
+                "any",
+                "enum"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Const makes the binding rule explicit and enforceable."
+            },
+            {
+              "type": "mcq",
+              "question": "What scope do let and const obey?",
+              "options": [
+                "Block scope",
+                "Only global scope",
+                "CSS scope",
+                "Database scope"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Their bindings stay within the nearest block."
+            },
+            {
+              "type": "mcq",
+              "question": "What does an expression-bodied arrow function return?",
+              "options": [
+                "The expression result",
+                "Always undefined",
+                "The function itself",
+                "A Promise automatically"
+              ],
+              "correct_option_index": 0,
+              "explanation": "The single expression is returned implicitly."
+            },
+            {
+              "type": "mcq",
+              "question": "Why may a callback parameter have a type without an annotation?",
+              "options": [
+                "Contextual typing from the receiving API",
+                "TypeScript uses any for all callbacks",
+                "The browser compiles it",
+                "The parameter is ignored"
+              ],
+              "correct_option_index": 0,
+              "explanation": "The expected callback signature supplies the parameter type."
+            },
+            {
+              "type": "mcq",
+              "question": "Why should default parameters normally be trailing?",
+              "options": [
+                "Arguments are assigned by position",
+                "They compile only at the end",
+                "They require rest syntax",
+                "They are object keys"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Trailing defaults can be omitted without awkward placeholders."
+            },
+            {
+              "type": "mcq",
+              "question": "What does spread do in push(...items)?",
+              "options": [
+                "Expands items into separate arguments",
+                "Collects arguments into one array",
+                "Freezes the array",
+                "Creates a deep clone"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Spread expands an iterable at the call site."
+            },
+            {
+              "type": "mcq",
+              "question": "What does a rest parameter do?",
+              "options": [
+                "Collects remaining arguments into an array",
+                "Copies an object deeply",
+                "Changes compiler target",
+                "Declares a constant"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Rest gathers call arguments for array-based processing."
+            },
+            {
+              "type": "mcq",
+              "question": "How does object destructuring locate values?",
+              "options": [
+                "By property key",
+                "Only by position",
+                "By array length",
+                "By line number"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Object binding patterns match named properties."
+            },
+            {
+              "type": "mcq",
+              "question": "Is object spread a recursive deep copy?",
+              "options": [
+                "No, it is shallow",
+                "Yes, always",
+                "Only for const",
+                "Only with ES5"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Nested references remain shared."
+            },
+            {
+              "type": "mcq",
+              "question": "What does target ES5 ask TypeScript to change?",
+              "options": [
+                "Unsupported modern syntax in emitted JavaScript",
+                "The source language to Java",
+                "npm dependencies",
+                "HTML semantics"
+              ],
+              "correct_option_index": 0,
+              "explanation": "The target determines which JavaScript syntax may remain in output."
+            }
+          ]
+        }
+      ]
     }
   ]
 }

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#07111f"/><stop offset=".52" stop-color="#101c32"/><stop offset="1" stop-color="#162640"/></linearGradient>
+    <linearGradient id="glow"><stop stop-color="#54dfd2"/><stop offset="1" stop-color="#4b8dff"/></linearGradient>
+    <filter id="shadow"><feDropShadow dy="22" stdDeviation="24" flood-opacity=".42"/></filter>
+  </defs>
+  <rect width="1280" height="720" rx="36" fill="url(#bg)"/>
+  <circle cx="1150" cy="65" r="285" fill="#54dfd2" opacity=".09"/><circle cx="115" cy="700" r="280" fill="#4b8dff" opacity=".07"/>
+  <path d="M72 74h190" stroke="url(#glow)" stroke-width="6" stroke-linecap="round"/>
+  <text x="72" y="120" fill="#54dfd2" font-size="17" font-weight="700" letter-spacing="2.6" font-family="Arial, sans-serif">NEXT-GENERATION JAVASCRIPT &amp; TYPESCRIPT · 06</text>
+  <text x="72" y="212" fill="#f7f9ff" font-size="51" font-weight="700" font-family="Arial, sans-serif">Rest parameters</text>
+  <rect x="72" y="423" width="508" height="145" rx="24" fill="#10243b" stroke="#304964"/>
+  <text x="106" y="465" fill="#7894ac" font-size="15" letter-spacing="2.1" font-family="Arial, sans-serif">WHY IT MATTERS</text>
+  <text x="106" y="510" fill="#dce8f5" font-size="21" font-weight="400" font-family="Arial, sans-serif">Collect flexible calls into a typed array,</text>
+<text x="106" y="539" fill="#dce8f5" font-size="21" font-weight="400" font-family="Arial, sans-serif">then reduce the values.</text>
+  <g filter="url(#shadow)">
+    <rect x="644" y="142" width="570" height="430" rx="28" fill="#060e19" stroke="#3a526c"/>
+    <rect x="644" y="142" width="570" height="66" rx="28" fill="#11243a"/>
+    <circle cx="686" cy="175" r="7" fill="#ff718f"/><circle cx="711" cy="175" r="7" fill="#ffca62"/><circle cx="736" cy="175" r="7" fill="#55e6a5"/>
+    <text x="775" y="182" fill="#829bb1" font-size="17" font-family="Consolas, monospace">src/app.ts</text>
+    <text x="698" y="328" fill="#54dfd2" font-size="28" font-weight="700" font-family="Consolas, monospace">(...numbers: number[])</text>
+    <rect x="698" y="371" width="452" height="2" fill="#2d455d"/>
+    <text x="698" y="425" fill="#8aa0b4" font-size="17" font-family="Consolas, monospace">type → compile → inspect → run</text>
+    <rect x="698" y="472" width="176" height="42" rx="21" fill="url(#glow)" opacity=".92"/>
+    <text x="728" y="499" fill="#07111f" font-size="16" font-weight="700" font-family="Arial, sans-serif">SECTION 05</text>
+  </g>
+  <text x="72" y="655" fill="#607a91" font-size="16" letter-spacing="1.4" font-family="Arial, sans-serif">PROGRAMMING FOCUSED  /  ORIGINAL LESSON VISUAL</text>
+  </svg>
