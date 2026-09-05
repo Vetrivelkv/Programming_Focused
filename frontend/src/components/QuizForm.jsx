@@ -1,7 +1,7 @@
 import { CheckCircle2, RotateCcw, XCircle } from "lucide-react";
 import { useState } from "react";
 
-export default function QuizForm({ questions, requiredScore, onSubmit, submitLabel = "Submit answers" }) {
+export default function QuizForm({ questions, requiredScore, nextModuleUrl, onSubmit, submitLabel = "Submit answers" }) {
   const [answers, setAnswers] = useState(() => Array(questions.length).fill(""));
   const [result, setResult] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -45,7 +45,12 @@ export default function QuizForm({ questions, requiredScore, onSubmit, submitLab
             </details>
           ))}
         </div>
-        <button className="button secondary" type="button" onClick={() => setResult(null)}>Try the quiz again</button>
+        <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "center" }}>
+          {result.passed && nextModuleUrl && (
+            <Link to={nextModuleUrl} className="button primary">Continue to next module <ArrowRight size={20} /></Link>
+          )}
+          <button className="button secondary" type="button" onClick={() => setResult(null)}>Try the quiz again</button>
+        </div>
       </section>
     );
   }
