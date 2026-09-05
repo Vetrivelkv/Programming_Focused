@@ -152,27 +152,39 @@
           "questions": [
             {
               "type": "mcq",
-              "question": "Why does parameter `b = 5` not need `: number`?",
+              "question": "Why does the `b` parameter in `function add(a: number, b = 5)` not need an explicit `: number` type?",
               "options": [
-                "The default value allows inference",
-                "All parameters are numbers",
-                "Defaults disable checking",
-                "Node assigns the type"
+                "The default value `5` allows TypeScript to infer the type automatically",
+                "All function parameters default to numbers",
+                "Default parameters disable type checking entirely",
+                "Node.js automatically assigns the type at runtime"
               ],
               "correct": 0,
-              "explanation": "The numeric default supplies enough information."
+              "explanation": "Because `b` is assigned a default value of `5` (which is a number), TypeScript uses **Type Inference** to automatically deduce that `b` must be a number."
             },
             {
               "type": "mcq",
-              "question": "What is the main cost of `any`?",
+              "question": "What is **Contextual Typing**?",
               "options": [
-                "It opts out of useful checking",
-                "It prevents JavaScript emission",
-                "It makes values immutable",
-                "It only accepts strings"
+                "When TypeScript infers a function parameter's type based on where the function is used (like a callback in `.forEach()`)",
+                "When you explicitly write out the context of a variable using `type Context = ...`",
+                "A feature that allows you to change a variable's type based on the surrounding HTML context",
+                "When TypeScript reads the comments around a function to guess its type"
               ],
               "correct": 0,
-              "explanation": "Any allows unsafe operations and can spread lost type information."
+              "explanation": "Contextual typing occurs when the type of an expression is implied by its location. For example, in `[\"Alice\"].forEach((name) => ...)`, TypeScript knows `name` is a string because of the array's context!"
+            },
+            {
+              "type": "mcq",
+              "question": "What happens if you use the `any` type (e.g., `let payload: any;`)?",
+              "options": [
+                "It completely disables TypeScript's checking for that variable, allowing unsafe operations",
+                "It strictly enforces that the variable can only be modified by specific functions",
+                "It prevents the code from compiling to JavaScript",
+                "It automatically converts the variable to a string at runtime"
+              ],
+              "correct": 0,
+              "explanation": "The `any` type acts as an escape hatch that completely turns off type checking. It should be used as an absolute last resort, because it defeats the purpose of using TypeScript."
             }
           ]
         },

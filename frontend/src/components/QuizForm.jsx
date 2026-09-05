@@ -1,5 +1,9 @@
-import { CheckCircle2, RotateCcw, XCircle } from "lucide-react";
+import { CheckCircle2, RotateCcw, XCircle, ArrowRight } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import CodeBlock from "./CodeBlock";
 
 export default function QuizForm({ questions, requiredScore, nextModuleUrl, onSubmit, submitLabel = "Submit answers" }) {
   const [answers, setAnswers] = useState(() => Array(questions.length).fill(""));
@@ -36,16 +40,20 @@ export default function QuizForm({ questions, requiredScore, nextModuleUrl, onSu
         </div>
         <p>{result.passed
           ? "Perfect score — the next item is now unlocked."
-          : `A perfect ${requiredScore}/${requiredScore} is needed. Review the feedback and try again.`}</p>
+          : \`A perfect \${requiredScore}/\${requiredScore} is needed. Review the feedback and try again.\`}</p>
         <div className="feedback-list">
           {result.feedback.map((item) => (
             <details key={item.index}>
-              <summary>{item.correct ? <CheckCircle2 /> : <XCircle />} Question {item.index} — {item.correct ? "Correct" : `Correct answer: ${item.correctAnswer}`}</summary>
-              <p>{item.explanation}</p>
+              <summary>{item.correct ? <CheckCircle2 /> : <XCircle />} Question {item.index} — {item.correct ? "Correct" : \`Correct answer: \${item.correctAnswer}\`}</summary>
+              <div className="feedback-explanation">
+                <ReactMarkdown remarkPlugins={[remarkGfm]} components={{ pre: CodeBlock }}>
+                  {item.explanation}
+                </ReactMarkdown>
+              </div>
             </details>
           ))}
         </div>
-        <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "center" }}>
+        <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "center", marginTop: "1rem" }}>
           {result.passed && nextModuleUrl && (
             <Link to={nextModuleUrl} className="button primary">Continue to next module <ArrowRight size={20} /></Link>
           )}
@@ -62,8 +70,15 @@ export default function QuizForm({ questions, requiredScore, nextModuleUrl, onSu
         <span className="goal-pill">Goal: {requiredScore}/{requiredScore}</span>
       </div>
       {questions.map((question, index) => (
-        <fieldset className="question-card" key={`${question.question}-${index}`}>
-          <legend><span>{String(index + 1).padStart(2, "0")}</span>{question.question}</legend>
+        <fieldset className="question-card" key={\`\${question.question}-\${index}\`}>
+          <legend>
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <div className="markdown-inline" style={{ display: 'inline' }}>
+              <ReactMarkdown remarkPlugins={[remarkGfm]} components={{ pre: CodeBlock, p: 'span' }}>
+                {question.question}
+              </ReactMarkdown>
+            </div>
+          </legend>
           {question.type === "fib" ? (
             <input
               className="text-answer"
@@ -73,11 +88,15 @@ export default function QuizForm({ questions, requiredScore, nextModuleUrl, onSu
               required
             />
           ) : question.options.map((option) => (
-            <label className={`option ${answers[index] === option ? "selected" : ""}`} key={option}>
-              <input type="radio" name={`question-${index}`} value={option} required
+            <label className={\`option \${answers[index] === option ? "selected" : ""}\`} key={option}>
+              <input type="radio" name={\`question-\${index}\`} value={option} required
                 checked={answers[index] === option}
                 onChange={(event) => updateAnswer(index, event.target.value)} />
-              <span>{option}</span>
+              <div className="markdown-inline">
+                <ReactMarkdown remarkPlugins={[remarkGfm]} components={{ pre: CodeBlock, p: 'span' }}>
+                  {option}
+                </ReactMarkdown>
+              </div>
             </label>
           ))}
         </fieldset>
