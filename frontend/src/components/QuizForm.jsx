@@ -5,7 +5,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import CodeBlock from "./CodeBlock";
 
-export default function QuizForm({ questions, requiredScore, nextModuleUrl, onSubmit, submitLabel = "Submit answers" }) {
+export default function QuizForm({ questions, requiredScore, nextModuleUrl, nextModuleLabel = "Continue to next module", onSubmit, submitLabel = "Submit answers" }) {
   const [answers, setAnswers] = useState(() => Array(questions.length).fill(""));
   const [result, setResult] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -55,7 +55,7 @@ export default function QuizForm({ questions, requiredScore, nextModuleUrl, onSu
         </div>
         <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "center", marginTop: "1rem" }}>
           {result.passed && nextModuleUrl && (
-            <Link to={nextModuleUrl} className="button primary">Continue to next module <ArrowRight size={20} /></Link>
+            <Link to={nextModuleUrl} className="button primary">{nextModuleLabel} <ArrowRight size={20} /></Link>
           )}
           <button className="button secondary" type="button" onClick={() => setResult(null)}>Try the quiz again</button>
         </div>

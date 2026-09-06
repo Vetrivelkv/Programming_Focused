@@ -31,6 +31,7 @@ export default function ChallengePage() {
         questions={challenge.questions}
         requiredScore={challenge.requiredScore}
         nextModuleUrl={challenge.nextModuleUrl}
+        nextModuleLabel="Continue to next challenge round"
         submitLabel="Complete challenge"
         onSubmit={(answers) => apiJson(`${base}/submit`, { method: "POST", body: JSON.stringify({ answers }) })}
       />
