@@ -190,33 +190,33 @@
         },
         {
           "id": "ts_basics_04",
-          "title": "Union Types: One Value, Several Possibilities",
+          "title": "Union Types: Handling Multiple Possibilities",
           "image": "/assets/typescript/basics/04-unions.png",
-          "content": "# Union Types\n\nA union describes every value a variable may legitimately hold.\n\n```ts\nlet age: number | string = 36;\nage = '37';\n// age = false;\n```\n\nBefore using a member-specific operation, narrow the union:\n\n```ts\nfunction normalizeId(id: number | string): string {\n  if (typeof id === 'number') {\n    return id.toFixed(0);\n  }\n  return id.trim().toLowerCase();\n}\n```\n\nDo not add union members merely to silence errors. Each member should reflect a real domain state, and every consumer should handle those states.",
+          "content": "# Union Types: Handling Multiple Possibilities\n\nSometimes a variable needs to be able to accept more than one specific type of data. For example, an ID might sometimes be a `number` (`1234`) and sometimes a `string` (`\"uuid-5678\"`).\n\nIn TypeScript, you can use the **pipe symbol** (`|`) to create a **Union Type**, which says \"this value can be type A *or* type B\".\n\n```ts\n// 1. Defining a Union Type\nlet userId: number | string;\n\nuserId = 101;       // ✅ OK: it's a number\nuserId = \"admin\";   // ✅ OK: it's a string\n// userId = true;   // ❌ Error: Type 'boolean' is not assignable to 'number | string'\n```\n\n## The \"Narrowing\" Concept (Crucial!)\n\nWhen a variable is a union type, TypeScript will only let you use methods that are valid for **both** types. For example, you can't use `.toUpperCase()` directly on `userId` because a `number` doesn't have a `.toUpperCase()` method!\n\nTo do type-specific operations, you must check what type the value currently is using standard JavaScript features like `typeof`. This process of figuring out the specific type from a union is called **Type Narrowing**.\n\n```ts\nfunction formatUserId(id: number | string): string {\n  // We can't do id.toUpperCase() here! What if id is 101?\n  \n  if (typeof id === 'string') {\n    // 💡 TypeScript is smart! In this block, it *knows* id is a string\n    return id.toUpperCase();\n  }\n  \n  // 💡 Because of the 'if' above, TypeScript *knows* id must be a number here\n  return `ID-${id.toFixed(0)}`; \n}\n```\n\n## Why use Unions?\nUnions help you accurately model the real world. Many APIs will return a successful result object *or* a string error message. Instead of using `any` (which disables type checking), a union gives you flexibility while maintaining complete type safety.",
           "questions": [
             {
               "type": "mcq",
-              "question": "What does `string | number` mean?",
+              "question": "Why might you get an error if you try to use `.toUpperCase()` directly on a variable of type `string | number`?",
               "options": [
-                "The value may be a string or a number",
-                "The value is both at runtime",
-                "The value is always any",
-                "The value is an array"
+                "Because `.toUpperCase()` is only valid for strings, and TypeScript doesn't know if the value is currently a string or a number.",
+                "Because union types are only evaluated at runtime.",
+                "Because the pipe (`|`) symbol disables all string methods.",
+                "Because `.toUpperCase()` requires a Boolean parameter."
               ],
               "correct": 0,
-              "explanation": "A union lists valid alternatives."
+              "explanation": "When using a union type, you are only allowed to access properties and methods that are shared by *all* types in the union, unless you \"narrow\" the type first."
             },
             {
               "type": "mcq",
-              "question": "Why use `typeof` inside `normalizeId`?",
+              "question": "What is \"Type Narrowing\" in TypeScript?",
               "options": [
-                "To narrow the union",
-                "To cast at runtime",
-                "To compile the file",
-                "To create a tuple"
+                "Using JavaScript checks like `typeof` so TypeScript can deduce a more specific type from a union.",
+                "Using the `any` type to force the compiler to ignore errors.",
+                "Changing a variable's data at runtime from a string to a number.",
+                "Compiling TypeScript into a smaller JavaScript file to save space."
               ],
               "correct": 0,
-              "explanation": "The check proves which operations are safe in each branch."
+              "explanation": "Type narrowing is the process of moving from a broad type (like `string | number`) to a more specific type (like `string`) using standard logic checks like `if (typeof value === 'string')`."
             }
           ]
         },
@@ -224,63 +224,63 @@
           "id": "ts_basics_05",
           "title": "Arrays & Generic Array Syntax",
           "image": "/assets/typescript/basics/05-arrays.png",
-          "content": "# Arrays & Generic Array Syntax\n\nTypeScript infers an array's element type from its initial values.\n\n```ts\nlet hobbies = ['cycling', 'cooking']; // string[]\nhobbies.push('reading');\n// hobbies.push(10);\n```\n\nAnnotate an initially empty or deliberately mixed array:\n\n```ts\nlet results: (string | number)[] = [];\nresults = [1, 'pass'];\n\nlet history: Array<string | number> = ['start', 1];\n```\n\n`T[]` and `Array<T>` express the same array type. Parentheses matter in `(string | number)[]`: without them, the brackets would attach only to the nearest type. The generic syntax is often easier to read for complex element types.",
+          "content": "# Arrays in TypeScript\n\nWorking with arrays in TypeScript is very similar to JavaScript, but with the added superpower of ensuring all items in the array belong to a specific type.\n\n## 1. Type Inference\nMost of the time, TypeScript is smart enough to figure out the type of an array based on its starting items. \n\n```ts\n// 💡 TypeScript infers this is an array of strings: string[]\nlet hobbies = ['cycling', 'cooking']; \n\nhobbies.push('reading'); // ✅ OK\n// hobbies.push(10);     // ❌ Error: Argument of type 'number' is not assignable to parameter of type 'string'\n```\n\n## 2. Explicit Array Types\nIf you are starting with an empty array, or you want to be explicitly clear, you can tell TypeScript what type of items the array will hold. There are two standard ways to do this:\n\n**Syntax 1: Square Brackets `[]` (Most common)**\nSimply add `[]` to the end of the type you want the array to hold.\n```ts\nlet names: string[] = [];\nnames.push(\"Alice\");\n```\n\n**Syntax 2: Generic Array `<T>` (Alternative)**\nYou can also use the `Array<Type>` syntax. They do exactly the same thing, but some developers prefer this for complex types.\n```ts\nlet names: Array<string> = [];\nnames.push(\"Alice\");\n```\n\n## 3. Arrays with Mixed Types (Unions)\nWhat if an array needs to hold *both* numbers and strings? You can combine Arrays with Union Types! \n\n**Watch out for parentheses!**\nIf you use the bracket syntax for unions, you *must* wrap the union in parentheses.\n```ts\n// ✅ Correct: Array holding strings OR numbers\nlet results: (string | number)[] = [1, 'pass']; \n\n// ❌ Incorrect: This means \"a string OR an array of numbers\"\nlet badResults: string | number[] = [1, 'pass']; \n\n// ✅ Correct (Using Generic Syntax): Often cleaner for unions\nlet history: Array<string | number> = ['start', 1];\n```",
           "questions": [
             {
               "type": "mcq",
-              "question": "Which type accepts an array containing strings and numbers?",
+              "question": "What is the difference between `string[]` and `Array<string>` in TypeScript?",
               "options": [
-                "(string | number)[]",
-                "string | number[]",
-                "[string, number, boolean]",
-                "Record<string, number>"
+                "They are exactly the same; they just represent two different syntaxes for an array of strings.",
+                "`string[]` is a normal array, while `Array<string>` creates a read-only list.",
+                "`Array<string>` allows mixed types, but `string[]` does not.",
+                "`string[]` is used for single strings, while `Array<string>` is for multiple strings."
               ],
               "correct": 0,
-              "explanation": "The parentheses make the union the element type."
+              "explanation": "Both `string[]` and `Array<string>` are identical under the hood. You can choose the syntax you prefer."
             },
             {
               "type": "mcq",
-              "question": "How does `Array<string>` relate to `string[]`?",
+              "question": "Which of the following correctly types an array that can hold BOTH strings and numbers?",
               "options": [
-                "They describe the same array type",
-                "It creates a tuple",
-                "It disables inference",
-                "It describes a string object"
+                "`let items: (string | number)[];`",
+                "`let items: string | number[];`",
+                "`let items: Array[string | number];`",
+                "`let items: [string, number];`"
               ],
               "correct": 0,
-              "explanation": "They are alternative type syntaxes."
+              "explanation": "You must wrap the union in parentheses `(string | number)[]` or use the generic syntax `Array<string | number>`. Without parentheses, `string | number[]` means \"either a single string, or an array of numbers\"."
             }
           ]
         },
         {
           "id": "ts_basics_06",
-          "title": "Tuples: Fixed Positions with Meaning",
+          "title": "Tuples: Fixed-Length Arrays",
           "image": "/assets/typescript/basics/06-tuples.png",
-          "content": "# Tuples\n\nA tuple describes a fixed sequence where each position has its own type.\n\n```ts\ntype MatchResult = [number, number];\n\nconst score: MatchResult = [3, 1];\nconst home = score[0];\nconst away = score[1];\n// const broken: MatchResult = [3, 1, 0];\n```\n\nTuples are useful for compact pairs such as coordinates or success/error results. Prefer an object when callers need named fields or the record will grow:\n\n```ts\ntype Score = { home: number; away: number };\n```\n\nAn ordinary `(number | string)[]` does not guarantee order or length; a tuple does.",
+          "content": "# Tuples: Fixed-Length Arrays\n\nIn JavaScript, there is no special \"tuple\" data structure—tuples are just standard **Arrays** under the hood. However, in TypeScript, a **Tuple Type** allows you to be incredibly strict about exactly what an array contains. \n\nA tuple is a type of array where you know the **exact length** and the **exact type at each specific position**.\n\n```ts\n// 1. Defining a Tuple\n// This array MUST have exactly two items: a string first, then a number.\nlet userRecord: [string, number];\n\nuserRecord = [\"Alice\", 28]; // ✅ OK\n// userRecord = [28, \"Alice\"]; // ❌ Error: Order matters!\n// userRecord = [\"Alice\", 28, true]; // ❌ Error: Length must be exactly 2!\n```\n\n## Tuple (Array) vs. Object: Which to use?\n\nSince tuples are just arrays without property names, you have to access data by index (e.g., `score[0]`). This makes tuples perfect for very small, closely-related pairs of data, like:\n* Coordinates: `[longitude, latitude]`\n* HTTP Responses: `[statusCode, responseBody]`\n* React Hooks: `[stateValue, setterFunction]` (like `useState!`)\n\n**When NOT to use Tuples:**\nIf your data has more than 2 or 3 items, or the meaning of the positions isn't immediately obvious, **use an Object instead**. Objects provide named properties (`score.home` instead of `score[0]`), which makes your code far more readable as it grows.\n\n```ts\n// ❌ Hard to read Tuple: What do these numbers mean?\ntype MatchResultTuple = [number, number, number]; \nconst match1: MatchResultTuple = [3, 1, 0]; // (Home, Away, Penalties?)\n\n// ✅ Much clearer Object:\ntype MatchResultObject = { home: number; away: number; penalties: number };\nconst match2: MatchResultObject = { home: 3, away: 1, penalties: 0 };\n```\n\nIn summary: Tuples apply strict TypeScript rules to standard JavaScript arrays, fixing their length and the order of their types.",
           "questions": [
             {
               "type": "mcq",
-              "question": "What does `[number, string]` guarantee?",
+              "question": "What data structure does a TypeScript Tuple actually use in the compiled JavaScript?",
               "options": [
-                "Two ordered positions with those types",
-                "Any number of mixed values",
-                "A key-value record",
-                "A numeric array only"
+                "A standard Array",
+                "A standard Object",
+                "A new `Tuple` class",
+                "A Map"
               ],
               "correct": 0,
-              "explanation": "A tuple fixes position, length, and member types."
+              "explanation": "Tuples are just a TypeScript concept. When the code compiles to JavaScript, they remain standard arrays."
             },
             {
               "type": "mcq",
-              "question": "When is an object clearer than a tuple?",
+              "question": "When should you prefer an Object over a Tuple?",
               "options": [
-                "When fields benefit from names",
-                "When order matters",
-                "When there are exactly two values",
-                "Never"
+                "When the data has many fields or needs clear names for readability.",
+                "When you are writing React hooks.",
+                "When you need to enforce a strict length of exactly two items.",
+                "When you want to save memory."
               ],
               "correct": 0,
-              "explanation": "Named properties communicate domain meaning and scale better."
+              "explanation": "Tuples lack property names, making them hard to understand if they hold many values. Objects with named properties are much clearer for larger or complex records."
             }
           ]
         },
@@ -288,31 +288,31 @@
           "id": "ts_basics_07",
           "title": "Object Types, Nested Shapes & the `{}` Trap",
           "image": "/assets/typescript/basics/07-objects.png",
-          "content": "# Object Types & Nested Shapes\n\nObject types describe the properties code may read and write.\n\n```ts\ntype User = {\n  name: string;\n  age: number | string;\n  hobbies: string[];\n  role: { id: number; description: string };\n};\n\nconst user: User = {\n  name: 'Mira',\n  age: 38,\n  hobbies: ['coding'],\n  role: { id: 5, description: 'admin' },\n};\n```\n\nThe type `{}` does **not** mean “an empty object”. It means any value except `null` and `undefined`, so strings and numbers fit it. Use a specific object shape when properties are known, `object` for a non-primitive object, or `Record` for dynamic keys.",
+          "content": "# Object Types in TypeScript\n\nObjects are the most common way to group data in JavaScript. In TypeScript, you describe the \"shape\" of these objects to ensure you don't accidentally read a missing property or misspell a key.\n\n## 1. Defining Object Shapes\nYou can describe an object by defining what keys it has and what type each key holds. Using a `type` alias allows you to reuse this shape across your codebase!\n\n```ts\n// 💡 Creating a \"Type Alias\" for our object shape\ntype User = {\n  name: string;\n  age: number; // The age MUST be a number\n};\n\n// ✅ OK: Matches the User shape perfectly\nconst user: User = { name: \"Mira\", age: 38 };\n\n// ❌ Error: Property 'age' is missing!\n// const badUser: User = { name: \"John\" };\n```\n\n## 2. Nested Shapes & Complex Types\nObject shapes can easily contain other complex types, like Arrays, Unions, or even other nested Objects!\n\n```ts\ntype Employee = {\n  name: string;\n  department: string | number;     // A Union Type\n  skills: string[];                // An Array\n  role: {                          // A Nested Object\n    id: number;\n    title: string;\n  };\n};\n\nconst staff: Employee = {\n  name: \"Alex\",\n  department: \"Engineering\",\n  skills: [\"TypeScript\", \"React\"],\n  role: { id: 404, title: \"Developer\" }\n};\n```\n\n## 3. The `{}` Trap (Crucial!)\nA very common mistake for beginners is using `{}` as a type, thinking it means \"an empty object\".\n\n**In TypeScript, `{}` actually means \"any value that is not `null` or `undefined`\".**\nThis means if you type a variable as `{}`, TypeScript will let you assign a string or a number to it!\n\n```ts\nlet myData: {};\n\nmyData = { name: \"Mira\" }; // ✅ Allowed\nmyData = \"Wait, a string?\"; // ✅ Allowed! (Wait, what?)\nmyData = 42; // ✅ Allowed!\n// myData = null; // ❌ Error (The only thing it prevents!)\n```",
           "questions": [
             {
               "type": "mcq",
-              "question": "What does TypeScript's `{}` type exclude?",
+              "question": "What does the `{}` type actually mean in TypeScript?",
               "options": [
-                "null and undefined",
-                "All strings",
-                "All numbers",
-                "Every object with a property"
+                "Any value except `null` and `undefined` (including strings and numbers).",
+                "A strictly empty object that cannot hold any properties.",
+                "An object that can hold any string key.",
+                "The same thing as the `any` type."
               ],
               "correct": 0,
-              "explanation": "The empty object type accepts any non-nullish value."
+              "explanation": "The `{}` type is very broad. It accepts practically anything except `null` and `undefined`, which is rarely what you actually want when working with objects!"
             },
             {
               "type": "mcq",
-              "question": "Why extract a `User` alias?",
+              "question": "Why is it a good practice to use a `type` alias (like `type User = { ... }`) for object shapes?",
               "options": [
-                "It gives a reusable name to the object contract",
-                "It validates network data",
-                "It creates a class instance",
-                "It emits a database table"
+                "It allows you to reuse the exact same object shape across multiple variables or functions.",
+                "It prevents the object from being modified at runtime.",
+                "It automatically creates an empty object in JavaScript.",
+                "It forces TypeScript to ignore spelling errors on properties."
               ],
               "correct": 0,
-              "explanation": "Aliases reduce repetition and communicate intent."
+              "explanation": "Type aliases give a name to your object shapes, making your code highly reusable and much easier to read!"
             }
           ]
         },
@@ -320,31 +320,31 @@
           "id": "ts_basics_08",
           "title": "Flexible Objects with `Record`",
           "image": "/assets/typescript/basics/08-record.png",
-          "content": "# Flexible Objects with Record\n\nUse `Record<Key, Value>` when property names are not known in advance but every value follows a rule.\n\n```ts\ntype Metric = number | string;\nlet metrics: Record<string, Metric>;\n\nmetrics = {\n  requests: 120,\n  region: 'ap-south',\n};\n```\n\nThe first generic argument constrains keys; the second constrains values. A record is more honest than inventing placeholder properties, but a named object type is better when fields have distinct meanings.\n\n```ts\ntype Permission = 'read' | 'write';\ntype Grants = Record<Permission, boolean>;\n```\n\nThis second example also proves that every required permission key is present.",
+          "content": "# Flexible Objects with `Record`\n\nUsually, we know exactly what properties our objects will have (like a `User` object with a `name` and `age`). But what if we are building a dictionary, a map, or a cache where the keys are dynamic and unknown ahead of time? \n\nThis is exactly what the **`Record<KeyType, ValueType>`** utility type is for!\n\n## 1. Dictionaries / Maps\nIf you want an object to act like a dictionary—where any string key is allowed, but every value MUST be a specific type—use `Record<string, YourType>`.\n\n```ts\n// 💡 We don't know the keys (fruit names) ahead of time, \n// but we DO know their prices will be numbers.\nlet fruitPrices: Record<string, number>;\n\nfruitPrices = {\n  apple: 1.99,   // ✅ OK\n  banana: 0.89,  // ✅ OK\n  // cherry: \"two dollars\" // ❌ Error: Type 'string' is not assignable to type 'number'\n};\n```\n\n## 2. Exhaustive Mappings (Enforcing Keys)\n`Record` is even more powerful when combined with a Union Type for the keys. It forces TypeScript to guarantee that **every single key** from the union is present in the object. \n\nThis is incredibly useful for mapping configuration or permissions!\n\n```ts\ntype UserRole = \"admin\" | \"editor\" | \"guest\";\n\n// 💡 This forces the object to have EXACTLY these 3 keys.\nlet rolePermissions: Record<UserRole, boolean> = {\n  admin: true,\n  editor: true,\n  guest: false\n}; // ✅ OK\n\n// ❌ Error: Property 'guest' is missing in type!\n/*\nlet badPermissions: Record<UserRole, boolean> = {\n  admin: true,\n  editor: true\n}; \n*/\n```\n\n## Summary: When to use what?\n* **Use `type` aliases (like `type User = { name: string }`)** when your object represents a specific entity with known, distinct fields.\n* **Use `Record<string, Type>`** when your object is a dictionary or lookup table with dynamic keys.\n* **Use `Record<UnionType, Type>`** when you want to enforce that an object maps a specific, exhaustive list of keys to a value.",
           "questions": [
             {
               "type": "mcq",
-              "question": "What does `Record<string, number>` describe?",
+              "question": "When should you use `Record<string, number>` instead of a standard `type` alias (like `type Data = { a: number }`)?",
               "options": [
-                "String keys with numeric values",
-                "A tuple",
-                "Only one named property",
-                "A function type"
+                "When you don't know the exact property names ahead of time, but you know all values will be numbers.",
+                "When you want to limit the object to having exactly one property.",
+                "When the object needs to hold both strings and numbers as values.",
+                "When you are defining a strictly shaped domain model like a User or Product."
               ],
               "correct": 0,
-              "explanation": "Record maps the allowed key type to a value type."
+              "explanation": "`Record<string, Type>` is perfect for dictionaries or maps where keys are dynamic (unknown ahead of time) but values are consistent."
             },
             {
               "type": "mcq",
-              "question": "When is a named object shape preferable?",
+              "question": "What is the benefit of using a Union Type for the keys in a Record, like `Record<\"read\" | \"write\", boolean>`?",
               "options": [
-                "When properties have different meanings and types",
-                "Whenever keys are dynamic",
-                "Only for empty objects",
-                "Never"
+                "It forces the object to contain exactly the properties `\"read\"` and `\"write\"`.",
+                "It allows the object to use either `\"read\"` or `\"write\"`, but not both.",
+                "It changes the values to be strings instead of booleans.",
+                "It prevents the object from being modified after creation."
               ],
               "correct": 0,
-              "explanation": "Explicit properties better document fixed domain fields."
+              "explanation": "When using a Union Type for the keys in a `Record`, TypeScript will enforce that *all* keys from the union are present in the resulting object."
             }
           ]
         },
@@ -352,31 +352,31 @@
           "id": "ts_basics_09",
           "title": "Enums & Runtime Choices",
           "image": "/assets/typescript/basics/09-enums.png",
-          "content": "# Enums\n\nEnums create named choices and also emit a JavaScript object.\n\n```ts\nenum Role {\n  Admin,\n  Editor,\n  Guest,\n}\n\nconst currentRole = Role.Editor;\n```\n\nNumeric members default to `0`, `1`, `2`, though explicit string values are clearer at network or storage boundaries:\n\n```ts\nenum Status {\n  Draft = 'draft',\n  Published = 'published',\n}\n```\n\nBecause enums have runtime output, use them when that named runtime object is valuable. Literal unions often produce simpler JavaScript and interoperate naturally with JSON.",
+          "content": "# Enums: Named Choices\n\nEnums allow you to define a set of named constants. Unlike most TypeScript features (which disappear when converted to JavaScript), Enums actually **emit a real JavaScript object** that you can use at runtime!\n\n## 1. Numeric Enums\nBy default, enums are zero-indexed numbers.\n\n```ts\nenum Role {\n  Admin,   // 0\n  Editor,  // 1\n  Guest    // 2\n}\n\n// ✅ OK: We can use the Enum at runtime!\nconst currentRole = Role.Editor; \nconsole.log(currentRole); // Outputs: 1\n```\n\n## 2. String Enums\nNumeric enums can be hard to read when debugging or saving to a database. You can manually set them to strings for better readability.\n\n```ts\nenum Status {\n  Draft = 'draft',\n  Published = 'published'\n}\n\n// ✅ OK: Much easier to read in a database!\nlet state: Status = Status.Draft;\n```\n\n## Summary\nUse Enums when you have a small, fixed set of choices and you want a real JavaScript object to reference them at runtime. If you don't need the runtime object, a simple Union of Strings (Literal Types) might be better!\n\n## Complete Code Snippet\n```ts\nenum Role {\n  Admin,\n  Editor,\n  Guest\n}\nconst currentRole = Role.Editor;\n\nenum Status {\n  Draft = 'draft',\n  Published = 'published'\n}\nlet state: Status = Status.Draft;\n```",
           "questions": [
             {
               "type": "mcq",
-              "question": "What is distinctive about a regular enum?",
+              "question": "What is unique about Enums compared to most other TypeScript features?",
               "options": [
-                "It produces a runtime object",
-                "It is erased exactly like every type alias",
-                "It accepts every string",
-                "It can only contain booleans"
+                "They actually produce a real JavaScript object at runtime.",
+                "They are completely erased during compilation.",
+                "They can only be used with numbers.",
+                "They are built into modern browsers natively."
               ],
               "correct": 0,
-              "explanation": "Enums differ from type-only constructs because code is emitted."
+              "explanation": "Unlike types or interfaces, Enums compile down into actual JavaScript objects that you can interact with at runtime."
             },
             {
               "type": "mcq",
-              "question": "Why might string enum values be preferable at a boundary?",
+              "question": "Why might you choose a String Enum over a default Numeric Enum?",
               "options": [
-                "They are readable and stable in serialized data",
-                "They disable checking",
-                "They become tuples",
-                "They remove JavaScript"
+                "String values are much easier to read when debugging or inspecting network payloads.",
+                "Numeric enums are deprecated in TypeScript.",
+                "String enums use less memory.",
+                "String enums compile faster."
               ],
               "correct": 0,
-              "explanation": "Descriptive string values are easier to inspect and exchange."
+              "explanation": "Numbers like `0` or `1` can be ambiguous, whereas explicit strings like `'draft'` communicate exact intent."
             }
           ]
         },
@@ -384,31 +384,31 @@
           "id": "ts_basics_10",
           "title": "Literal Types & Reusable Aliases",
           "image": "/assets/typescript/basics/10-literals-aliases.png",
-          "content": "# Literal Types & Type Aliases\n\nA literal type allows one exact value. Combine literals into a finite vocabulary:\n\n```ts\ntype Role = 'admin' | 'editor' | 'guest' | 'reader';\n\nlet userRole: Role = 'admin';\nuserRole = 'guest';\n// userRole = 'owner';\n```\n\nAliases can name larger contracts and reuse the literal union:\n\n```ts\ntype User = {\n  name: string;\n  age: number;\n  role: Role;\n  permissions: string[];\n};\n\nfunction canEdit(role: Role): boolean {\n  return role === 'admin' || role === 'editor';\n}\n```\n\nLiteral types can also constrain tuple positions. Here each result must be exactly `1` or `-1`:\n\n```ts\ntype Comparison = [1 | -1, 1 | -1];\n\nconst comparison: Comparison = [1, -1];\n// const invalid: Comparison = [0, 1];\n```\n\nLiteral unions are type-only: they add no runtime lookup object. They are ideal for existing strings from HTML, JSON, and APIs.",
+          "content": "# Literal Types & Type Aliases\n\nA **Literal Type** doesn't just specify that a value is a string or a number; it specifies the *exact* value it must be. \n\n## 1. Union of Literals\nCombining literal types with a union (`|`) creates a powerful, restricted vocabulary. \n\n```ts\n// 💡 This string can ONLY be one of these three exact values.\ntype Role = 'admin' | 'editor' | 'guest';\n\nlet userRole: Role = 'admin'; // ✅ OK\n// userRole = 'owner';        // ❌ Error: Type '\"owner\"' is not assignable to type 'Role'\n```\n\n## 2. Reusing Aliases\nYou can use these `type` aliases everywhere to ensure consistency across your app.\n\n```ts\n// 💡 Reusing our `Role` alias inside an object shape\ntype User = {\n  name: string;\n  role: Role;\n};\n\nfunction canEdit(role: Role): boolean {\n  return role === 'admin' || role === 'editor';\n}\n```\n\n## 3. Literals in Tuples\nLiteral types are also fantastic for restricting what numbers can be used in tuples (fixed-length arrays).\n\n```ts\n// 💡 A tuple where each item MUST be exactly 1 or -1\ntype Direction = [1 | -1, 1 | -1];\n\nconst dir: Direction = [1, -1]; // ✅ OK\n// const badDir: Direction = [0, 1]; // ❌ Error: 0 is not 1 or -1\n```\n\nUnlike Enums, Literal Types are completely erased during compilation, resulting in smaller and cleaner JavaScript.\n\n## Complete Code Snippet\n```ts\ntype Role = 'admin' | 'editor' | 'guest';\nlet userRole: Role = 'admin';\n\ntype User = {\n  name: string;\n  role: Role;\n};\n\nfunction canEdit(role: Role): boolean {\n  return role === 'admin' || role === 'editor';\n}\n\ntype Direction = [1 | -1, 1 | -1];\nconst dir: Direction = [1, -1];\n```",
           "questions": [
             {
               "type": "mcq",
-              "question": "Which value fits the type `'open' | 'closed'`?",
+              "question": "What is the primary difference between a Literal Type Union (e.g. `'admin' | 'guest'`) and an Enum?",
               "options": [
-                "'open'",
-                "'pending'",
-                "true",
-                "0"
+                "Literal Types are erased during compilation and do not emit any JavaScript objects.",
+                "Literal Types can only be used with numbers.",
+                "Enums cannot be used inside interfaces.",
+                "Enums are faster."
               ],
               "correct": 0,
-              "explanation": "Only the listed literal values are accepted."
+              "explanation": "Literal Types exist only at compile-time to help you catch errors, making them more lightweight than Enums which generate runtime code."
             },
             {
               "type": "mcq",
-              "question": "Do type aliases create runtime JavaScript objects?",
+              "question": "Which of the following values is valid for the type `type Status = 'open' | 'closed';`?",
               "options": [
-                "No, they are erased",
-                "Yes, always",
-                "Only in Node.js",
-                "Only for strings"
+                "`'open'`",
+                "`'pending'`",
+                "`true`",
+                "`0`"
               ],
               "correct": 0,
-              "explanation": "Aliases describe types for the checker and are not emitted."
+              "explanation": "A Literal Type enforces the exact value specified, so only `'open'` or `'closed'` are allowed."
             }
           ]
         },
@@ -416,31 +416,31 @@
           "id": "ts_basics_11",
           "title": "Return Types, `void` & `never`",
           "image": "/assets/typescript/basics/11-returns.png",
-          "content": "# Return Types, void & never\n\nTypeScript normally infers a function's return type. An explicit annotation documents an exported contract or verifies intent.\n\n```ts\nfunction add(a: number, b: number): number {\n  return a + b;\n}\n\nfunction log(message: string): void {\n  console.log(message);\n}\n\nfunction fail(message: string): never {\n  throw new Error(message);\n}\n```\n\n`void` means callers should not rely on a returned value. `never` means normal completion is impossible: the function always throws or loops forever. `undefined` is an actual value; it is not interchangeable with `never`.",
+          "content": "# Return Types, `void` & `never`\n\nTypeScript can automatically guess what your function returns, but explicitly annotating it prevents accidental changes and serves as documentation.\n\n## 1. Explicit Return Types\nPlace the return type after the parameter list.\n\n```ts\nfunction add(a: number, b: number): number {\n  return a + b; // ✅ OK\n}\n```\n\n## 2. The `void` Type\nWhen a function **does not return anything** (it just performs an action, like logging), use `void`.\n\n```ts\nfunction log(message: string): void {\n  console.log(message);\n  // ❌ Error if you try to `return \"done\";` here\n}\n```\n\n## 3. The `never` Type (Advanced)\n`never` means the function will **never finish normally**. It either throws an error and crashes, or it runs in an infinite loop.\n\n```ts\nfunction throwError(message: string): never {\n  throw new Error(message);\n}\n```\n\n### Wait, what's the difference between `void` and `never`?\n* `void`: The function runs, finishes successfully, and returns nothing (technically `undefined` in JS).\n* `never`: The function starts, but **never successfully finishes** (it crashes or loops forever).\n\n## Complete Code Snippet\n```ts\nfunction add(a: number, b: number): number {\n  return a + b;\n}\n\nfunction log(message: string): void {\n  console.log(message);\n}\n\nfunction throwError(message: string): never {\n  throw new Error(message);\n}\n```",
           "questions": [
             {
               "type": "mcq",
-              "question": "Which return type fits a function that always throws?",
+              "question": "Which return type should you use for a function that only logs to the console and returns nothing?",
               "options": [
-                "never",
-                "void",
-                "undefined",
-                "any[]"
+                "`void`",
+                "`never`",
+                "`undefined`",
+                "`any`"
               ],
               "correct": 0,
-              "explanation": "No reachable normal return produces a value."
+              "explanation": "`void` is used to explicitly state that the function intentionally ignores returning a value."
             },
             {
               "type": "mcq",
-              "question": "What does `void` communicate?",
+              "question": "What does it mean if a function returns `never`?",
               "options": [
-                "The return value should not be used",
-                "The function cannot execute",
-                "The function always throws",
-                "The parameter is optional"
+                "The function will crash, throw an error, or loop infinitely, meaning it never reaches a normal return statement.",
+                "The function will return the string \"never\".",
+                "The function will return `null`.",
+                "The function is deprecated and should not be used."
               ],
               "correct": 0,
-              "explanation": "Void describes an intentionally ignored return result."
+              "explanation": "`never` represents a state where normal completion of the function is literally impossible."
             }
           ]
         },
@@ -448,31 +448,31 @@
           "id": "ts_basics_12",
           "title": "Functions as Types & Safe Callbacks",
           "image": "/assets/typescript/basics/12-function-types.png",
-          "content": "# Functions as Types\n\nFunction types describe parameters and results, not merely “some function”.\n\n```ts\ntype Logger = (message: string) => void;\n\nconst logMessage: Logger = (message) => {\n  console.log(message);\n};\n\nfunction performJob(callback: Logger): void {\n  callback('Job done');\n}\n```\n\nMethods use the same idea inside object types:\n\n```ts\ntype User = {\n  name: string;\n  greet: () => string;\n};\n\nconst user: User = {\n  name: 'Mira',\n  greet() { return this.name; },\n};\n```\n\nAvoid the broad `Function` type: it does not tell callers which arguments or return value are safe.",
+          "content": "# Functions as Types & Safe Callbacks\n\nIn JavaScript, it is common to pass functions around as arguments (callbacks). In TypeScript, we can strictly define exactly what that callback function should look like!\n\n## 1. Arrow Function Syntax for Types\nTo define a function type, we use a syntax that looks very similar to an arrow function: `(parameters) => returnType`.\n\n```ts\n// 💡 A type for a function that takes a string and returns nothing\ntype Logger = (message: string) => void;\n\n// ✅ OK: This function perfectly matches the Logger shape\nconst myLogger: Logger = (msg) => {\n  console.log(msg);\n};\n```\n\n## 2. Passing Callbacks\nThis is incredibly useful when writing functions that accept other functions.\n\n```ts\nfunction doWork(callback: Logger) {\n  // ✅ OK: TypeScript knows `callback` takes a string\n  callback(\"Work is finished!\"); \n  \n  // ❌ Error: Expected 1 argument, but got 0.\n  // callback(); \n}\n```\n\n## 3. Avoid the broad `Function` type\nAvoid using the uppercase `Function` type. It is the equivalent of `any` for functions. It doesn't tell you what arguments the function takes or what it returns, defeating the purpose of TypeScript!\n\n```ts\n// ❌ Avoid this!\nfunction badWork(callback: Function) {\n  callback(1, 2, 3); // TypeScript won't stop you from doing this, even if it's wrong!\n}\n```\n\n## Complete Code Snippet\n```ts\ntype Logger = (message: string) => void;\n\nconst myLogger: Logger = (msg) => {\n  console.log(msg);\n};\n\nfunction doWork(callback: Logger) {\n  callback(\"Work is finished!\");\n}\n```",
           "questions": [
             {
               "type": "mcq",
-              "question": "What does `(message: string) => void` describe?",
+              "question": "How do you correctly type a function that takes a `number` and returns a `string`?",
               "options": [
-                "A function accepting a string whose result is ignored",
-                "An array of strings",
-                "A string alias",
-                "A class"
+                "`(id: number) => string`",
+                "`function(number): string`",
+                "`number => string`",
+                "`Function<number, string>`"
               ],
               "correct": 0,
-              "explanation": "The arrow separates parameters from the return type."
+              "explanation": "TypeScript uses an arrow-function-like syntax `(parameters) => returnType` to describe function types."
             },
             {
               "type": "mcq",
-              "question": "Why avoid the `Function` type?",
+              "question": "Why should you avoid using the uppercase `Function` type?",
               "options": [
-                "It loses the callable signature",
-                "It cannot represent callbacks",
-                "It only works in browsers",
-                "It forces every function to throw"
+                "It acts like `any` for functions, providing no safety for parameters or return values.",
+                "It will cause a syntax error in modern TypeScript.",
+                "It forces the function to be asynchronous.",
+                "It is only available in older versions of JavaScript."
               ],
               "correct": 0,
-              "explanation": "A precise signature protects both callers and implementations."
+              "explanation": "Using `Function` hides the signature of the callback, meaning you could pass the wrong arguments to it without TypeScript warning you."
             }
           ]
         },
@@ -480,31 +480,31 @@
           "id": "ts_basics_13",
           "title": "`null`, `undefined` & Type Narrowing",
           "image": "/assets/typescript/basics/13-null-narrowing.png",
-          "content": "# null, undefined & Narrowing\n\nWith strict null checks, absence must be part of the type.\n\n```ts\nlet label: string | null = 'Ready';\nlabel = null;\n\nfunction printLength(value: string | null) {\n  if (value === null) return;\n  console.log(value.length); // narrowed to string\n}\n```\n\n`null` is deliberate absence; `undefined` commonly means a value was not supplied or a property was not found. Inferred `null` stays narrow under strict settings, so annotate a wider union when later assignment is intended.\n\nTruthiness can narrow, but it also rejects valid empty strings and zero. Prefer an explicit nullish comparison when those values matter.",
+          "content": "# `null`, `undefined` & Type Narrowing\n\nTypeScript forces you to handle cases where a value might be missing. This prevents the dreaded \"Cannot read property of undefined\" error.\n\n## 1. Null vs Undefined\n* `undefined` usually means a value hasn't been set yet, or a property doesn't exist.\n* `null` usually means a value is intentionally empty or missing.\n\n## 2. Type Narrowing (Removing the `null`)\nIf a value could be `string | null`, you **cannot** immediately call string methods on it. You must \"narrow\" the type by checking for `null` first.\n\n```ts\nfunction printLength(value: string | null) {\n  // ❌ Error: Object is possibly 'null'\n  // console.log(value.length); \n\n  // ✅ OK: We check if it is null first!\n  if (value === null) {\n    return;\n  }\n  \n  // 💡 TypeScript is smart! Below this point, it KNOWS `value` is a string.\n  console.log(value.length); \n}\n```\n\n## 3. Truthiness Checks\nYou can also use a truthiness check (`if (!value)`), but be careful! This also catches empty strings `\"\"` and the number `0`.\n\n```ts\nfunction check(value: string | null) {\n  if (!value) return; // Returns on null, undefined, AND empty strings!\n}\n```\n\n## Complete Code Snippet\n```ts\nfunction printLength(value: string | null) {\n  if (value === null) {\n    return;\n  }\n  console.log(value.length);\n}\n\nfunction check(value: string | null) {\n  if (!value) return;\n}\n```",
           "questions": [
             {
               "type": "mcq",
-              "question": "What happens after `if (value === null) return`?",
+              "question": "What happens after the line `if (value === null) return;` inside a function where `value` is `string | null`?",
               "options": [
-                "The remaining branch sees value as string",
-                "Value becomes any",
-                "Null is converted to an empty string",
-                "The function becomes never"
+                "TypeScript automatically narrows the type of `value` to just `string` for the rest of the function.",
+                "TypeScript throws an error because you can't compare a union type to `null`.",
+                "The type of `value` becomes `any`.",
+                "The type of `value` becomes `never`."
               ],
               "correct": 0,
-              "explanation": "Control-flow analysis removes the handled union member."
+              "explanation": "This is called Type Narrowing. By checking and returning early on `null`, TypeScript knows the value must be a `string` in the rest of the block."
             },
             {
               "type": "mcq",
-              "question": "Why can a truthiness check be too broad?",
+              "question": "Why can using a simple truthiness check like `if (!value)` be dangerous when trying to filter out `null`?",
               "options": [
-                "It also rejects values such as empty string and zero",
-                "It cannot check null",
-                "It changes runtime types",
-                "It creates an enum"
+                "It also filters out valid 'falsy' values like empty strings (`\"\"`) and zero (`0`).",
+                "It doesn't actually check for `undefined`.",
+                "It causes a runtime error in JavaScript.",
+                "It changes the type to `boolean`."
               ],
               "correct": 0,
-              "explanation": "Falsy values are not always missing values."
+              "explanation": "If your program considers an empty string or the number 0 to be valid data, a truthiness check will mistakenly block them alongside `null`."
             }
           ]
         },
@@ -512,31 +512,31 @@
           "id": "ts_basics_14",
           "title": "Optional Chaining & Non-Null Assertions",
           "image": "/assets/typescript/basics/14-optional-chain.png",
-          "content": "# Optional Chaining & Non-Null Assertions\n\nDOM lookups and nested data can be absent. Optional chaining stops safely and returns `undefined`.\n\n```ts\nconst input = document.getElementById('user-name') as HTMLInputElement | null;\nconsole.log(input?.value);\n```\n\nThe non-null assertion tells the checker absence is impossible:\n\n```ts\nconst form = document.querySelector('form')!;\nform.addEventListener('submit', handleSubmit);\n```\n\n`!` performs no runtime check. Use it only when another invariant truly guarantees the value. For reusable code, an explicit guard gives both safety and a useful failure message:\n\n```ts\nif (!input) throw new Error('User-name input is missing');\nconsole.log(input.value);\n```\n",
+          "content": "# Optional Chaining & Non-Null Assertions\n\nWhen dealing with deeply nested data or DOM elements, you often encounter properties that might not exist.\n\n## 1. Optional Chaining (`?.`)\nOptional chaining stops safely and returns `undefined` if the value on the left is missing. It prevents your app from crashing!\n\n```ts\ntype User = { profile?: { bio: string } };\n\nfunction getBio(user: User) {\n  // ✅ OK: If profile is undefined, it just returns undefined\n  console.log(user.profile?.bio);\n}\n```\n\n## 2. Non-Null Assertions (`!`)\nThe exclamation mark (`!`) tells TypeScript: **\"I promise this value is NOT null or undefined, trust me.\"**\n\n```ts\n// 💡 querySelector returns Element | null.\n// We use `!` to promise TypeScript that the form definitely exists in the HTML.\nconst form = document.querySelector('form')!;\n\n// ✅ OK: TypeScript allows this because we used `!`\nform.addEventListener('submit', () => {});\n```\n\n### ⚠️ Danger of `!`\nThe `!` performs **no runtime check**. If you are wrong and the element actually *is* missing, your app will crash. Use `!` sparingly, only when you have absolute guarantee that the value exists (like a hardcoded HTML element).\n\n## Complete Code Snippet\n```ts\ntype User = { profile?: { bio: string } };\n\nfunction getBio(user: User) {\n  console.log(user.profile?.bio);\n}\n\nconst form = document.querySelector('form')!;\nform.addEventListener('submit', () => {});\n```",
           "questions": [
             {
               "type": "mcq",
-              "question": "What can `input?.value` produce when input is null?",
+              "question": "What is the result of `user.profile?.bio` if `user.profile` is undefined?",
               "options": [
-                "undefined",
-                "A guaranteed string",
-                "never",
-                "A compiler crash"
+                "It returns `undefined` safely without throwing an error.",
+                "It throws a \"Cannot read property of undefined\" error.",
+                "It returns `null`.",
+                "It causes a compile-time TypeScript error."
               ],
               "correct": 0,
-              "explanation": "Optional chaining returns undefined instead of accessing the missing value."
+              "explanation": "The optional chaining operator (`?.`) safely stops the execution path and returns `undefined` if a parent object is missing."
             },
             {
               "type": "mcq",
-              "question": "What runtime validation does postfix `!` add?",
+              "question": "What runtime protection does the non-null assertion operator (`!`) provide?",
               "options": [
-                "None",
-                "A null check",
-                "A string conversion",
-                "An exception automatically"
+                "None. It only silences the TypeScript compiler.",
+                "It automatically wraps the code in a try/catch block.",
+                "It converts `null` into an empty object.",
+                "It throws a helpful error message before the app crashes."
               ],
               "correct": 0,
-              "explanation": "The assertion changes only the checker's assumption."
+              "explanation": "The `!` operator is purely for the compiler. If the value actually turns out to be `null` at runtime, your app will still crash."
             }
           ]
         },
@@ -544,31 +544,31 @@
           "id": "ts_basics_15",
           "title": "Type Assertions & the `unknown` Type",
           "image": "/assets/typescript/basics/15-casting-unknown.png",
-          "content": "# Type Assertions & unknown\n\nAn assertion supplies more specific static knowledge; it does not convert a value.\n\n```ts\nconst input = document.getElementById('user-name') as HTMLInputElement | null;\n```\n\nUse `unknown` for data whose type is not yet proven:\n\n```ts\nfunction process(value: unknown): void {\n  if (\n    typeof value === 'object' &&\n    value !== null &&\n    'log' in value &&\n    typeof value.log === 'function'\n  ) {\n    value.log();\n  }\n}\n```\n\nThe checks progress from broad to specific: object, non-null, property exists, property is callable. This is safer than `any`, which would allow `value.log()` immediately. Assertions belong where you possess real knowledge the compiler cannot derive; otherwise narrow or validate.",
+          "content": "# Type Assertions & `unknown`\n\nSometimes you know more about a value than TypeScript does. Other times, you know absolutely nothing about a value!\n\n## 1. Type Assertions (`as`)\nAn assertion tells TypeScript to override its inferred type and trust you. **It does not convert the value at runtime.**\n\n```ts\n// 💡 document.getElementById returns HTMLElement | null\n// We assert that it is specifically an HTMLInputElement\nconst input = document.getElementById('user-name') as HTMLInputElement;\n\n// ✅ OK: TypeScript now lets us access `.value`\nconsole.log(input.value);\n```\n\n## 2. The `unknown` Type\n`unknown` is a safer alternative to `any`. It means \"I don't know what this is yet.\" Unlike `any`, TypeScript **will not let you do anything with an `unknown` value** until you prove what it is!\n\n```ts\nfunction process(value: unknown) {\n  // ❌ Error: value is of type 'unknown'\n  // value.toUpperCase();\n\n  if (typeof value === \"string\") {\n    // ✅ OK: We proved it's a string, so we can use string methods!\n    console.log(value.toUpperCase());\n  }\n}\n```\n\n**Summary:**\n* Use `as` when you have external knowledge that the compiler lacks.\n* Use `unknown` when dealing with uncertain data (like API responses) to force yourself to validate it before use.\n\n## Complete Code Snippet\n```ts\nconst input = document.getElementById('user-name') as HTMLInputElement;\nconsole.log(input.value);\n\nfunction process(value: unknown) {\n  if (typeof value === \"string\") {\n    console.log(value.toUpperCase());\n  }\n}\n```",
           "questions": [
             {
               "type": "mcq",
-              "question": "What does `as HTMLInputElement` do at runtime?",
+              "question": "What happens to `as HTMLInputElement` when the TypeScript code is compiled to JavaScript?",
               "options": [
-                "Nothing; it changes static analysis",
-                "It creates an input element",
-                "It validates the DOM",
-                "It converts a string"
+                "It is completely erased; assertions perform no runtime data conversion.",
+                "It converts the element into an input tag at runtime.",
+                "It wraps the element in a validation try/catch block.",
+                "It tells the browser to strictly type the element."
               ],
               "correct": 0,
-              "explanation": "Assertions are erased during compilation."
+              "explanation": "Type assertions only exist at compile time to satisfy the TypeScript checker. They do not alter your code's runtime behavior."
             },
             {
               "type": "mcq",
-              "question": "Why is `unknown` safer than `any`?",
+              "question": "Why is `unknown` considered safer than `any`?",
               "options": [
-                "It requires narrowing before operations",
-                "It accepts fewer runtime values",
-                "It emits a validator",
-                "It is always a string"
+                "TypeScript forces you to check the type of an `unknown` value before you are allowed to use it.",
+                "`unknown` can only hold primitive values like strings and numbers.",
+                "`unknown` automatically converts the value to a string.",
+                "`any` causes runtime crashes, while `unknown` does not."
               ],
               "correct": 0,
-              "explanation": "Unknown preserves uncertainty until code proves capabilities."
+              "explanation": "`unknown` preserves type safety by refusing to let you interact with the value until you've used type narrowing (like `typeof`) to prove its type."
             }
           ]
         },
@@ -576,31 +576,31 @@
           "id": "ts_basics_16",
           "title": "Optional Values & Nullish Coalescing",
           "image": "/assets/typescript/basics/16-optional-nullish.png",
-          "content": "# Optional Values & Nullish Coalescing\n\n`?` marks a parameter or property as optional, which introduces `undefined`.\n\n```ts\nfunction generateError(message?: string): never {\n  throw new Error(message ?? 'Unknown error');\n}\n\ntype User = {\n  name: string;\n  role?: 'admin' | 'guest';\n};\n```\n\nNullish coalescing uses its right side only for `null` or `undefined`:\n\n```ts\nconst rawInput = '';\nconst withOr = rawInput || 'fallback'; // 'fallback'\nconst withNullish = rawInput ?? 'fallback'; // ''\n```\n\nUse `??` when empty string, `0`, or `false` are legitimate values. Use `||` when every falsy value should trigger the fallback. Parentheses clarify mixed expressions because JavaScript restricts combining `??` directly with `&&` or `||`.",
+          "content": "# Optional Values & Nullish Coalescing\n\nWhen dealing with objects or function arguments, you often want to make certain pieces of data optional.\n\n## 1. Optional Properties (`?`)\nAdding a question mark `?` after a property name or parameter makes it optional. Under the hood, this means the type automatically includes `| undefined`.\n\n```ts\ntype User = {\n  name: string;\n  role?: \"admin\" | \"guest\"; // Same as \"admin\" | \"guest\" | undefined\n};\n\nconst u1: User = { name: \"Mira\", role: \"admin\" }; // ✅ OK\nconst u2: User = { name: \"Alex\" }; // ✅ OK: role is undefined\n```\n\n## 2. Nullish Coalescing (`??`)\nWhen a value might be `null` or `undefined`, we often want to provide a default fallback. The `??` operator does exactly this!\n\n```ts\nconst rawInput = \"\";\n\n// ❌ Using || (Logical OR)\n// Falls back if the value is ANY falsy value (like \"\", 0, false)\nconst withOr = rawInput || \"fallback\"; // Evaluates to \"fallback\"\n\n// ✅ Using ?? (Nullish Coalescing)\n// ONLY falls back if the value is strictly `null` or `undefined`\nconst withNullish = rawInput ?? \"fallback\"; // Evaluates to \"\" (empty string)\n```\n\nUse `??` when valid data might be falsy (like an empty string or `0`). Use `||` only when you want to replace *all* falsy values.\n\n## Complete Code Snippet\n```ts\ntype User = {\n  name: string;\n  role?: \"admin\" | \"guest\";\n};\n\nconst u1: User = { name: \"Mira\", role: \"admin\" };\nconst u2: User = { name: \"Alex\" };\n\nconst rawInput = \"\";\nconst withOr = rawInput || \"fallback\";\nconst withNullish = rawInput ?? \"fallback\";\n```",
           "questions": [
             {
               "type": "mcq",
-              "question": "What type does `message?: string` imply?",
+              "question": "What type does the `role` property effectively have when defined as `role?: string`?",
               "options": [
-                "string | undefined",
-                "string | null only",
-                "any",
-                "never"
+                "`string | undefined`",
+                "`string | null`",
+                "`string | any`",
+                "`string | void`"
               ],
               "correct": 0,
-              "explanation": "An omitted optional parameter has the value undefined."
+              "explanation": "The `?` marks the property as optional, which means it can either hold the specified type or be `undefined`."
             },
             {
               "type": "mcq",
-              "question": "When does `value ?? fallback` use the fallback?",
+              "question": "If `const count = 0;`, what will `count ?? 10` evaluate to?",
               "options": [
-                "Only when value is null or undefined",
-                "For every falsy value",
-                "Only for empty strings",
-                "Only for zero"
+                "`0`",
+                "`10`",
+                "`undefined`",
+                "`null`"
               ],
               "correct": 0,
-              "explanation": "Nullish coalescing preserves valid falsy values."
+              "explanation": "The `??` operator only falls back on `null` or `undefined`. Because `0` is a valid number (even though it's falsy), it returns `0`."
             }
           ]
         }
@@ -613,31 +613,31 @@
           "id": "ts_compiler_01",
           "title": "Create a Configured TypeScript Project",
           "image": "/assets/typescript/ts_compiler/01-project-setup.png",
-          "content": "# Create a Configured TypeScript Project\n\nRunning `npx tsc file.ts` compiles one file with command-line defaults. A `tsconfig.json` turns a folder into a project: the editor, CI, and every developer share one compiler contract.\n\n```bash\nmkdir compiler-lab\ncd compiler-lab\nnpm init -y\nnpm install --save-dev typescript\nnpx tsc --init\nmkdir src\n```\n\nPut authored files in `src` and emitted JavaScript in `dist`. From this point, run `npx tsc` without a filename so the compiler discovers the project configuration.\n\n## Complete subclass code — `tsconfig.json`\n\n```json\n{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"module\": \"NodeNext\",\n    \"moduleResolution\": \"NodeNext\",\n    \"rootDir\": \"./src\",\n    \"outDir\": \"./dist\",\n    \"strict\": true,\n    \"noEmitOnError\": true\n  },\n  \"include\": [\"src\"]\n}\n```",
+          "content": "# Create a Configured TypeScript Project\n\nYou can run `npx tsc file.ts` to compile a single file, but in real projects, we want all our files to share the same settings. This is where `tsconfig.json` comes in!\n\n## 1. Initializing a Project\nA `tsconfig.json` turns a simple folder into a TypeScript project. It ensures that you, your editor, and your CI/CD pipeline all use the exact same compiler contract.\n\n```bash\n# 1. Create a project folder\nmkdir compiler-lab && cd compiler-lab\n\n# 2. Initialize a package.json\nnpm init -y\n\n# 3. Install TypeScript locally\nnpm install --save-dev typescript\n\n# 4. Generate a default tsconfig.json\nnpx tsc --init\n```\n\n## 2. Compiling the Whole Project\nOnce you have a `tsconfig.json`, you should organize your code. Put your raw TypeScript files in a `src` folder, and tell the compiler to output the JavaScript into a `dist` (distribution) folder.\n\n```bash\n# ✅ OK: Run tsc with NO filename to compile the whole project!\nnpx tsc\n```\n\n## Complete Code Snippet\n\n```json\n// tsconfig.json\n{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"module\": \"NodeNext\",\n    \"moduleResolution\": \"NodeNext\",\n    \"rootDir\": \"./src\",\n    \"outDir\": \"./dist\",\n    \"strict\": true,\n    \"noEmitOnError\": true\n  },\n  \"include\": [\"src\"]\n}\n```",
           "questions": [
             {
               "type": "mcq",
-              "question": "What makes TypeScript treat a folder as a configured project?",
+              "question": "What is the primary purpose of a `tsconfig.json` file?",
               "options": [
-                "tsconfig.json",
-                "index.html",
-                "README.md",
-                ".gitignore"
+                "It establishes project-wide compiler settings so the editor and compiler agree on how to treat the codebase.",
+                "It installs npm packages for your project.",
+                "It replaces `package.json` for managing dependencies.",
+                "It automatically starts a local development server."
               ],
               "correct": 0,
-              "explanation": "The compiler searches for tsconfig.json to establish project-wide settings."
+              "explanation": "`tsconfig.json` tells the TypeScript compiler (and your code editor) exactly how to check and compile the entire folder as a unified project."
             },
             {
               "type": "mcq",
-              "question": "Why run `npx tsc` without a filename here?",
+              "question": "Why should you run `npx tsc` without specifying a filename once you have a project set up?",
               "options": [
-                "It loads the project configuration",
-                "It skips type checking",
-                "It runs Node.js",
-                "It deletes dist"
+                "Running `tsc` without a filename tells the compiler to look for `tsconfig.json` and compile the entire project based on its rules.",
+                "It forces TypeScript to compile only the `index.ts` file.",
+                "It deletes all previously compiled files in the `dist` folder.",
+                "It skips type checking and only outputs JavaScript."
               ],
               "correct": 0,
-              "explanation": "Passing no filename lets tsc compile the configured project."
+              "explanation": "If you specify a file (`npx tsc file.ts`), TypeScript ignores your `tsconfig.json`! Running it without arguments ensures it uses your project settings."
             }
           ]
         },
@@ -645,31 +645,31 @@
           "id": "ts_compiler_02",
           "title": "Choose `target` and Runtime Libraries",
           "image": "/assets/typescript/ts_compiler/02-target-libs.png",
-          "content": "# Choose target and Runtime Libraries\n\n`target` controls the JavaScript syntax TypeScript emits. `lib` controls the built-in APIs the checker knows about. They answer different questions: “What syntax can the runtime execute?” and “Which platform globals are available?”\n\n```ts\nconst scores = [10, 20, 30];\nconst latest = scores.at(-1);\n\ndocument.querySelector('#output')?.append(String(latest));\n```\n\n`ES2022` supplies modern JavaScript declarations such as `Array.prototype.at`; `DOM` supplies browser declarations such as `document`. A Node-only project normally omits `DOM` and installs Node type declarations instead.\n\n## Complete subclass code — `tsconfig.json`\n\n```json\n{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"lib\": [\"ES2022\", \"DOM\", \"DOM.Iterable\"],\n    \"module\": \"ESNext\",\n    \"rootDir\": \"./src\",\n    \"outDir\": \"./dist\",\n    \"strict\": true\n  },\n  \"include\": [\"src\"]\n}\n```",
+          "content": "# Choose `target` and Runtime Libraries\n\nWhen configuring TypeScript, two of the most important settings are `target` and `lib`. They answer two very different questions.\n\n## 1. The `target` Option\n**\"What JavaScript syntax should I output?\"**\nIf you set `target` to a modern version (like `ES2022`), TypeScript will output modern JavaScript. If you set it to an older version (like `ES5`), TypeScript will transform modern syntax (like arrow functions or classes) into older syntax so ancient browsers can run it.\n\n## 2. The `lib` Option\n**\"What built-in APIs exist in my environment?\"**\nYour code might run in a Browser (which has `document` and `window`), or Node.js (which doesn't!). The `lib` array tells TypeScript which global APIs it should recognize.\n\n```ts\n// 💡 If \"DOM\" is not in your `lib` array, TypeScript will throw an error here!\nconst button = document.querySelector('.submit-btn');\n```\n* Building for the Browser? Include `\"DOM\"`.\n* Building for Node.js? Omit `\"DOM\"` and install `@types/node` instead.\n\n## Complete Code Snippet\n\n```json\n// tsconfig.json\n{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    // ✅ OK: We are telling TS that DOM methods exist here!\n    \"lib\": [\"ES2022\", \"DOM\", \"DOM.Iterable\"],\n    \"module\": \"ESNext\",\n    \"rootDir\": \"./src\",\n    \"outDir\": \"./dist\",\n    \"strict\": true\n  },\n  \"include\": [\"src\"]\n}\n```",
           "questions": [
             {
               "type": "mcq",
-              "question": "What does `target` primarily control?",
+              "question": "What does the `target` compiler option actually control?",
               "options": [
-                "Emitted JavaScript syntax",
-                "Which source files are included",
-                "npm package versions",
-                "Git branches"
+                "The version of JavaScript syntax that TypeScript will generate in the output files.",
+                "The version of TypeScript installed in the project.",
+                "Which folder the compiled JavaScript will be placed into.",
+                "Whether or not strict null checks are enabled."
               ],
               "correct": 0,
-              "explanation": "Target selects the JavaScript language level for emitted output."
+              "explanation": "`target` dictates the language level of the emitted JavaScript (e.g., converting classes to functions for `ES5`, or leaving them as classes for `ES2022`)."
             },
             {
               "type": "mcq",
-              "question": "Why add `DOM` to `lib`?",
+              "question": "Why might a Node.js project NOT want to include `\"DOM\"` in its `lib` array?",
               "options": [
-                "To type browser APIs such as document",
-                "To install a browser",
-                "To enable Node imports",
-                "To create HTML"
+                "Because Node.js does not have browser APIs like `document` or `window`, and including them would hide errors if you accidentally used them.",
+                "Because `DOM` makes the compilation process too slow.",
+                "Because Node.js requires a completely different version of TypeScript.",
+                "Because `DOM` is automatically included in `ESNext`."
               ],
               "correct": 0,
-              "explanation": "Library declaration files describe platform APIs to the checker."
+              "explanation": "`lib` defines the built-in environment. Since Node doesn't have a DOM, omitting it ensures TypeScript warns you if you try to use `document`."
             }
           ]
         },
@@ -677,31 +677,31 @@
           "id": "ts_compiler_03",
           "title": "Control File Input & Emitted Output",
           "image": "/assets/typescript/ts_compiler/03-input-emission.png",
-          "content": "# Control File Input & Emitted Output\n\n`rootDir` and `outDir` preserve a clean source/output boundary. Top-level `include` and `exclude` decide which files belong to the program; they are not compiler options.\n\n```text\ncompiler-lab/\n├─ src/app.ts\n├─ src/app.test.ts\n├─ dist/app.js\n└─ tsconfig.json\n```\n\nSource maps connect a debugger's generated JavaScript location back to TypeScript. `noEmitOnError` prevents stale or invalid builds from becoming deployable output.\n\n## Complete subclass code — `tsconfig.json`\n\n```json\n{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"module\": \"NodeNext\",\n    \"moduleResolution\": \"NodeNext\",\n    \"rootDir\": \"./src\",\n    \"outDir\": \"./dist\",\n    \"sourceMap\": true,\n    \"removeComments\": true,\n    \"noEmitOnError\": true,\n    \"strict\": true\n  },\n  \"include\": [\"src/**/*.ts\"],\n  \"exclude\": [\"src/**/*.test.ts\", \"node_modules\"]\n}\n```",
+          "content": "# Control File Input & Emitted Output\n\nHow does TypeScript know *which* files to compile, and *where* to put them?\n\n## 1. Directory Structure\nUse `rootDir` to specify where your source files live, and `outDir` to specify where the compiled JavaScript should go. This keeps your project clean!\n\n```text\ncompiler-lab/\n├─ src/app.ts       <-- rootDir\n├─ dist/app.js      <-- outDir\n└─ tsconfig.json\n```\n\n## 2. Including & Excluding Files\nAt the very bottom of `tsconfig.json` (outside of `compilerOptions`), you use `include` and `exclude` to define the exact files in your program.\n* **`include`**: Which folders/files to check.\n* **`exclude`**: Files to ignore (like test files or `node_modules`).\n\n## 3. The `noEmitOnError` Safety Net\nBy default, TypeScript will generate JavaScript *even if there are type errors*. Setting `\"noEmitOnError\": true` ensures that broken code never makes it to production!\n\n## Complete Code Snippet\n\n```json\n// tsconfig.json\n{\n  \"compilerOptions\": {\n    \"rootDir\": \"./src\",\n    \"outDir\": \"./dist\",\n    \"noEmitOnError\": true\n  },\n  // ✅ OK: Only compile source files, and ignore test files!\n  \"include\": [\"src/**/*.ts\"],\n  \"exclude\": [\"src/**/*.test.ts\", \"node_modules\"]\n}\n```",
           "questions": [
             {
               "type": "mcq",
-              "question": "Where do `include` and `exclude` belong?",
+              "question": "Where should the `include` and `exclude` arrays be placed in your `tsconfig.json`?",
               "options": [
-                "At the top level of tsconfig.json",
-                "Inside compilerOptions",
-                "Inside package-lock.json",
-                "Inside every source file"
+                "At the top level of the JSON file, completely outside of `compilerOptions`.",
+                "Inside the `compilerOptions` object.",
+                "Inside your `package.json` file.",
+                "At the very top of your `index.ts` file."
               ],
               "correct": 0,
-              "explanation": "They select the program's file set and are siblings of compilerOptions."
+              "explanation": "`include` and `exclude` are top-level properties that define the file scope of the project, independent of how those files are compiled."
             },
             {
               "type": "mcq",
-              "question": "What does `noEmitOnError` prevent?",
+              "question": "What is the benefit of enabling `noEmitOnError: true`?",
               "options": [
-                "Output when type errors exist",
-                "Editor diagnostics",
-                "Source maps",
-                "npm installation"
+                "It prevents TypeScript from generating JavaScript files if there are any type checking errors.",
+                "It automatically fixes simple syntax errors before compiling.",
+                "It stops the terminal from displaying error messages.",
+                "It prevents `console.error` logs from running in the browser."
               ],
               "correct": 0,
-              "explanation": "The compiler withholds generated files when checking fails."
+              "explanation": "This acts as a safety net, ensuring you don't accidentally deploy invalid code simply because you ignored an editor warning."
             }
           ]
         },
@@ -709,31 +709,31 @@
           "id": "ts_compiler_04",
           "title": "Configure Strict Type Checking",
           "image": "/assets/typescript/ts_compiler/04-strict-checking.png",
-          "content": "# Configure Strict Type Checking\n\n`strict` enables a coordinated family of checks, including implicit-any detection and null awareness. Start new projects with it enabled; loosening one rule should be an explicit migration choice.\n\n```ts\ntype User = { name: string; nickname?: string };\n\nfunction displayName(user: User): string {\n  return user.nickname?.trim() || user.name;\n}\n```\n\n`noUncheckedIndexedAccess` adds `undefined` when an index might be missing. `exactOptionalPropertyTypes` distinguishes an omitted property from a present property whose value is `undefined`.\n\n## Complete subclass code — `tsconfig.json`\n\n```json\n{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"module\": \"NodeNext\",\n    \"moduleResolution\": \"NodeNext\",\n    \"rootDir\": \"./src\",\n    \"outDir\": \"./dist\",\n    \"strict\": true,\n    \"noUncheckedIndexedAccess\": true,\n    \"exactOptionalPropertyTypes\": true,\n    \"useUnknownInCatchVariables\": true,\n    \"noEmitOnError\": true\n  },\n  \"include\": [\"src\"]\n}\n```",
+          "content": "# Configure Strict Type Checking\n\nTypeScript has a master switch called `\"strict\": true`. You should **always** enable this for new projects.\n\n## 1. The `strict` Master Switch\nEnabling `strict` turns on a whole family of safety checks, including strict null awareness and preventing \"implicit any\" types.\n\n```ts\ntype User = { name: string; nickname?: string };\n\nfunction displayName(user: User): string {\n  // 💡 Because of strict mode, TS forces us to handle the case where nickname is missing!\n  return user.nickname?.trim() || user.name;\n}\n```\n\n## 2. Extra Strictness\nThere are a few extra strict rules that aren't included in the master switch, but are highly recommended:\n* **`noUncheckedIndexedAccess`**: Forces you to check if an array item or object key actually exists before using it.\n* **`exactOptionalPropertyTypes`**: Prevents you from explicitly setting an optional property to `undefined` if it wasn't designed to hold it.\n\n## Complete Code Snippet\n\n```json\n// tsconfig.json\n{\n  \"compilerOptions\": {\n    // ✅ OK: Maximum safety enabled!\n    \"strict\": true,\n    \"noUncheckedIndexedAccess\": true,\n    \"exactOptionalPropertyTypes\": true,\n    \"useUnknownInCatchVariables\": true,\n    \"noEmitOnError\": true\n  },\n  \"include\": [\"src\"]\n}\n```",
           "questions": [
             {
               "type": "mcq",
-              "question": "What does `strict` do?",
+              "question": "What happens when you set `\"strict\": true` in your tsconfig?",
               "options": [
-                "Enables a family of strict type checks",
-                "Minifies JavaScript",
-                "Runs tests",
-                "Installs declaration packages"
+                "It automatically enables a large family of strict type-checking rules, providing maximum safety.",
+                "It forces your JavaScript output to use `'use strict';`.",
+                "It prevents you from using any third-party libraries.",
+                "It minifies the resulting JavaScript code."
               ],
               "correct": 0,
-              "explanation": "Strict is the umbrella setting for multiple safety checks."
+              "explanation": "`strict` is a powerful umbrella setting that activates all strict type-checking options at once."
             },
             {
               "type": "mcq",
-              "question": "What does `noUncheckedIndexedAccess` add to uncertain indexed reads?",
+              "question": "What additional safety does `noUncheckedIndexedAccess` provide?",
               "options": [
-                "undefined",
-                "never",
-                "any",
-                "null only"
+                "It forces you to handle the possibility of `undefined` when reading random indices from arrays or dictionaries.",
+                "It prevents you from using square brackets `[]` to access properties.",
+                "It throws an error if an array has no items.",
+                "It automatically removes `null` values from arrays."
               ],
               "correct": 0,
-              "explanation": "An array or record index may not exist at runtime."
+              "explanation": "At runtime, accessing `myArray[100]` might return `undefined`. This rule forces TypeScript to acknowledge that risk!"
             }
           ]
         },
@@ -741,31 +741,31 @@
           "id": "ts_compiler_05",
           "title": "Enable Code-Quality Diagnostics",
           "image": "/assets/typescript/ts_compiler/05-quality-checks.png",
-          "content": "# Enable Code-Quality Diagnostics\n\nType correctness and code quality overlap but are not identical. Compiler quality checks reveal abandoned variables, forgotten returns, accidental switch fallthrough, and unsafe overrides.\n\n```ts\nfunction formatScore(score: number): string {\n  if (score >= 90) return 'excellent';\n  if (score >= 60) return 'pass';\n  return 'retry';\n}\n```\n\nThese checks work well in CI, but use them deliberately: library callback signatures sometimes require parameters you do not read, and generated files should be excluded rather than “fixed”.\n\n## Complete subclass code — `tsconfig.json`\n\n```json\n{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"module\": \"NodeNext\",\n    \"moduleResolution\": \"NodeNext\",\n    \"rootDir\": \"./src\",\n    \"outDir\": \"./dist\",\n    \"strict\": true,\n    \"noUnusedLocals\": true,\n    \"noUnusedParameters\": true,\n    \"noImplicitReturns\": true,\n    \"noFallthroughCasesInSwitch\": true,\n    \"noImplicitOverride\": true,\n    \"forceConsistentCasingInFileNames\": true,\n    \"noEmitOnError\": true\n  },\n  \"include\": [\"src\"]\n}\n```",
+          "content": "# Enable Code-Quality Diagnostics\n\nType correctness is one thing, but code *quality* is another. TypeScript can act as a lightweight linter to help you catch sloppy code.\n\n## 1. Catching Unused Code\nDead code clutters your project. TypeScript can warn you if you declare a variable or parameter but never use it.\n\n```ts\n// ❌ Error: 'score' is declared but its value is never read.\nfunction format(score: number) {\n  return 'excellent';\n}\n```\n\n## 2. Catching Missing Returns\nIf a function claims it returns a `string`, it must return a string across *every possible path*. `noImplicitReturns` ensures you don't accidentally forget a `return` statement inside an `if` block.\n\n```ts\nfunction getStatus(isValid: boolean): string {\n  if (isValid) return 'OK';\n  // ❌ Error: Not all code paths return a value.\n}\n```\n\n## Complete Code Snippet\n\n```json\n// tsconfig.json\n{\n  \"compilerOptions\": {\n    \"strict\": true,\n    // ✅ OK: Linter-like rules to enforce clean code\n    \"noUnusedLocals\": true,\n    \"noUnusedParameters\": true,\n    \"noImplicitReturns\": true,\n    \"noFallthroughCasesInSwitch\": true,\n    \"forceConsistentCasingInFileNames\": true\n  }\n}\n```",
           "questions": [
             {
               "type": "mcq",
-              "question": "Which option reports a function path without an explicit result?",
+              "question": "Which compiler option ensures that a function doesn't accidentally forget to return a value on certain execution paths?",
               "options": [
-                "noImplicitReturns",
-                "sourceMap",
-                "allowJs",
-                "target"
+                "`noImplicitReturns`",
+                "`noUnusedLocals`",
+                "`strictNullChecks`",
+                "`noEmitOnError`"
               ],
               "correct": 0,
-              "explanation": "It checks that return behaviour is consistent across reachable paths."
+              "explanation": "`noImplicitReturns` checks all logical branches (like `if` statements) to guarantee that a value is always returned."
             },
             {
               "type": "mcq",
-              "question": "Why enable casing consistency?",
+              "question": "Why is it important to enable `forceConsistentCasingInFileNames`?",
               "options": [
-                "Imports then work consistently across operating systems",
-                "It changes variable names",
-                "It minifies output",
-                "It installs Git"
+                "It prevents bugs caused by operating systems treating uppercase and lowercase file paths differently.",
+                "It forces all your variables to be written in camelCase.",
+                "It makes the compiled JavaScript run faster.",
+                "It automatically renames your files to lowercase."
               ],
               "correct": 0,
-              "explanation": "Case-sensitive and case-insensitive file systems otherwise disagree."
+              "explanation": "File systems on Mac and Windows are case-insensitive, but Linux (often used in CI/CD) is case-sensitive. This rule catches import casing bugs before they break production!"
             }
           ]
         },
@@ -773,31 +773,31 @@
           "id": "ts_compiler_06",
           "title": "Read a Production `tsconfig.json`",
           "image": "/assets/typescript/ts_compiler/06-deep-dive.png",
-          "content": "# Read a Production tsconfig.json\n\nRead configuration by responsibility instead of memorising hundreds of switches: language environment, modules, JavaScript support, emission, interoperability, checking, and file selection.\n\nFor a modern Node project, `NodeNext` keeps module checking aligned with Node's package rules. `esModuleInterop` smooths CommonJS imports. `skipLibCheck` skips checking declaration-file internals, not your application code.\n\n## Complete subclass code — `tsconfig.json`\n\n```json\n{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"lib\": [\"ES2022\"],\n    \"module\": \"NodeNext\",\n    \"moduleResolution\": \"NodeNext\",\n    \"rootDir\": \"./src\",\n    \"outDir\": \"./dist\",\n    \"sourceMap\": true,\n    \"declaration\": true,\n    \"noEmitOnError\": true,\n    \"esModuleInterop\": true,\n    \"forceConsistentCasingInFileNames\": true,\n    \"strict\": true,\n    \"noUncheckedIndexedAccess\": true,\n    \"noImplicitReturns\": true,\n    \"skipLibCheck\": true\n  },\n  \"include\": [\"src/**/*.ts\"],\n  \"exclude\": [\"dist\", \"node_modules\", \"**/*.test.ts\"]\n}\n```",
+          "content": "# Read a Production `tsconfig.json`\n\nWhen you open a real-world project, `tsconfig.json` can look intimidating. Let's break down some of the most common \"advanced\" flags you will see.\n\n## 1. Module Resolution (`NodeNext`)\nNode.js has updated how it handles modules (ESM vs CommonJS). Using `\"module\": \"NodeNext\"` and `\"moduleResolution\": \"NodeNext\"` ensures TypeScript perfectly mimics the modern Node.js import rules.\n\n## 2. Skipping Library Checks (`skipLibCheck`)\nTypeScript usually checks *everything*, including the types of third-party libraries in your `node_modules`. \n* Setting `\"skipLibCheck\": true` tells TS: **\"Assume my libraries are correct, only check my app code.\"** \n* This makes compilation **much faster**!\n\n## 3. Interoperability (`esModuleInterop`)\nOlder CommonJS packages and newer ES Modules often clash when importing. `esModuleInterop` smooths over these differences so you can use modern `import` syntax everywhere.\n\n## Complete Code Snippet\n\n```json\n// tsconfig.json\n{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"module\": \"NodeNext\",\n    \"moduleResolution\": \"NodeNext\",\n    \"esModuleInterop\": true,\n    \"skipLibCheck\": true,     // ✅ OK: Speed up builds!\n    \"strict\": true,\n    \"outDir\": \"./dist\"\n  },\n  \"include\": [\"src/**/*.ts\"],\n  \"exclude\": [\"node_modules\", \"**/*.test.ts\"]\n}\n```",
           "questions": [
             {
               "type": "mcq",
-              "question": "What does `skipLibCheck` skip?",
+              "question": "What is the main benefit of enabling `skipLibCheck: true`?",
               "options": [
-                "Checking declaration-file internals",
-                "Checking your application",
-                "Emitting JavaScript",
-                "Resolving imports"
+                "It dramatically speeds up compilation by skipping the internal type checking of third-party libraries in node_modules.",
+                "It stops TypeScript from checking your application code entirely.",
+                "It prevents your app from using external libraries.",
+                "It automatically downloads missing types from the internet."
               ],
               "correct": 0,
-              "explanation": "It applies to .d.ts library files, not ordinary project source."
+              "explanation": "Third-party libraries are usually pre-checked by their authors. Skipping them saves a lot of time during your build."
             },
             {
               "type": "mcq",
-              "question": "Why pair NodeNext module and resolution settings?",
+              "question": "Why would a modern project use `\"moduleResolution\": \"NodeNext\"`?",
               "options": [
-                "To model Node's module rules consistently",
-                "To enable DOM APIs",
-                "To remove package.json",
-                "To run CSS"
+                "To ensure TypeScript's import/export rules perfectly match how modern Node.js resolves ES Modules and CommonJS.",
+                "To tell TypeScript to compile code that only runs in the browser.",
+                "To automatically install Node.js.",
+                "To disable modules completely."
               ],
               "correct": 0,
-              "explanation": "Both emission and lookup then follow Node's ESM/CommonJS semantics."
+              "explanation": "Node.js has strict rules about file extensions and module types (ESM vs CJS). `NodeNext` forces TypeScript to respect those exact rules."
             }
           ]
         },
@@ -805,31 +805,31 @@
           "id": "ts_compiler_07",
           "title": "Compile the Project & Use Watch Mode",
           "image": "/assets/typescript/ts_compiler/07-compile-watch.png",
-          "content": "# Compile the Project & Use Watch Mode\n\n`npx tsc` performs one project build. `npx tsc --watch` keeps the compiler alive, watches included files, and rebuilds after changes.\n\n```bash\nnpm run build\nnpm run dev:types\nnode dist/app.js\n```\n\nWatch mode is feedback, not a production process manager. It does not automatically restart Node unless you pair it with another development tool.\n\n## Complete subclass code — `package.json`\n\n```json\n{\n  \"name\": \"compiler-lab\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": {\n    \"clean\": \"node -e \\\"require('fs').rmSync('dist',{recursive:true,force:true})\\\"\",\n    \"build\": \"tsc\",\n    \"dev:types\": \"tsc --watch\",\n    \"start\": \"node dist/app.js\"\n  },\n  \"devDependencies\": {\n    \"typescript\": \"^5.9.0\"\n  }\n}\n```",
+          "content": "# Compile the Project & Use Watch Mode\n\nRunning `npx tsc` manually every time you change a file gets annoying fast. Let's automate it!\n\n## 1. Build Scripts\nYou should add your compilation commands to the `scripts` section of your `package.json`. This makes them easy to run via npm.\n\n## 2. Watch Mode (`--watch`)\nBy adding the `--watch` flag, TypeScript will stay alive in your terminal. Every time you save a `.ts` file, it instantly recompiles it into JavaScript!\n\n```bash\n# ✅ OK: Start it once, and let it watch your files!\nnpm run dev:types\n```\n\n*Note: Watch mode compiles your files, but it doesn't automatically restart your Node server. For that, you'd pair it with a tool like `nodemon` or `node --watch`.*\n\n## Complete Code Snippet\n\n```json\n// package.json\n{\n  \"name\": \"compiler-lab\",\n  \"type\": \"module\",\n  \"scripts\": {\n    \"clean\": \"node -e \\\"require('fs').rmSync('dist',{recursive:true,force:true})\\\"\",\n    \"build\": \"tsc\",\n    \"dev:types\": \"tsc --watch\",\n    \"start\": \"node dist/app.js\"\n  },\n  \"devDependencies\": {\n    \"typescript\": \"^5.9.0\"\n  }\n}\n```",
           "questions": [
             {
               "type": "mcq",
-              "question": "What does `tsc --watch` do?",
+              "question": "What does running `tsc --watch` do?",
               "options": [
-                "Recompiles when included files change",
-                "Restarts every server",
-                "Deploys to Railway",
-                "Installs packages"
+                "It keeps the compiler running in the background and automatically recompiles files whenever you save changes.",
+                "It opens a browser window to watch your app live.",
+                "It automatically restarts your Node.js server.",
+                "It prevents any further changes to the files."
               ],
               "correct": 0,
-              "explanation": "Watch mode monitors the configured program and rebuilds it."
+              "explanation": "Watch mode is an essential developer tool. It detects file saves and incrementally recompiles the code, providing instant error feedback."
             },
             {
               "type": "mcq",
-              "question": "Why keep build commands in package.json?",
+              "question": "Does `tsc --watch` automatically execute/run your JavaScript code after compiling it?",
               "options": [
-                "They give the team repeatable commands",
-                "They replace tsconfig",
-                "They disable strict mode",
-                "They hide errors"
+                "No, it only compiles the code. You need a separate process (like `nodemon`) to actually run the generated JavaScript.",
+                "Yes, it runs the code in the browser.",
+                "Yes, it restarts Node.js automatically.",
+                "No, because TypeScript cannot be converted to JavaScript."
               ],
               "correct": 0,
-              "explanation": "Scripts document and standardise the workflow."
+              "explanation": "TypeScript's job is strictly to compile and check types. Running the application requires a runtime execution environment (like Node or a browser)."
             }
           ]
         },
@@ -837,31 +837,31 @@
           "id": "ts_compiler_08",
           "title": "Install & Use Type Declaration Packages",
           "image": "/assets/typescript/ts_compiler/08-type-packages.png",
-          "content": "# Install & Use Type Declaration Packages\n\nJavaScript libraries and runtimes need type descriptions. Packages may ship declarations themselves; otherwise the community often publishes them under `@types/*`.\n\n```bash\nnpm install --save-dev @types/node\n```\n\nNode's declarations teach TypeScript about `node:fs`, `process`, `Buffer`, and other runtime APIs. Types do not install the runtime or change behaviour—they describe APIs that already exist.\n\n## Complete subclass code — `src/app.ts`\n\n```ts\nimport fs from 'node:fs';\n\ntype Config = {\n  project: string;\n  strict: boolean;\n};\n\nconst config: Config = {\n  project: 'compiler-lab',\n  strict: true,\n};\n\nfs.writeFileSync('dist/config.json', JSON.stringify(config, null, 2));\nconsole.log(`Wrote configuration for ${config.project}`);\n```",
+          "content": "# Install & Use Type Declaration Packages\n\nWhen using external libraries (like `express` or `lodash`), or built-in Node modules (like `fs` or `path`), TypeScript doesn't automatically know what their types are.\n\n## 1. The `@types` Repository\nIf a package is written in pure JavaScript, the community usually provides a separate package containing *just* the TypeScript declarations. These are always published under the `@types/` namespace.\n\n```bash\n# 💡 Install the types for the Node.js runtime\nnpm install --save-dev @types/node\n```\n\n## 2. Using Built-in Modules safely\nOnce `@types/node` is installed, TypeScript instantly understands how to interact with Node APIs like `node:fs`.\n\n```ts\nimport fs from 'node:fs';\n\n// ✅ OK: TypeScript now knows exactly what arguments `writeFileSync` takes!\nfs.writeFileSync('dist/config.json', \"{}\");\n```\n\n*Note: Type declaration packages do NOT install the actual runtime libraries; they only describe APIs that already exist.*\n\n## Complete Code Snippet\n\n```ts\n// src/app.ts\nimport fs from 'node:fs';\n\ntype Config = {\n  project: string;\n  strict: boolean;\n};\n\nconst config: Config = {\n  project: 'compiler-lab',\n  strict: true,\n};\n\n// 💡 Because of @types/node, TS knows exactly how to use node:fs\nfs.writeFileSync('dist/config.json', JSON.stringify(config, null, 2));\nconsole.log(`Wrote configuration for ${config.project}`);\n```",
           "questions": [
             {
               "type": "mcq",
-              "question": "What does `@types/node` provide?",
+              "question": "What is the purpose of packages published under the `@types/*` scope (like `@types/node`)?",
               "options": [
-                "Type declarations for Node APIs",
-                "The Node runtime",
-                "A database",
-                "A bundler"
+                "They provide TypeScript type definitions for libraries or environments that were originally written in pure JavaScript.",
+                "They contain the actual source code and logic for the libraries.",
+                "They tell the browser how to run TypeScript natively.",
+                "They minify JavaScript files."
               ],
               "correct": 0,
-              "explanation": "It describes Node's existing modules and globals to TypeScript."
+              "explanation": "Since pure JavaScript libraries lack type information, `@types` packages provide the blueprints so TypeScript knows how to check them safely."
             },
             {
               "type": "mcq",
-              "question": "When is a separate @types package unnecessary?",
+              "question": "Does installing `@types/node` install the Node.js runtime on your computer?",
               "options": [
-                "When the library ships its own declarations",
-                "When strict is enabled",
-                "When code has functions",
-                "When using npm"
+                "No, it only installs the type descriptions. The Node.js runtime must already be installed separately.",
+                "Yes, it installs the latest version of Node.js.",
+                "Yes, but only a browser-compatible version.",
+                "No, it uninstalls Node.js."
               ],
               "correct": 0,
-              "explanation": "Many modern packages include their own .d.ts files."
+              "explanation": "Type declarations only *describe* APIs. They do not contain any actual executable logic or runtime code."
             }
           ]
         }

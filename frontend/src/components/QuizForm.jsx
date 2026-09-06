@@ -40,11 +40,11 @@ export default function QuizForm({ questions, requiredScore, nextModuleUrl, onSu
         </div>
         <p>{result.passed
           ? "Perfect score — the next item is now unlocked."
-          : \`A perfect \${requiredScore}/\${requiredScore} is needed. Review the feedback and try again.\`}</p>
+          : `A perfect ${requiredScore}/${requiredScore} is needed. Review the feedback and try again.`}</p>
         <div className="feedback-list">
           {result.feedback.map((item) => (
             <details key={item.index}>
-              <summary>{item.correct ? <CheckCircle2 /> : <XCircle />} Question {item.index} — {item.correct ? "Correct" : \`Correct answer: \${item.correctAnswer}\`}</summary>
+              <summary>{item.correct ? <CheckCircle2 /> : <XCircle />} Question {item.index} — {item.correct ? "Correct" : `Correct answer: ${item.correctAnswer}`}</summary>
               <div className="feedback-explanation">
                 <ReactMarkdown remarkPlugins={[remarkGfm]} components={{ pre: CodeBlock }}>
                   {item.explanation}
@@ -70,7 +70,7 @@ export default function QuizForm({ questions, requiredScore, nextModuleUrl, onSu
         <span className="goal-pill">Goal: {requiredScore}/{requiredScore}</span>
       </div>
       {questions.map((question, index) => (
-        <fieldset className="question-card" key={\`\${question.question}-\${index}\`}>
+        <fieldset className="question-card" key={`${question.question}-${index}`}>
           <legend>
             <span>{String(index + 1).padStart(2, "0")}</span>
             <div className="markdown-inline" style={{ display: 'inline' }}>
@@ -88,8 +88,8 @@ export default function QuizForm({ questions, requiredScore, nextModuleUrl, onSu
               required
             />
           ) : question.options.map((option) => (
-            <label className={\`option \${answers[index] === option ? "selected" : ""}\`} key={option}>
-              <input type="radio" name={\`question-\${index}\`} value={option} required
+            <label className={`option ${answers[index] === option ? "selected" : ""}`} key={option}>
+              <input type="radio" name={`question-${index}`} value={option} required
                 checked={answers[index] === option}
                 onChange={(event) => updateAnswer(index, event.target.value)} />
               <div className="markdown-inline">

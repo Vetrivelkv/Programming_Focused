@@ -62,6 +62,7 @@ export default function LessonPage() {
   const [error, setError] = useState("");
   const base = `/api/courses/${courseId}/learn/${encodeURIComponent(topic)}/${moduleId}`;
   useEffect(() => {
+    window.scrollTo(0, 0);
     apiJson(base).then(setLesson).catch((caught) => setError(caught.message));
   }, [base]);
   if (!lesson && !error) return <LoadingState label="Opening your lesson…" />;
@@ -69,7 +70,7 @@ export default function LessonPage() {
 
   return (
     <div className="page lesson-page">
-      <Link className="back-link" to={`/course/${courseId}`}><ArrowLeft /> Back to dashboard</Link>
+      <Link className="back-link" to={`/course/${courseId}?topic=${encodeURIComponent(topic)}`}><ArrowLeft /> Back to dashboard</Link>
       <header className="lesson-header">
         <span className="lesson-icon"><BookOpenText /></span>
         <p className="eyebrow">{topic}</p>
@@ -95,8 +96,10 @@ export default function LessonPage() {
         </ReactMarkdown>
       </article>
       <QuizForm
+        key={lesson.id}
         questions={lesson.questions}
         requiredScore={lesson.requiredScore}
+        nextModuleUrl={lesson.nextModuleUrl}
         onSubmit={(answers) => apiJson(`${base}/submit`, { method: "POST", body: JSON.stringify({ answers }) })}
       />
     </div>

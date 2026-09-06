@@ -1,6 +1,6 @@
 import { ArrowRight, Check, ChevronDown, LockKeyhole, Play, Trophy } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 import { useAuth } from "../App";
 import { apiJson } from "../api";
 import LoadingState from "../components/LoadingState";
@@ -9,13 +9,29 @@ const keyOf = (...parts) => parts.join("::");
 
 export default function DashboardPage() {
   const { courseId } = useParams();
+  const location = useLocation();
   const { user } = useAuth();
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
+
+  const urlParams = new URLSearchParams(location.search);
+  const lastTopic = urlParams.get("topic");
+
   useEffect(() => {
     setData(null);
     apiJson(`/api/courses/${courseId}/dashboard`).then(setData).catch((caught) => setError(caught.message));
   }, [courseId]);
+
+  useEffect(() => {
+    if (data && lastTopic) {
+      setTimeout(() => {
+        const el = document.getElementById(`topic-${lastTopic}`);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 100);
+    }
+  }, [data, lastTopic]);
 
   const maps = useMemo(() => {
     const learning = new Map(data?.learningProgress.map((row) => [keyOf(row.topic_name, row.subtopic_id), row]));
@@ -49,7 +65,7 @@ export default function DashboardPage() {
       </section>
       <div className="topic-stack">
         {data.learningTopics.map((topic, topicIndex) => (
-          <details className="topic-panel" key={topic.name} open={topicIndex === 0}>
+          <details className="topic-panel" key={topic.name} id={`topic-${topic.name}`} open={lastTopic ? topic.name === lastTopic : topicIndex === 0}>
             <summary><span>{String(topicIndex + 1).padStart(2, "0")}</span><strong>{topic.name}</strong><small>{topic.modules.length} modules</small><ChevronDown /></summary>
             <div className="module-grid">
               {topic.modules.map((module, index) => {
@@ -79,7 +95,7 @@ export default function DashboardPage() {
       </section>
       <div className="topic-stack">
         {data.challengeTopics.map((topic, topicIndex) => (
-          <details className="topic-panel challenge" key={topic.name} open={topicIndex === 0}>
+          <details className="topic-panel challenge" key={topic.name} id={`topic-${topic.name}`} open={lastTopic ? topic.name === lastTopic : topicIndex === 0}>
             <summary><span>{String(topicIndex + 1).padStart(2, "0")}</span><strong>{topic.name}</strong><small>{topic.rounds.length} rounds</small><ChevronDown /></summary>
             <div className="round-list">
               {topic.rounds.map((round, index) => {

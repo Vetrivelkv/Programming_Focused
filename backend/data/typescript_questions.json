@@ -142,7 +142,7 @@
                 "[number, string]"
               ],
               "correct_option_index": 0,
-              "explanation": "A union lists legitimate alternatives."
+              "explanation": "A union (`|`) lists legitimate alternatives, meaning the value can be either a number or a string."
             },
             {
               "type": "mcq",

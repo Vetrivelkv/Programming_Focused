@@ -101,11 +101,26 @@ export default function registerCourseRoutes(app) {
   }));
 
   app.get("/api/courses/:courseId/learn/:topic/:moduleId", asyncRoute(async (request, response) => {
-    const { topic, module } = findModule(
-      request.params.courseId, decode(request.params.topic), request.params.moduleId,
-    );
-    const progress = await getLearningProgress(request.user.id, request.params.courseId);
+    const courseId = request.params.courseId;
+    const topicName = decode(request.params.topic);
+    const moduleId = request.params.moduleId;
+    const { topic, module } = findModule(courseId, topicName, moduleId);
+    const progress = await getLearningProgress(request.user.id, courseId);
     assertModuleUnlocked(topic, module.id, progress);
+
+    const course = getCourse(courseId);
+    let nextModuleUrl = null;
+    const topicIndex = course.curriculum.topics.findIndex((t) => t.name === topic.name);
+    if (topicIndex !== -1) {
+      const moduleIndex = topic.subtopics.findIndex((m) => m.id === module.id);
+      if (moduleIndex !== -1 && moduleIndex < topic.subtopics.length - 1) {
+        nextModuleUrl = `/course/${courseId}/learn/${encodeURIComponent(topic.name)}/${topic.subtopics[moduleIndex + 1].id}`;
+      } else if (topicIndex < course.curriculum.topics.length - 1) {
+        const nextTopic = course.curriculum.topics[topicIndex + 1];
+        nextModuleUrl = `/course/${courseId}/learn/${encodeURIComponent(nextTopic.name)}/${nextTopic.subtopics[0].id}`;
+      }
+    }
+
     response.json({
       id: module.id,
       title: module.title,
@@ -113,6 +128,7 @@ export default function registerCourseRoutes(app) {
       image: module.image || "",
       questions: module.questions.map(sanitizeQuestion),
       requiredScore: module.questions.length,
+      nextModuleUrl,
     });
   }));
 
@@ -129,16 +145,32 @@ export default function registerCourseRoutes(app) {
   }));
 
   app.get("/api/courses/:courseId/challenges/:topic/:roundNumber", asyncRoute(async (request, response) => {
-    const { topic, round } = findRound(
-      request.params.courseId, decode(request.params.topic), request.params.roundNumber,
-    );
-    const progress = await getChallengeProgress(request.user.id, request.params.courseId);
+    const courseId = request.params.courseId;
+    const topicName = decode(request.params.topic);
+    const roundNumber = request.params.roundNumber;
+    const { topic, round } = findRound(courseId, topicName, roundNumber);
+    const progress = await getChallengeProgress(request.user.id, courseId);
     assertRoundUnlocked(topic, round.round_number, progress);
+
+    const course = getCourse(courseId);
+    let nextModuleUrl = null;
+    const topicIndex = course.challenges.topics.findIndex((t) => t.name === topic.name);
+    if (topicIndex !== -1) {
+      const roundIndex = topic.rounds.findIndex((r) => r.round_number === round.round_number);
+      if (roundIndex !== -1 && roundIndex < topic.rounds.length - 1) {
+        nextModuleUrl = `/course/${courseId}/challenges/${encodeURIComponent(topic.name)}/${topic.rounds[roundIndex + 1].round_number}`;
+      } else if (topicIndex < course.challenges.topics.length - 1) {
+        const nextTopic = course.challenges.topics[topicIndex + 1];
+        nextModuleUrl = `/course/${courseId}/challenges/${encodeURIComponent(nextTopic.name)}/${nextTopic.rounds[0].round_number}`;
+      }
+    }
+
     response.json({
       roundNumber: round.round_number,
       title: round.title,
       questions: round.questions.map(sanitizeQuestion),
       requiredScore: round.questions.length,
+      nextModuleUrl,
     });
   }));
 

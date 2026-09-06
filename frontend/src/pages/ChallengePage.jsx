@@ -11,6 +11,7 @@ export default function ChallengePage() {
   const [error, setError] = useState("");
   const base = `/api/courses/${courseId}/challenges/${encodeURIComponent(topic)}/${roundNumber}`;
   useEffect(() => {
+    window.scrollTo(0, 0);
     apiJson(base).then(setChallenge).catch((caught) => setError(caught.message));
   }, [base]);
   if (!challenge && !error) return <LoadingState label="Preparing your challenge…" />;
@@ -18,7 +19,7 @@ export default function ChallengePage() {
 
   return (
     <div className="page lesson-page challenge-page">
-      <Link className="back-link" to={`/course/${courseId}`}><ArrowLeft /> Back to dashboard</Link>
+      <Link className="back-link" to={`/course/${courseId}?topic=${encodeURIComponent(topic)}`}><ArrowLeft /> Back to dashboard</Link>
       <header className="lesson-header">
         <span className="lesson-icon"><Trophy /></span>
         <p className="eyebrow">{topic} · Round {challenge.roundNumber}</p>
@@ -26,8 +27,10 @@ export default function ChallengePage() {
         <p>Score a perfect {challenge.requiredScore}/{challenge.requiredScore} to unlock the next challenge.</p>
       </header>
       <QuizForm
+        key={challenge.roundNumber}
         questions={challenge.questions}
         requiredScore={challenge.requiredScore}
+        nextModuleUrl={challenge.nextModuleUrl}
         submitLabel="Complete challenge"
         onSubmit={(answers) => apiJson(`${base}/submit`, { method: "POST", body: JSON.stringify({ answers }) })}
       />
