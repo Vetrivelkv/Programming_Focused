@@ -871,194 +871,70 @@
       "name": "Section 4 · TypeScript Essentials Demo Project",
       "subtopics": [
         {
-          "id": "ts_demo_01",
-          "title": "Model the Investment Calculator",
-          "image": "/assets/typescript/ts_demo/01-first-steps.png",
-          "content": "# Model the Investment Calculator\n\nThe demo project turns four inputs into a year-by-year projection: initial amount, annual contribution, expected decimal return, and duration. Start by naming the data before writing the loop.\n\n```ts\nconst initialAmount = 5000;\nconst annualContribution = 500;\nconst expectedReturn = 0.08;\nconst duration = 10;\n```\n\nNode runs the emitted JavaScript: `npx tsc && node dist/calculator.js`. Keeping the example outside a browser isolates the language and compiler concepts.\n\n## Complete subclass code — `calculator.ts`\n\n```ts\nconst initialAmount: number = 5000;\nconst annualContribution: number = 500;\nconst expectedReturn: number = 0.08;\nconst duration: number = 10;\n\nconsole.log({ initialAmount, annualContribution, expectedReturn, duration });\n```",
-          "questions": [
-            {
-              "type": "mcq",
-              "question": "How is an 8% expected return represented?",
-              "options": [
-                "0.08",
-                "8",
-                "'8%'",
-                "80"
-              ],
-              "correct": 0,
-              "explanation": "The calculation uses a decimal rate."
-            },
-            {
-              "type": "mcq",
-              "question": "Why run the emitted file with Node?",
-              "options": [
-                "Node executes JavaScript output",
-                "Node type-checks TypeScript",
-                "Node creates tsconfig",
-                "Node replaces npm"
-              ],
-              "correct": 0,
-              "explanation": "The compiler produces the JavaScript runtime input."
-            }
-          ]
-        },
-        {
-          "id": "ts_demo_02",
-          "title": "Create Reusable Investment Types",
-          "image": "/assets/typescript/ts_demo/02-custom-types.png",
-          "content": "# Create Reusable Investment Types\n\nGroup related inputs into one domain object. A custom alias prevents long parameter lists and gives callers a single contract.\n\n```ts\ntype InvestmentData = {\n  initialAmount: number;\n  annualContribution: number;\n  expectedReturn: number;\n  duration: number;\n};\n```\n\nThe output shape deserves its own type because every projected year carries the same fields.\n\n## Complete subclass code — `calculator.ts`\n\n```ts\ntype InvestmentData = {\n  initialAmount: number;\n  annualContribution: number;\n  expectedReturn: number;\n  duration: number;\n};\n\ntype InvestmentResult = {\n  year: string;\n  totalAmount: number;\n  totalContributions: number;\n  totalInterestEarned: number;\n};\n\nconst data: InvestmentData = {\n  initialAmount: 5000,\n  annualContribution: 500,\n  expectedReturn: 0.08,\n  duration: 10,\n};\n\nconst firstYear: InvestmentResult = {\n  year: 'Year 1',\n  totalAmount: 5940,\n  totalContributions: 500,\n  totalInterestEarned: 400,\n};\n\nconsole.log(data, firstYear);\n```",
-          "questions": [
-            {
-              "type": "mcq",
-              "question": "Why use one InvestmentData object?",
-              "options": [
-                "It names and groups the function input contract",
-                "It validates user input automatically",
-                "It emits a database",
-                "It removes numbers"
-              ],
-              "correct": 0,
-              "explanation": "A domain object is easier to extend and safer to pass than positional arguments."
-            },
-            {
-              "type": "mcq",
-              "question": "What does InvestmentResult model?",
-              "options": [
-                "One projected year",
-                "The compiler configuration",
-                "An npm package",
-                "A DOM element"
-              ],
-              "correct": 0,
-              "explanation": "Each result stores the totals for a particular year."
-            }
-          ]
-        },
-        {
-          "id": "ts_demo_03",
-          "title": "Return Results or a Validation Message",
-          "image": "/assets/typescript/ts_demo/03-union-result.png",
-          "content": "# Return Results or a Validation Message\n\nInvalid inputs cannot produce a meaningful projection. Model that honestly as a union instead of returning a partially valid array.\n\n```ts\ntype CalculationResult = InvestmentResult[] | string;\n```\n\nThe caller must narrow the result before iterating. This makes the error path part of the function contract.\n\n## Complete subclass code — `calculator.ts`\n\n```ts\ntype InvestmentData = {\n  initialAmount: number;\n  annualContribution: number;\n  expectedReturn: number;\n  duration: number;\n};\n\ntype InvestmentResult = {\n  year: string;\n  totalAmount: number;\n  totalContributions: number;\n  totalInterestEarned: number;\n};\n\ntype CalculationResult = InvestmentResult[] | string;\n\nfunction validateInvestment(data: InvestmentData): CalculationResult {\n  if (data.initialAmount < 0) return 'Initial amount must be at least zero.';\n  if (data.duration <= 0) return 'Duration must be greater than zero.';\n  if (data.expectedReturn < 0) return 'Expected return must be at least zero.';\n  return [];\n}\n\nconst result = validateInvestment({\n  initialAmount: 5000,\n  annualContribution: 500,\n  expectedReturn: 0.08,\n  duration: 10,\n});\n\nconsole.log(result);\n```",
-          "questions": [
-            {
-              "type": "mcq",
-              "question": "What does CalculationResult require callers to handle?",
-              "options": [
-                "An array or an error string",
-                "Only an array",
-                "null only",
-                "A thrown syntax error"
-              ],
-              "correct": 0,
-              "explanation": "The union exposes both success and validation outcomes."
-            },
-            {
-              "type": "mcq",
-              "question": "How can a caller narrow this union?",
-              "options": [
-                "Use `typeof result === 'string'`",
-                "Use `as any`",
-                "Check tsconfig",
-                "Rename the function"
-              ],
-              "correct": 0,
-              "explanation": "The runtime string check narrows the other branch to InvestmentResult[]."
-            }
-          ]
-        },
-        {
-          "id": "ts_demo_04",
-          "title": "Build the Annual Projection Loop",
-          "image": "/assets/typescript/ts_demo/04-calculation-loop.png",
-          "content": "# Build the Annual Projection Loop\n\nFor each year, apply growth to the current total, calculate cumulative interest, add the annual contribution, and store an immutable snapshot.\n\n```ts\ntotal *= 1 + expectedReturn;\ntotalInterestEarned = total - totalContributions - initialAmount;\ntotalContributions += annualContribution;\ntotal += annualContribution;\n```\n\nThe order matters: moving the contribution before growth changes the business rule.\n\n## Complete subclass code — `calculator.ts`\n\n```ts\ntype InvestmentData = {\n  initialAmount: number;\n  annualContribution: number;\n  expectedReturn: number;\n  duration: number;\n};\n\ntype InvestmentResult = {\n  year: string;\n  totalAmount: number;\n  totalContributions: number;\n  totalInterestEarned: number;\n};\n\nfunction calculateInvestment(data: InvestmentData): InvestmentResult[] {\n  const { initialAmount, annualContribution, expectedReturn, duration } = data;\n  let total = initialAmount;\n  let totalContributions = 0;\n  let totalInterestEarned = 0;\n  const results: InvestmentResult[] = [];\n\n  for (let year = 1; year <= duration; year++) {\n    total *= 1 + expectedReturn;\n    totalInterestEarned = total - totalContributions - initialAmount;\n    totalContributions += annualContribution;\n    total += annualContribution;\n    results.push({\n      year: `Year ${year}`,\n      totalAmount: total,\n      totalContributions,\n      totalInterestEarned,\n    });\n  }\n\n  return results;\n}\n```",
-          "questions": [
-            {
-              "type": "mcq",
-              "question": "Why push a new object on every loop?",
-              "options": [
-                "To preserve a snapshot for each year",
-                "To change tsconfig",
-                "To install types",
-                "To avoid numbers"
-              ],
-              "correct": 0,
-              "explanation": "Each object records the accumulated state at that year boundary."
-            },
-            {
-              "type": "mcq",
-              "question": "When is annual growth applied in this model?",
-              "options": [
-                "Before adding that year's contribution",
-                "After printing",
-                "Only in the last year",
-                "Never"
-              ],
-              "correct": 0,
-              "explanation": "The operation order defines the calculator's financial assumption."
-            }
-          ]
-        },
-        {
-          "id": "ts_demo_05",
-          "title": "Connect Calculation & Presentation",
-          "image": "/assets/typescript/ts_demo/05-connect-functions.png",
-          "content": "# Connect Calculation & Presentation\n\nKeep calculation and output separate. `calculateInvestment` returns data; `printResults` narrows the union and decides how to display it.\n\n```ts\nfunction printResults(results: CalculationResult): void {\n  if (typeof results === 'string') {\n    console.log(results);\n    return;\n  }\n\n  for (const result of results) console.log(result.year);\n}\n```\n\nThis boundary makes the calculation reusable in a CLI, web page, or API without embedding presentation work inside the math.\n\n## Complete subclass code — `calculator.ts`\n\n```ts\ntype InvestmentData = {\n  initialAmount: number;\n  annualContribution: number;\n  expectedReturn: number;\n  duration: number;\n};\n\ntype InvestmentResult = {\n  year: string;\n  totalAmount: number;\n  totalContributions: number;\n  totalInterestEarned: number;\n};\n\ntype CalculationResult = InvestmentResult[] | string;\n\nfunction calculateInvestment(data: InvestmentData): CalculationResult {\n  const { initialAmount, annualContribution, expectedReturn, duration } = data;\n\n  if (initialAmount < 0) return 'Initial amount must be at least zero.';\n  if (duration <= 0) return 'Duration must be greater than zero.';\n  if (expectedReturn < 0) return 'Expected return must be at least zero.';\n\n  let total = initialAmount;\n  let totalContributions = 0;\n  let totalInterestEarned = 0;\n  const annualResults: InvestmentResult[] = [];\n\n  for (let year = 1; year <= duration; year++) {\n    total *= 1 + expectedReturn;\n    totalInterestEarned = total - totalContributions - initialAmount;\n    totalContributions += annualContribution;\n    total += annualContribution;\n    annualResults.push({\n      year: `Year ${year}`,\n      totalAmount: total,\n      totalContributions,\n      totalInterestEarned,\n    });\n  }\n\n  return annualResults;\n}\n\nfunction printResults(results: CalculationResult): void {\n  if (typeof results === 'string') {\n    console.log(results);\n    return;\n  }\n\n  for (const result of results) {\n    console.log(result.year);\n    console.log(`Total: ${result.totalAmount.toFixed(0)}`);\n    console.log(`Contributions: ${result.totalContributions.toFixed(0)}`);\n    console.log(`Interest: ${result.totalInterestEarned.toFixed(0)}`);\n    console.log('----------------------');\n  }\n}\n\nconst data: InvestmentData = {\n  initialAmount: 5000,\n  annualContribution: 500,\n  expectedReturn: 0.08,\n  duration: 10,\n};\n\nprintResults(calculateInvestment(data));\n```",
-          "questions": [
-            {
-              "type": "mcq",
-              "question": "Why separate calculateInvestment and printResults?",
-              "options": [
-                "To separate domain logic from presentation",
-                "To avoid return types",
-                "To disable Node",
-                "To create more errors"
-              ],
-              "correct": 0,
-              "explanation": "The calculation can then serve different output layers."
-            },
-            {
-              "type": "mcq",
-              "question": "What does the early return after logging an error achieve?",
-              "options": [
-                "It prevents iterating a string",
-                "It converts the string",
-                "It recompiles",
-                "It adds a year"
-              ],
-              "correct": 0,
-              "explanation": "After the branch returns, results is narrowed to the array type."
-            }
-          ]
-        },
-        {
-          "id": "ts_demo_06",
-          "title": "Compile & Execute the Complete Project",
+          "id": "ts_demo_complete",
+          "title": "Building the Investment Calculator Project",
           "image": "/assets/typescript/ts_demo/06-compile-execute.png",
-          "content": "# Compile & Execute the Complete Project\n\nThe final workflow checks the entire configured project, emits only when it is valid, and runs the generated module.\n\n```bash\nnpx tsc\nnode dist/calculator.js\n```\n\nTry a negative return or zero duration to prove the validation path, then restore valid data and inspect every annual result. The final source below is complete and runnable.\n\n## Complete subclass code — `calculator.ts`\n\n```ts\ntype InvestmentData = {\n  initialAmount: number;\n  annualContribution: number;\n  expectedReturn: number;\n  duration: number;\n};\n\ntype InvestmentResult = {\n  year: string;\n  totalAmount: number;\n  totalContributions: number;\n  totalInterestEarned: number;\n};\n\ntype CalculationResult = InvestmentResult[] | string;\n\nfunction calculateInvestment(data: InvestmentData): CalculationResult {\n  const { initialAmount, annualContribution, expectedReturn, duration } = data;\n\n  if (initialAmount < 0) return 'Initial amount must be at least zero.';\n  if (duration <= 0) return 'Duration must be greater than zero.';\n  if (expectedReturn < 0) return 'Expected return must be at least zero.';\n\n  let total = initialAmount;\n  let totalContributions = 0;\n  let totalInterestEarned = 0;\n  const annualResults: InvestmentResult[] = [];\n\n  for (let year = 1; year <= duration; year++) {\n    total *= 1 + expectedReturn;\n    totalInterestEarned = total - totalContributions - initialAmount;\n    totalContributions += annualContribution;\n    total += annualContribution;\n    annualResults.push({\n      year: `Year ${year}`,\n      totalAmount: total,\n      totalContributions,\n      totalInterestEarned,\n    });\n  }\n\n  return annualResults;\n}\n\nfunction printResults(results: CalculationResult): void {\n  if (typeof results === 'string') {\n    console.log(results);\n    return;\n  }\n\n  for (const result of results) {\n    console.log(result.year);\n    console.log(`Total: ${result.totalAmount.toFixed(0)}`);\n    console.log(`Contributions: ${result.totalContributions.toFixed(0)}`);\n    console.log(`Interest: ${result.totalInterestEarned.toFixed(0)}`);\n    console.log('----------------------');\n  }\n}\n\nconst data: InvestmentData = {\n  initialAmount: 5000,\n  annualContribution: 500,\n  expectedReturn: 0.08,\n  duration: 10,\n};\n\nprintResults(calculateInvestment(data));\n```",
+          "content": "# Building the Investment Calculator Project\n\nLet's bring all our TypeScript skills together into a complete, working demo! We're going to build a CLI tool that takes an initial investment, adds an annual contribution, and projects the growth over a duration of time.\n\n## 1. Setting Up Our Data & Types\nInstead of passing around a bunch of disconnected numbers, we'll group our inputs into a single domain object. We'll also define exactly what a single year of our projection looks like.\n\n```ts\n// 💡 Grouping related data makes our function signatures clean and readable\ntype InvestmentData = {\n  initialAmount: number;\n  annualContribution: number;\n  expectedReturn: number; // 💡 e.g., 0.08 for 8%\n  duration: number;\n};\n\n// 💡 The exact shape of a single projected year's snapshot\ntype InvestmentResult = {\n  year: string;\n  totalAmount: number;\n  totalContributions: number;\n  totalInterestEarned: number;\n};\n```\n\n## 2. Modeling the Outcomes & Validation\nIf a user provides invalid inputs (like a negative investment duration), our calculator can't produce a meaningful projection. We'll use a **Union Type** to be honest about our return values: we'll return an array of results on success, OR a string error message on failure.\n\n```ts\n// 💡 A Union Type perfectly describes a function that might succeed OR fail with a message.\ntype CalculationResult = InvestmentResult[] | string;\n```\nBecause the return type is a union, TypeScript will force whoever calls this function to check the result (narrowing the type) before trying to use it. \n\n## 3. Building the Annual Projection Loop\nNow we build the core math engine. The order of operations inside our loop is critical!\n\n```ts\n// 💡 Inside our loop, we grow the existing money BEFORE adding new contributions.\ntotal *= 1 + expectedReturn;\ntotalInterestEarned = total - totalContributions - initialAmount;\ntotalContributions += annualContribution;\ntotal += annualContribution;\n```\nEvery time the loop finishes a year, we push a new `{}` object into our array. This creates a permanent, immutable snapshot of the investment's state at that specific year.\n\n## 4. Separation of Concerns (Presentation)\nIt's a best practice to keep your math logic completely separate from your UI presentation. Our `calculateInvestment` function only returns data. \n\nWe'll create a dedicated `printResults` function to handle the output. By keeping these separate, you could easily reuse your exact same math logic in a React web app!\n\n```ts\nfunction printResults(results: CalculationResult): void {\n  // 💡 Narrowing the union! If it's a string, it's an error message.\n  if (typeof results === 'string') {\n    console.log(`❌ Error: ${results}`);\n    return; // 💡 Early return stops the rest of the function from running\n  }\n\n  // 💡 Because of the early return above, TypeScript KNOWS results is an array here!\n  for (const result of results) {\n    console.log(result.year);\n  }\n}\n```\n\n## 5. Compiling & Executing\nWe have our complete calculator! To test our entire workflow, we compile the project and run the emitted JavaScript with Node.js.\n\n```bash\n# 💡 Step 1: Compile the TypeScript into JavaScript\nnpx tsc\n\n# 💡 Step 2: Run the newly created JavaScript file\nnode dist/calculator.js\n```\n\n## Complete Code Snippet\n```ts\n// ✅ OK: Final complete application!\ntype InvestmentData = {\n  initialAmount: number;\n  annualContribution: number;\n  expectedReturn: number;\n  duration: number;\n};\n\ntype InvestmentResult = {\n  year: string;\n  totalAmount: number;\n  totalContributions: number;\n  totalInterestEarned: number;\n};\n\ntype CalculationResult = InvestmentResult[] | string;\n\nfunction calculateInvestment(data: InvestmentData): CalculationResult {\n  const { initialAmount, annualContribution, expectedReturn, duration } = data;\n\n  // ✅ OK: Returning validation errors as strings\n  if (initialAmount < 0) return 'Initial amount must be at least zero.';\n  if (duration <= 0) return 'Duration must be greater than zero.';\n  if (expectedReturn < 0) return 'Expected return must be at least zero.';\n\n  let total = initialAmount;\n  let totalContributions = 0;\n  let totalInterestEarned = 0;\n  const annualResults: InvestmentResult[] = [];\n\n  for (let year = 1; year <= duration; year++) {\n    total *= 1 + expectedReturn;\n    totalInterestEarned = total - totalContributions - initialAmount;\n    totalContributions += annualContribution;\n    total += annualContribution;\n    \n    // ✅ OK: Saving an immutable snapshot for this year\n    annualResults.push({\n      year: `Year ${year}`,\n      totalAmount: total,\n      totalContributions,\n      totalInterestEarned,\n    });\n  }\n\n  return annualResults;\n}\n\n// 💡 A dedicated function just for handling the presentation\nfunction printResults(results: CalculationResult): void {\n  if (typeof results === 'string') {\n    // ❌ Error handling\n    console.log(`Error: ${results}`);\n    return;\n  }\n\n  // ✅ OK: Success handling\n  for (const result of results) {\n    console.log(`--- ${result.year} ---`);\n    console.log(`Total: $${result.totalAmount.toFixed(2)}`);\n    console.log(`Contributions: $${result.totalContributions.toFixed(2)}`);\n    console.log(`Interest: $${result.totalInterestEarned.toFixed(2)}`);\n  }\n}\n\n// 💡 Try changing these values to test the error paths!\nconst data: InvestmentData = {\n  initialAmount: 5000,\n  annualContribution: 500,\n  expectedReturn: 0.08,\n  duration: 10,\n};\n\nprintResults(calculateInvestment(data));\n```",
           "questions": [
             {
               "type": "mcq",
-              "question": "What should happen before running dist/calculator.js?",
+              "question": "You're writing the `calculateInvestment` function. Why is it safer to accept a single `data: InvestmentData` object instead of four separate number parameters?",
               "options": [
-                "Compile the configured project",
-                "Run the TypeScript as CSS",
-                "Delete tsconfig",
-                "Install a browser"
+                "It prevents bugs caused by passing arguments in the wrong order, and guarantees the data is clearly labeled.",
+                "TypeScript restricts functions to a maximum of three parameters.",
+                "It automatically validates that the numbers are greater than zero.",
+                "Objects run faster in JavaScript than individual arguments."
               ],
               "correct": 0,
-              "explanation": "The JavaScript output must be produced from checked TypeScript."
+              "explanation": "When a function takes multiple arguments of the same type (like four numbers), it's very easy to accidentally swap them. Passing a single typed object guarantees the data is labeled and structured correctly."
             },
             {
               "type": "mcq",
-              "question": "What is the best final verification?",
+              "question": "You call `calculateInvestment` and store the output in `let myResult`. You immediately try to run `myResult.forEach(...)` but TypeScript throws an error. Why?",
               "options": [
-                "Exercise both valid and invalid inputs",
-                "Only inspect the file name",
-                "Disable noEmitOnError",
-                "Replace types with any"
+                "Because `myResult` is typed as a union (`InvestmentResult[] | string`). It might be an error message string, so you must narrow the type before using array methods.",
+                "Because the array returned by the function is read-only.",
+                "Because `.forEach` is not supported in TypeScript.",
+                "Because the union type automatically converts the array into a string."
               ],
               "correct": 0,
-              "explanation": "Both success and validation branches belong to the contract."
+              "explanation": "When dealing with a union, TypeScript protects you from runtime crashes by forcing you to prove the value is actually an array before you use array methods on it."
+            },
+            {
+              "type": "mcq",
+              "question": "In the projection loop, we mutate the `total` variable. Why don't these mutations ruin the historical snapshots we saved in previous years?",
+              "options": [
+                "Because we create and push a brand new object literal `{...}` on every iteration, capturing the values at that exact moment.",
+                "Because TypeScript makes variables immutable by default inside loops.",
+                "Because we used `const` for the `results` array.",
+                "Because the loop runs asynchronously."
+              ],
+              "correct": 0,
+              "explanation": "Every time the loop runs, a newly allocated object is created and pushed to the array. Modifying the primitive number variables later doesn't reach back and change the properties of the objects we already saved."
+            },
+            {
+              "type": "mcq",
+              "question": "You're building a web dashboard and want to show the investment chart in the browser. Why was separating `calculateInvestment` and `printResults` a great idea?",
+              "options": [
+                "Because you can reuse the exact same `calculateInvestment` math logic in your React app, and simply replace `printResults` with a UI chart component.",
+                "Because it prevents TypeScript from throwing union errors.",
+                "Because browsers cannot run functions that contain `console.log`.",
+                "Because it combines the math and the UI into one file for faster loading."
+              ],
+              "correct": 0,
+              "explanation": "Separation of concerns makes code reusable. Because the calculation doesn't care about *how* things are printed, it can be seamlessly dropped into any environment (CLI, web, mobile, etc.)."
+            },
+            {
+              "type": "mcq",
+              "question": "You make a logic change to `calculator.ts`, but when you run `node dist/calculator.js`, you don't see your changes. What did you forget to do?",
+              "options": [
+                "You forgot to run `npx tsc` to compile the updated TypeScript code into the new JavaScript file.",
+                "You forgot to save the file in your code editor.",
+                "You need to restart your computer to clear the Node.js cache.",
+                "You ran the wrong file; you should have run `node src/calculator.ts`."
+              ],
+              "correct": 0,
+              "explanation": "Node.js only runs the `.js` files in your `dist` folder. If you edit your `.ts` source files, you must always recompile with `tsc` to update the JavaScript output before running it."
             }
           ]
         }
@@ -1071,31 +947,31 @@
           "id": "ts_next_gen_01",
           "title": "Set Up the Modern JavaScript Lab",
           "image": "/assets/typescript/ts_next_gen/01-module-lab.png",
-          "content": "# Set Up the Modern JavaScript Lab\n\nThis section studies JavaScript features that TypeScript understands and can compile for different runtimes. Keep authored TypeScript in `src`, generated JavaScript in `dist`, and let one project configuration control the build.\n\n## Project shape\n\n```text\nnext-gen-lab/\n├─ src/\n│  └─ app.ts\n├─ dist/\n│  └─ app.js\n├─ index.html\n├─ package.json\n└─ tsconfig.json\n```\n\nInstall TypeScript and a lightweight development server, then start the compiler in watch mode beside the server.\n\n```bash\nnpm init -y\nnpm install --save-dev typescript lite-server\nnpx tsc --init\nnpx tsc --watch\nnpx lite-server\n```\n\nThe browser needs the DOM declarations; the compiler target determines how modern syntax is emitted. Source maps keep browser debugging connected to `src/app.ts`.\n\n## Complete subclass code — `tsconfig.json`\n\n```json\n{\n  \"compilerOptions\": {\n    \"target\": \"ES6\",\n    \"lib\": [\"DOM\", \"ES6\", \"DOM.Iterable\", \"ScriptHost\"],\n    \"rootDir\": \"./src\",\n    \"outDir\": \"./dist\",\n    \"sourceMap\": true,\n    \"strict\": true\n  },\n  \"include\": [\"src\"]\n}\n```\n\n## Complete subclass code — `package.json`\n\n```json\n{\n  \"scripts\": {\n    \"build\": \"tsc\",\n    \"dev:types\": \"tsc --watch\",\n    \"dev:web\": \"lite-server\"\n  },\n  \"devDependencies\": {\n    \"lite-server\": \"^2.6.1\",\n    \"typescript\": \"^5.9.0\"\n  }\n}\n```",
+          "content": "# Set Up the Modern JavaScript Lab\n\n## 1. Project Shape\nIn this section, we study modern JavaScript features that TypeScript understands and compiles for different runtimes. We will keep our authored TypeScript in `src`, our generated JavaScript in `dist`, and let one project configuration control the build.\n\n```text\nnext-gen-lab/\n├─ src/\n│  └─ app.ts\n├─ dist/\n│  └─ app.js\n├─ index.html\n├─ package.json\n└─ tsconfig.json\n```\n\n## 2. Installing Dependencies\nFirst, initialize your project and install TypeScript along with a lightweight development server. Then, initialize your `tsconfig.json`.\n\n```bash\nnpm init -y\nnpm install --save-dev typescript lite-server\nnpx tsc --init\n```\n\n## 3. The Configuration\nYour `tsconfig.json` determines how modern syntax is emitted (via `target`). We also enable `sourceMap` to keep browser debugging connected to our original `src/app.ts` file instead of the compiled JavaScript.\n\n## Complete Code Snippet\n**`tsconfig.json`**\n```json\n{\n  \"compilerOptions\": {\n    \"target\": \"ES6\", // 💡 Determines the JavaScript language level of compiler output\n    \"lib\": [\"DOM\", \"ES6\", \"DOM.Iterable\", \"ScriptHost\"],\n    \"rootDir\": \"./src\",\n    \"outDir\": \"./dist\", // 💡 The boundary separating generated files from authored inputs\n    \"sourceMap\": true, // ✅ OK: Enables browser debugging connected to our .ts files\n    \"strict\": true\n  },\n  \"include\": [\"src\"]\n}\n```\n\n**`package.json`**\n```json\n{\n  \"scripts\": {\n    \"build\": \"tsc\",\n    \"dev:types\": \"tsc --watch\",\n    \"dev:web\": \"lite-server\"\n  },\n  \"devDependencies\": {\n    \"lite-server\": \"^2.6.1\",\n    \"typescript\": \"^5.9.0\"\n  }\n}\n```",
           "questions": [
             {
               "type": "mcq",
-              "question": "Why separate src and dist?",
+              "question": "Why is it important to separate your `src` and `dist` directories in your TypeScript project configuration?",
               "options": [
-                "To keep authored TypeScript apart from emitted JavaScript",
-                "To install the DOM",
-                "To replace package.json",
-                "To disable source maps"
+                "To keep authored TypeScript files separate from the generated JavaScript output, preventing emitted files from accidentally becoming project inputs.",
+                "To install the DOM.",
+                "To replace package.json.",
+                "To disable source maps."
               ],
               "correct": 0,
-              "explanation": "The source/output boundary prevents generated files from becoming authored inputs."
+              "explanation": "The source/output boundary prevents generated files from becoming authored inputs and prevents messy directory structures."
             },
             {
               "type": "mcq",
-              "question": "What does target control?",
+              "question": "What is the primary purpose of the `target` option in `tsconfig.json`?",
               "options": [
-                "The JavaScript syntax emitted by TypeScript",
-                "The browser window size",
-                "The npm registry",
-                "The Git remote"
+                "It determines the specific JavaScript language level (e.g., ES5, ES6) that the compiler will output.",
+                "It controls the browser window size during testing.",
+                "It points to the npm registry.",
+                "It configures the Git remote repository."
               ],
               "correct": 0,
-              "explanation": "Target selects the JavaScript language level of compiler output."
+              "explanation": "Target selects the JavaScript language level of compiler output, ensuring compatibility with your deployment environment."
             }
           ]
         },
@@ -1103,31 +979,31 @@
           "id": "ts_next_gen_02",
           "title": "Use `let`, `const` & Block Scope",
           "image": "/assets/typescript/ts_next_gen/02-let-const.png",
-          "content": "# Use let, const & Block Scope\n\nPrefer `const` when the binding will not be reassigned. TypeScript correctly rejects an attempt to point the same constant at another value.\n\n```ts\nconst userName = 'Max';\n// userName = 'Manu'; // Error: cannot assign to a constant.\n```\n\nUse `let` when reassignment is part of the design.\n\n```ts\nlet age = 30;\nage = 29;\n```\n\nUnlike `var`, both declarations obey block scope. A variable declared inside a function or an `if` block stays inside that boundary.\n\n```ts\nfunction add(a: number, b: number): number {\n  var result = a + b;\n  return result;\n}\n\nif (age > 20) {\n  let isOld = true;\n  console.log(isOld);\n}\n\n// console.log(result); // Outside the function.\n// console.log(isOld);  // Outside the if block.\n```\n\n`const` protects the binding, not the internals of a referenced array or object. Later lessons use that distinction when pushing into an array.\n\n## Complete subclass code — `src/app.ts`\n\n```ts\nconst userName = 'Max';\nlet age = 30;\nage = 29;\n\nfunction add(a: number, b: number): number {\n  const result = a + b;\n  return result;\n}\n\nif (age > 20) {\n  const isOld = true;\n  console.log(userName, isOld, add(age, 1));\n}\n```",
+          "content": "# Use let, const & Block Scope\n\n## 1. Choosing Between Let and Const\nIn modern JavaScript and TypeScript, you should prefer `const` whenever a variable's binding will not be reassigned. If you attempt to reassign a `const`, TypeScript will immediately catch the error. Use `let` only when reassignment is an intentional part of your design.\n\n```ts\nconst userName = 'Max';\n// ❌ Error: Cannot assign to 'userName' because it is a constant.\n// userName = 'Manu'; \n\n// ✅ OK: 'let' allows reassignment\nlet age = 30;\nage = 29;\n```\n\n## 2. Block Scope\nUnlike the older `var` keyword, both `let` and `const` obey **block scope**. This means if you declare a variable inside a function or an `if` block, it stays locked inside that specific boundary.\n\n```ts\nif (age > 20) {\n  const isOld = true;\n  console.log(isOld); // ✅ OK: Used inside the block\n}\n// ❌ Error: Cannot find name 'isOld'. It doesn't exist outside the 'if' block!\n// console.log(isOld); \n```\n\n## 3. Const and Object Mutations\nIt is crucial to remember that `const` protects the *binding*, not the internal contents of an array or object. You cannot point the variable to a new array, but you *can* push new items into the existing array!\n\n## Complete Code Snippet\n```ts\nconst userName = 'Max';\nlet age = 30;\nage = 29;\n\nfunction add(a: number, b: number): number {\n  // 💡 Block scoped to this function\n  const result = a + b;\n  return result;\n}\n\nif (age > 20) {\n  // 💡 Block scoped to this 'if' statement\n  const isOld = true;\n  console.log(userName, isOld, add(age, 1));\n}\n```",
           "questions": [
             {
               "type": "mcq",
-              "question": "Which declaration best fits a binding that is never reassigned?",
+              "question": "Which declaration should you use by default if you know a variable will never be reassigned to a new value?",
               "options": [
-                "const",
-                "var",
-                "function",
-                "interface"
+                "`const`, because it communicates your intent and enforces that the binding remains fixed.",
+                "`let`, because it uses less memory.",
+                "`var`, because it is globally scoped.",
+                "`function`, to create a constant binding."
               ],
               "correct": 0,
-              "explanation": "Const communicates and enforces that the binding stays fixed."
+              "explanation": "Const communicates and enforces that the binding stays fixed, reducing bugs caused by accidental reassignments."
             },
             {
               "type": "mcq",
-              "question": "Where is a let declared inside an if block available?",
+              "question": "Where is a variable declared with `let` or `const` inside an `if` block available for use?",
               "options": [
-                "Only inside that block and its nested blocks",
-                "Everywhere in the file",
-                "Only in dist",
-                "Only in HTML"
+                "Only inside that specific `if` block and any blocks nested inside of it, due to block scoping.",
+                "Everywhere in the file, because it gets hoisted.",
+                "Only in the compiled JavaScript `dist` folder.",
+                "Globally across all files."
               ],
               "correct": 0,
-              "explanation": "Let and const are block-scoped."
+              "explanation": "Let and const are block-scoped, meaning they don't leak out into outer scopes."
             }
           ]
         },
@@ -1135,31 +1011,31 @@
           "id": "ts_next_gen_03",
           "title": "Write Arrow Functions & Typed Callbacks",
           "image": "/assets/typescript/ts_next_gen/03-arrow-functions.png",
-          "content": "# Write Arrow Functions & Typed Callbacks\n\nAn arrow function can begin with an explicit block and return statement.\n\n```ts\nconst add = (a: number, b: number) => {\n  return a + b;\n};\n```\n\nWhen the body is one expression, omit the braces and `return`. The expression becomes the result.\n\n```ts\nconst add = (a: number, b: number) => a + b;\nconsole.log(add(2, 5));\n```\n\nA one-parameter function may omit parentheses. Put the function type on the variable when you still want the parameter and return contract to be explicit.\n\n```ts\nconst printOutput = (output: string | number) => console.log(output);\n\nconst typedPrintOutput: (value: string | number) => void =\n  output => console.log(output);\n```\n\nContext also supplies callback types. Here TypeScript knows that `event` is a mouse event because `addEventListener` and the selected event name provide the contract.\n\n```ts\nconst button = document.querySelector('button');\n\nif (button) {\n  button.addEventListener('click', event => console.log(event));\n}\n```\n\n## Complete subclass code — `src/app.ts`\n\n```ts\nconst add = (a: number, b: number): number => a + b;\n\nconst printOutput: (value: number | string) => void = output =>\n  console.log(output);\n\nconst button = document.querySelector('button');\n\nif (button) {\n  button.addEventListener('click', event => console.log(event));\n}\n\nprintOutput(add(2, 5));\n```",
+          "content": "# Write Arrow Functions & Typed Callbacks\n\n## 1. Arrow Function Syntax\nArrow functions provide a shorter syntax for writing functions. You can start with an explicit block and a `return` statement:\n\n```ts\nconst add = (a: number, b: number) => {\n  return a + b;\n};\n```\n\n## 2. Implicit Returns\nWhen your function body is just a single expression, you can omit the curly braces and the `return` keyword entirely! The expression automatically becomes the result.\n\n```ts\n// 💡 The result of a + b is implicitly returned!\nconst add = (a: number, b: number) => a + b;\n```\n\n## 3. Typed Callbacks and Context\nWhen passing arrow functions as callbacks, you can explicitly type the function signature on the variable.\n\n```ts\n// 💡 Explicitly defining the function signature: (value: string | number) => void\nconst printOutput: (value: string | number) => void = output => console.log(output);\n```\nSometimes, you don't even need to write the types! TypeScript uses contextual typing to figure out the parameters. For example, when adding an event listener, TypeScript automatically knows the callback parameter is a MouseEvent.\n\n```ts\nconst button = document.querySelector('button');\nif (button) {\n  // ✅ OK: TypeScript knows 'event' is a MouseEvent because of the 'click' context\n  button.addEventListener('click', event => console.log(event));\n}\n```\n\n## Complete Code Snippet\n```ts\n// ✅ OK: Concise arrow function with implicit return\nconst add = (a: number, b: number): number => a + b;\n\n// 💡 Typing the variable with a function signature\nconst printOutput: (value: number | string) => void = output =>\n  console.log(output);\n\nconst button = document.querySelector('button');\n\nif (button) {\n  // 💡 Contextual typing infers the 'event' type automatically\n  button.addEventListener('click', event => console.log(event));\n}\n\nprintOutput(add(2, 5));\n```",
           "questions": [
             {
               "type": "mcq",
-              "question": "When may an arrow function omit return?",
+              "question": "When are you allowed to omit the `return` keyword in an arrow function?",
               "options": [
-                "When its body is a single returned expression",
-                "Whenever it has two parameters",
-                "Only when it returns void",
-                "Only in JavaScript files"
+                "When the function body consists of a single expression, because the expression's result is returned implicitly.",
+                "Whenever it has exactly two parameters.",
+                "Only when it returns `void`.",
+                "Only in plain JavaScript files."
               ],
               "correct": 0,
-              "explanation": "An expression body returns that expression implicitly."
+              "explanation": "An expression body returns that expression implicitly, allowing for very concise one-liner functions."
             },
             {
               "type": "mcq",
-              "question": "Why can TypeScript infer the click event parameter?",
+              "question": "Why doesn't TypeScript require you to explicitly type the `event` parameter in `button.addEventListener('click', event => ...)`?",
               "options": [
-                "The event-listener signature provides contextual typing",
-                "Every parameter is any",
-                "The browser reads tsconfig",
-                "The callback has no type"
+                "Because the event listener API provides contextual typing; TypeScript knows that a 'click' event yields a MouseEvent parameter.",
+                "Because all callback parameters in TypeScript default to `any`.",
+                "Because the browser reads your `tsconfig.json` to figure it out.",
+                "Because callbacks inherently have no type safety."
               ],
               "correct": 0,
-              "explanation": "The API overload and event name give the callback a known parameter type."
+              "explanation": "The API overload and event name give the callback a known parameter type through contextual typing."
             }
           ]
         },
@@ -1167,31 +1043,31 @@
           "id": "ts_next_gen_04",
           "title": "Apply Default Function Parameters",
           "image": "/assets/typescript/ts_next_gen/04-default-parameters.png",
-          "content": "# Apply Default Function Parameters\n\nA default parameter supplies a value when the caller omits that argument or passes `undefined`.\n\n```ts\nconst add = (a: number, b: number = 1) => a + b;\n\nconsole.log(add(5));    // 6\nconsole.log(add(5, 3)); // 8\n```\n\nPlace defaulted parameters after required parameters. JavaScript assigns arguments by position; it does not search for the parameter you intended to skip.\n\n```ts\n// Avoid this awkward order:\n// const add = (a: number = 1, b: number) => a + b;\n// add(undefined, 5);\n```\n\nThe default participates in type inference, but the explicit annotation keeps the lesson contract obvious.\n\n## Complete subclass code — `src/app.ts`\n\n```ts\nconst add = (a: number, b: number = 1): number => a + b;\n\nconst printOutput: (value: number | string) => void = output =>\n  console.log(output);\n\nprintOutput(add(5));\nprintOutput(add(5, 3));\n```",
+          "content": "# Apply Default Function Parameters\n\n## 1. Setting Defaults\nA default parameter automatically supplies a value if the caller omits that argument or explicitly passes `undefined`. The default value also participates in type inference, though writing the explicit annotation helps keep your function's contract obvious.\n\n```ts\n// 💡 'b' defaults to 1 if no value is provided\nconst add = (a: number, b: number = 1) => a + b;\n\nconsole.log(add(5));    // ✅ OK: Returns 6 (5 + 1)\nconsole.log(add(5, 3)); // ✅ OK: Returns 8 (5 + 3)\n```\n\n## 2. Parameter Ordering\nYou should always place your defaulted parameters **after** your required parameters in the function signature. JavaScript assigns arguments by position; it will not automatically search for the parameter you intended to skip!\n\n```ts\n// ❌ Error-prone design: Default parameter comes first\nconst badAdd = (a: number = 1, b: number) => a + b;\n\n// To skip 'a', you would have to explicitly pass undefined, which is awkward:\nbadAdd(undefined, 5); \n```\n\n## Complete Code Snippet\n```ts\n// ✅ OK: Required parameters first, defaulted parameters last\nconst add = (a: number, b: number = 1): number => a + b;\n\nconst printOutput: (value: number | string) => void = output =>\n  console.log(output);\n\nprintOutput(add(5));    // Uses default: prints 6\nprintOutput(add(5, 3)); // Overrides default: prints 8\n```",
           "questions": [
             {
               "type": "mcq",
-              "question": "Where should a defaulted parameter usually appear?",
+              "question": "In the function `const add = (a: number, b: number = 1) => a + b`, what does `add(5)` return?",
               "options": [
-                "After required parameters",
-                "Before every required parameter",
-                "Outside the function",
-                "Inside tsconfig"
+                "It returns 6, because the omitted second argument automatically falls back to its default value of 1.",
+                "It returns 5, because the second argument is ignored.",
+                "It returns 1, because the first argument defaults to 1.",
+                "It returns undefined because an argument is missing."
               ],
               "correct": 0,
-              "explanation": "Trailing defaults let callers omit arguments naturally."
+              "explanation": "The omitted second argument uses its default value of 1, resulting in 5 + 1."
             },
             {
               "type": "mcq",
-              "question": "What does add(5) return when b defaults to 1?",
+              "question": "Why should default parameters generally be placed at the end of the parameter list?",
               "options": [
-                "6",
-                "5",
-                "1",
-                "undefined"
+                "Because JavaScript assigns arguments by position. Trailing defaults allow callers to simply omit the final arguments naturally.",
+                "Because TypeScript compilers only process defaults at the end of the line.",
+                "Because placing them at the beginning causes them to become global variables.",
+                "Because they are required to be configured in `tsconfig.json`."
               ],
               "correct": 0,
-              "explanation": "The omitted second argument uses its default value."
+              "explanation": "Trailing defaults let callers omit arguments naturally without having to pass awkward placeholders like `undefined`."
             }
           ]
         },
@@ -1199,31 +1075,31 @@
           "id": "ts_next_gen_05",
           "title": "Copy & Combine with the Spread Operator",
           "image": "/assets/typescript/ts_next_gen/05-spread.png",
-          "content": "# Copy & Combine with the Spread Operator\n\nSpread expands an iterable into individual values. It can feed an existing array's `push` call.\n\n```ts\nconst hobbies = ['Sports', 'Cooking'];\nconst activeHobbies = ['Hiking'];\n\nactiveHobbies.push(...hobbies);\n```\n\nIt can also build a new array without changing either input binding.\n\n```ts\nconst allHobbies = ['Reading', ...activeHobbies];\n```\n\nObject spread copies enumerable properties into a new object.\n\n```ts\nconst person = { firstName: 'Max', age: 30 };\nconst copiedPerson = { ...person };\n```\n\nArrays and objects are reference values. `const activeHobbies` may still be mutated because `push` changes the referenced array instead of reassigning the binding. Also remember that object and array spread are **shallow**: nested objects remain shared unless you copy them separately.\n\n## Complete subclass code — `src/app.ts`\n\n```ts\nconst hobbies = ['Sports', 'Cooking'];\nconst activeHobbies = ['Hiking'];\n\nactiveHobbies.push(...hobbies);\n\nconst allHobbies = ['Reading', ...activeHobbies];\n\nconst person = {\n  firstName: 'Max',\n  age: 30,\n};\n\nconst copiedPerson = { ...person };\n\nconsole.log(activeHobbies, allHobbies, copiedPerson);\n```",
+          "content": "# Copy & Combine with the Spread Operator\n\n## 1. Expanding Arrays\nThe spread operator (`...`) expands an iterable (like an array) into individual separate values. It is incredibly useful for feeding an existing array's items into functions like `push` that accept multiple arguments.\n\n```ts\nconst hobbies = ['Sports', 'Cooking'];\nconst activeHobbies = ['Hiking'];\n\n// 💡 Expands 'hobbies' into individual strings and pushes them one by one\nactiveHobbies.push(...hobbies);\n```\n\n## 2. Creating New Copies\nYou can also use the spread operator to build brand new arrays or objects without modifying the original inputs.\n\n```ts\n// ✅ OK: Creates a new array combining a new string with all items from activeHobbies\nconst allHobbies = ['Reading', ...activeHobbies];\n\n// ✅ OK: Copies all enumerable properties of 'person' into a brand new object\nconst person = { firstName: 'Max', age: 30 };\nconst copiedPerson = { ...person };\n```\n\n## 3. Shallow Copies Warning\nIt is important to remember that object and array spreads create **shallow copies**. If your object contains nested arrays or objects, those nested references remain shared between the original and the copy!\n\n## Complete Code Snippet\n```ts\nconst hobbies = ['Sports', 'Cooking'];\nconst activeHobbies = ['Hiking'];\n\n// 💡 Expanding an array into arguments\nactiveHobbies.push(...hobbies);\n\n// 💡 Using spread to combine arrays\nconst allHobbies = ['Reading', ...activeHobbies];\n\nconst person = {\n  firstName: 'Max',\n  age: 30,\n};\n\n// 💡 Using spread to copy object properties\nconst copiedPerson = { ...person };\n\nconsole.log(activeHobbies, allHobbies, copiedPerson);\n```",
           "questions": [
             {
               "type": "mcq",
-              "question": "What does activeHobbies.push(...hobbies) do?",
+              "question": "When you execute `activeHobbies.push(...hobbies)`, what exactly does the spread operator do?",
               "options": [
-                "Passes each hobby as a separate push argument",
-                "Pushes one nested array",
-                "Reassigns hobbies",
-                "Deletes Hiking"
+                "It expands the `hobbies` array so that each item is passed as an individual, separate argument to the `push` method.",
+                "It pushes the entire `hobbies` array as a single nested array inside `activeHobbies`.",
+                "It permanently reassigns `activeHobbies` to equal `hobbies`.",
+                "It deletes all items from `hobbies` and moves them."
               ],
               "correct": 0,
-              "explanation": "Spread expands the source array into individual arguments."
+              "explanation": "Spread expands the source iterable into individual arguments, feeding them directly into the function call."
             },
             {
               "type": "mcq",
-              "question": "Is { ...person } a deep copy of every nested value?",
+              "question": "True or False: `{ ...person }` creates a complete, deep copy of the person object, including completely copying all nested objects and arrays inside it.",
               "options": [
-                "No, spread creates a shallow copy",
-                "Yes, always",
-                "Only when target is ES5",
-                "Only in TypeScript"
+                "False. The spread operator creates a shallow copy. Any nested objects or arrays will still be shared by reference between the original and the copy.",
+                "True. Spread always creates a recursive deep copy of all values.",
+                "True, but only if you are compiling to ES6.",
+                "False. Spread can only be used on arrays, not objects."
               ],
               "correct": 0,
-              "explanation": "Nested references remain shared unless they are copied explicitly."
+              "explanation": "Nested references remain shared unless they are explicitly copied individually."
             }
           ]
         },
@@ -1231,31 +1107,31 @@
           "id": "ts_next_gen_06",
           "title": "Collect Values with Rest Parameters",
           "image": "/assets/typescript/ts_next_gen/06-rest-parameters.png",
-          "content": "# Collect Values with Rest Parameters\n\nRest syntax appears in a parameter list and performs the inverse of spread: it collects comma-separated arguments into an array.\n\n```ts\nconst add = (...numbers: number[]) => {\n  return numbers.reduce((currentResult, currentValue) => {\n    return currentResult + currentValue;\n  }, 0);\n};\n\nconst addedNumbers = add(5, 10, 2, 3.7);\n```\n\nThe initial `0` gives `reduce` a valid accumulator even when the rest array is empty. A tuple rest type can require an exact arity when the domain calls for it.\n\n```ts\nconst addExactlyThree = (...numbers: [number, number, number]) =>\n  numbers.reduce((total, value) => total + value, 0);\n\naddExactlyThree(5, 10, 2);\n// addExactlyThree(5, 10); // Error: expected three arguments.\n```\n\nUse `number[]` for any count and a tuple for a fixed count. Array methods such as `push` expose a rest-style signature for the same reason: callers may provide multiple values.\n\n## Complete subclass code — `src/app.ts`\n\n```ts\nconst add = (...numbers: number[]): number => {\n  return numbers.reduce((currentResult, currentValue) => {\n    return currentResult + currentValue;\n  }, 0);\n};\n\nconst addExactlyThree = (\n  ...numbers: [number, number, number]\n): number => numbers.reduce((total, value) => total + value, 0);\n\nconst addedNumbers = add(5, 10, 2, 3.7);\nconst threeNumberTotal = addExactlyThree(5, 10, 2);\n\nconsole.log(addedNumbers, threeNumberTotal);\n```",
+          "content": "# Collect Values with Rest Parameters\n\n## 1. Collecting Arguments\nWhile the spread operator expands arrays into separate values, the **Rest Parameter** does the exact opposite! It appears in a function's parameter list and collects a comma-separated list of arguments into a single array.\n\n```ts\n// 💡 The '...numbers' rest parameter collects all arguments into an array of numbers\nconst add = (...numbers: number[]) => {\n  return numbers.reduce((currentResult, currentValue) => {\n    return currentResult + currentValue;\n  }, 0);\n};\n\nconst addedNumbers = add(5, 10, 2, 3.7); // ✅ OK: All 4 numbers are collected into the array\n```\n*Note: The initial `0` gives `reduce` a valid accumulator even when the rest array is empty.*\n\n## 2. Rest Parameters with Tuples\nYou can use `number[]` for any unknown count of arguments. But if your domain requires a specific, fixed number of arguments, you can type the rest parameter as a Tuple!\n\n```ts\n// 💡 Forcing the rest parameter to collect exactly three numbers\nconst addExactlyThree = (...numbers: [number, number, number]) =>\n  numbers.reduce((total, value) => total + value, 0);\n\naddExactlyThree(5, 10, 2); // ✅ OK\n// ❌ Error: Expected 3 arguments, but got 2.\n// addExactlyThree(5, 10); \n```\n\n## Complete Code Snippet\n```ts\n// ✅ OK: Collects any number of arguments into a number array\nconst add = (...numbers: number[]): number => {\n  return numbers.reduce((currentResult, currentValue) => {\n    return currentResult + currentValue;\n  }, 0);\n};\n\n// ✅ OK: Collects exactly three arguments using a Tuple type\nconst addExactlyThree = (\n  ...numbers: [number, number, number]\n): number => numbers.reduce((total, value) => total + value, 0);\n\nconst addedNumbers = add(5, 10, 2, 3.7);\nconst threeNumberTotal = addExactlyThree(5, 10, 2);\n\nconsole.log(addedNumbers, threeNumberTotal);\n```",
           "questions": [
             {
               "type": "mcq",
-              "question": "What does a rest parameter create inside the function?",
+              "question": "What does a rest parameter (`...args`) do when used inside a function's parameter list?",
               "options": [
-                "An array of collected arguments",
-                "A DOM event",
-                "A new tsconfig",
-                "A deep copy"
+                "It collects all the remaining individual arguments passed to the function and merges them into a single array variable.",
+                "It forces the function to pause execution.",
+                "It creates a new `tsconfig.json` property.",
+                "It performs a deep copy of the arguments."
               ],
               "correct": 0,
-              "explanation": "Rest merges the remaining call arguments into an array."
+              "explanation": "Rest merges the remaining comma-separated call arguments into an array structure."
             },
             {
               "type": "mcq",
-              "question": "When is a tuple rest type useful?",
+              "question": "Why might you type a rest parameter as a Tuple (e.g., `...args: [string, number]`) instead of an open array (`...args: any[]`)?",
               "options": [
-                "When the function requires an exact number and order of arguments",
-                "When any count is allowed",
-                "When compiling CSS",
-                "When no types are wanted"
+                "To enforce a strict contract requiring an exact number of arguments in a specific order, catching mistakes if the caller provides too few or too many arguments.",
+                "Because any count of arguments is allowed in TypeScript.",
+                "To compile the application as CSS.",
+                "Because TypeScript requires all arrays to be tuples."
               ],
               "correct": 0,
-              "explanation": "A tuple captures fixed arity and positional types."
+              "explanation": "A tuple captures fixed arity (number of arguments) and strict positional types, giving you maximum type safety."
             }
           ]
         },
@@ -1263,31 +1139,31 @@
           "id": "ts_next_gen_07",
           "title": "Destructure Arrays & Objects",
           "image": "/assets/typescript/ts_next_gen/07-destructuring.png",
-          "content": "# Destructure Arrays & Objects\n\nArray destructuring reads by position. Rest can collect all values left after the named positions.\n\n```ts\nconst hobbies = ['Sports', 'Cooking', 'Hiking', 'Reading'];\nconst [hobby1, hobby2, ...remainingHobbies] = hobbies;\n\nconsole.log(hobbies, hobby1, hobby2, remainingHobbies);\n```\n\nThe original array remains unchanged. Object destructuring reads by property key rather than order.\n\n```ts\nconst person = { firstName: 'Max', age: 30 };\nconst { firstName, age } = person;\n```\n\nUse a colon to give the extracted property a local alias.\n\n```ts\nconst { firstName: userName, age } = person;\nconsole.log(userName, age);\n```\n\nIn this position, the colon means “rename `firstName` to `userName`”; it is not a TypeScript type annotation.\n\n## Complete subclass code — `src/app.ts`\n\n```ts\nconst hobbies = ['Sports', 'Cooking', 'Hiking', 'Reading'];\nconst [hobby1, hobby2, ...remainingHobbies] = hobbies;\n\nconst person = {\n  firstName: 'Max',\n  age: 30,\n};\n\nconst { firstName: userName, age } = person;\n\nconsole.log(hobbies);\nconsole.log(hobby1, hobby2, remainingHobbies);\nconsole.log(userName, age);\n```",
+          "content": "# Destructure Arrays & Objects\n\n## 1. Array Destructuring\nDestructuring allows you to easily extract values from arrays and objects into distinct variables. For arrays, destructuring extracts values strictly **by position**. You can also combine this with the rest operator to collect the remaining unextracted values!\n\n```ts\nconst hobbies = ['Sports', 'Cooking', 'Hiking', 'Reading'];\n\n// 💡 Extracts the first two positions, and collects the rest into a new array!\nconst [hobby1, hobby2, ...remainingHobbies] = hobbies;\n\nconsole.log(hobby1); // 'Sports'\nconsole.log(remainingHobbies); // ['Hiking', 'Reading']\n```\n*Note: The original array remains completely unchanged.*\n\n## 2. Object Destructuring\nUnlike arrays, object destructuring extracts values **by property key name**, regardless of the order they appear in the object.\n\n```ts\nconst person = { firstName: 'Max', age: 30 };\n// 💡 Extracts variables matching the exact property names\nconst { firstName, age } = person; \n```\n\nIf you want to extract a property but give it a different local variable name, use a colon (`:`).\n```ts\n// 💡 The colon here means \"rename firstName to userName\". It is NOT a TypeScript type annotation!\nconst { firstName: userName, age } = person;\nconsole.log(userName, age);\n```\n\n## Complete Code Snippet\n```ts\nconst hobbies = ['Sports', 'Cooking', 'Hiking', 'Reading'];\n\n// ✅ OK: Array destructuring by position, utilizing the rest operator\nconst [hobby1, hobby2, ...remainingHobbies] = hobbies;\n\nconst person = {\n  firstName: 'Max',\n  age: 30,\n};\n\n// ✅ OK: Object destructuring by key, renaming firstName to userName\nconst { firstName: userName, age } = person;\n\nconsole.log(hobbies);\nconsole.log(hobby1, hobby2, remainingHobbies);\nconsole.log(userName, age);\n```",
           "questions": [
             {
               "type": "mcq",
-              "question": "How does array destructuring choose values?",
+              "question": "How does array destructuring determine which values are assigned to which variables?",
               "options": [
-                "By position",
-                "By property name",
-                "Alphabetically",
-                "From tsconfig"
+                "Array patterns map variables strictly by their ordered position within the array.",
+                "By matching the property names of the array.",
+                "Alphabetically.",
+                "By checking the `tsconfig.json`."
               ],
               "correct": 0,
-              "explanation": "Array patterns map variables to ordered elements."
+              "explanation": "Array patterns rely entirely on position (index) to map variables to array elements."
             },
             {
               "type": "mcq",
-              "question": "What does firstName: userName mean in object destructuring?",
+              "question": "When destructuring an object, what does the syntax `{ firstName: userName }` achieve?",
               "options": [
-                "Extract firstName into a local named userName",
-                "Type firstName as userName",
-                "Assign userName to the object",
-                "Delete firstName"
+                "It extracts the value of the `firstName` property, but assigns it to a newly created local variable named `userName`.",
+                "It types `firstName` as the `userName` object.",
+                "It assigns the value of `userName` to the `firstName` property in the object.",
+                "It deletes `firstName` from the object."
               ],
               "correct": 0,
-              "explanation": "The colon introduces a local alias in an object binding pattern."
+              "explanation": "The colon introduces a local alias in an object binding pattern, renaming it for your local scope without changing the original object."
             }
           ]
         },
@@ -1295,31 +1171,585 @@
           "id": "ts_next_gen_08",
           "title": "Compile Modern Syntax for Older Runtimes",
           "image": "/assets/typescript/ts_next_gen/08-compile-target.png",
-          "content": "# Compile Modern Syntax for Older Runtimes\n\nWith an ES6 target, many features in this section already belong to the output language, so declarations, arrow functions, and destructuring can remain recognizable in `dist/app.js`.\n\n```json\n{\n  \"compilerOptions\": {\n    \"target\": \"ES6\"\n  }\n}\n```\n\nSwitching to ES5 asks TypeScript to rewrite unsupported syntax. The emitted file becomes longer: `const` and `let` become `var`, arrow functions become ordinary functions, destructuring becomes indexed/property reads, and spread/rest may use helper logic.\n\n```json\n{\n  \"compilerOptions\": {\n    \"target\": \"ES5\"\n  }\n}\n```\n\nIf `lib` is omitted, TypeScript chooses default library declarations that match the target. Add platform libraries such as `DOM` explicitly only when the program uses them. The key distinction is:\n\n- TypeScript-only syntax, such as type annotations, is removed.\n- Modern JavaScript syntax is preserved or transformed according to `target`.\n- Runtime APIs are not polyfilled by the compiler; compatibility may still require a polyfill.\n\n## Complete subclass code — `src/app.ts`\n\n```ts\nconst hobbies = ['Sports', 'Cooking', 'Hiking', 'Reading'];\nconst [hobby1, hobby2, ...remainingHobbies] = hobbies;\n\nconst person = {\n  firstName: 'Max',\n  age: 30,\n};\n\nconst { firstName: userName, age } = person;\n\nconsole.log(hobbies);\nconsole.log(hobby1, hobby2, remainingHobbies);\nconsole.log(userName, age);\n```\n\n## Complete subclass code — `tsconfig.json`\n\n```json\n{\n  \"compilerOptions\": {\n    \"target\": \"ES5\",\n    \"lib\": [\"DOM\", \"ES5\", \"ScriptHost\"],\n    \"rootDir\": \"./src\",\n    \"outDir\": \"./dist\",\n    \"sourceMap\": true,\n    \"strict\": true\n  },\n  \"include\": [\"src\"]\n}\n```",
+          "content": "# Compile Modern Syntax for Older Runtimes\n\n## 1. The Power of `target`\nWhen your `tsconfig.json` has an `ES6` target, many of the modern features in this section (like arrow functions, `let`/`const`, and destructuring) are left exactly as they are in your emitted JavaScript, because ES6 natively supports them!\n\n```json\n{\n  \"compilerOptions\": {\n    \"target\": \"ES6\" // 💡 Keeps modern syntax intact\n  }\n}\n```\n\n## 2. Compiling for Older Browsers\nIf you need to support older browsers, you can change the target to `ES5`. TypeScript will automatically rewrite your modern syntax into older equivalents. Your emitted file will become much longer: `let` and `const` will turn into `var`, arrow functions become standard functions, and destructuring becomes manual property lookups!\n\n```json\n{\n  \"compilerOptions\": {\n    \"target\": \"ES5\" // 💡 Forces TypeScript to transpile down to older syntax\n  }\n}\n```\n\n## 3. Polyfills vs. Transpilation\nIt is critical to understand the distinction of what the compiler does:\n* **Syntax Transpilation:** Modern *syntax* (like arrow functions) is rewritten to match your `target`. TypeScript-only syntax (like types) is completely removed.\n* **No Runtime Polyfills:** Missing modern *APIs* (like `Promise` or `fetch`) are **not** polyfilled by the compiler! If your target environment doesn't support them, you must include a separate polyfill library.\n\n## Complete Code Snippet\n**`src/app.ts`**\n```ts\nconst hobbies = ['Sports', 'Cooking', 'Hiking', 'Reading'];\nconst [hobby1, hobby2, ...remainingHobbies] = hobbies;\n\nconst person = {\n  firstName: 'Max',\n  age: 30,\n};\n\nconst { firstName: userName, age } = person;\n\nconsole.log(hobbies, hobby1, hobby2, remainingHobbies, userName, age);\n```\n\n**`tsconfig.json`**\n```json\n{\n  \"compilerOptions\": {\n    // ✅ OK: Set to ES5 to safely support older runtimes!\n    \"target\": \"ES5\",\n    \"lib\": [\"DOM\", \"ES5\", \"ScriptHost\"],\n    \"rootDir\": \"./src\",\n    \"outDir\": \"./dist\",\n    \"sourceMap\": true,\n    \"strict\": true\n  },\n  \"include\": [\"src\"]\n}\n```",
           "questions": [
             {
               "type": "mcq",
-              "question": "What happens to modern JavaScript syntax when target changes to ES5?",
+              "question": "What happens to your modern `let` declarations and arrow functions when you change your TypeScript compilation target from `ES6` to `ES5`?",
               "options": [
-                "TypeScript rewrites unsupported syntax into older equivalents",
-                "The source file is deleted",
-                "Types become runtime validators",
-                "The browser target changes itself"
+                "TypeScript automatically transpiles and rewrites the unsupported modern syntax into older equivalents (like using `var` and standard functions) so it runs safely on older engines.",
+                "The source file is deleted.",
+                "Types become runtime validators.",
+                "The browser target changes itself automatically."
               ],
               "correct": 0,
-              "explanation": "Target controls the language level of generated JavaScript."
+              "explanation": "Target controls the language level of generated JavaScript, converting new syntactical features down to older equivalents when needed."
             },
             {
               "type": "mcq",
-              "question": "Does TypeScript automatically polyfill every modern runtime API?",
+              "question": "Does changing the TypeScript target to `ES5` automatically polyfill missing runtime APIs, like `fetch` or `Promise`, for older browsers?",
               "options": [
-                "No",
-                "Yes",
-                "Only in strict mode",
-                "Only with source maps"
+                "No. TypeScript only transpiles modern syntax. It does not provide runtime polyfills for missing browser APIs; you must add those separately.",
+                "Yes, TypeScript includes a full suite of polyfills.",
+                "Only if you compile in strict mode.",
+                "Only if you use source maps."
               ],
               "correct": 0,
-              "explanation": "Compilation can transform syntax, but missing runtime APIs need separate polyfills or a newer runtime."
+              "explanation": "Compilation can transform syntax, but missing runtime APIs need separate polyfills or a newer runtime environment."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Section 6 · Classes & Interfaces",
+      "subtopics": [
+        {
+          "id": "ts_classes_01",
+          "title": "Create Classes, Fields & Instances",
+          "image": "/assets/typescript/ts_classes/01-class-blueprints.png",
+          "content": "# Create Classes, Fields & Instances\n\n## 1. What is a Class?\nThink of a class as a reusable blueprint for creating objects. Instead of manually writing out `{ name: 'Max', age: 36 }` over and over, you create a `User` class. \n\nIn TypeScript, unlike plain JavaScript, you **must explicitly declare your instance fields** before you use them in the constructor. If you try to assign `this.name = ...` without declaring `name` first, TypeScript will throw a helpful error!\n\n```ts\nclass User {\n  // 💡 Explicitly declaring fields that every instance will have\n  name: string;\n  age: number;\n\n  constructor(n: string, a: number) {\n    // ✅ OK: These assignments work because we declared the fields above\n    this.name = n;\n    this.age = a;\n  }\n}\n```\n\n## 2. Instantiating Objects\nWhen you use the `new` keyword, you allocate a separate, brand-new object in memory and run the constructor function to initialize its data.\n\n```ts\n// 💡 The 'new' keyword builds a distinct object using our blueprint\nconst max = new User('Max', 36);\nconst fred = new User('Fred', 29);\n```\n*Note: Constructor parameter names (like `n` and `a`) are just local implementation details. They don't have to match the class field names (`name` and `age`).*\n\n## 3. What Happens During Compilation?\nWhen TypeScript compiles this class into JavaScript, all the type annotations (like `: string` and `: number`) completely disappear. However, the class structure and the constructor assignments remain, because classes are natively supported in modern JavaScript!\n\n## Complete Code Snippet\n```ts\nclass User {\n  // 💡 Instance fields must be declared up front\n  name: string;\n  age: number;\n\n  constructor(displayName: string, yearsOld: number) {\n    // ✅ OK: Initializing the instance fields\n    this.name = displayName;\n    this.age = yearsOld;\n  }\n\n  // 💡 A method available on all instances\n  describe(): string {\n    return this.name + ' is ' + this.age + ' years old.';\n  }\n}\n\nconst max = new User('Max', 36);\nconst fred = new User('Fred', 29);\n\nconsole.log(max.describe());\nconsole.log(fred.describe());\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "You write a constructor that assigns `this.name = n`. Why does TypeScript require you to declare the `name` field at the top of the class first?",
+              "options": [
+                "It establishes the exact shape of the instance, ensuring that every `User` object generated by this class possesses a strictly typed `name` field.",
+                "It tells Node.js to create a database column for that property.",
+                "It automatically makes the class abstract.",
+                "It hides the field from being visible at runtime."
+              ],
+              "correct": 0,
+              "explanation": "TypeScript needs to know the \"shape\" of your blueprint before it allows you to assign values to it. Declaring the fields up front guarantees the object's structure."
+            },
+            {
+              "type": "mcq",
+              "question": "What exactly happens under the hood when you execute `new User('Max', 36)`?",
+              "options": [
+                "It allocates a brand new object in memory linked to the class blueprint, and immediately invokes the constructor to initialize it.",
+                "It creates a TypeScript type alias that disappears during compilation.",
+                "It triggers the compiler to rebuild the entire project.",
+                "It merges two interfaces together into a single object."
+              ],
+              "correct": 0,
+              "explanation": "The `new` operator is a core JavaScript feature that instantiates a fresh object and runs the class's setup function (the constructor)."
+            }
+          ]
+        },
+        {
+          "id": "ts_classes_02",
+          "title": "Use Parameter Properties & Access Modifiers",
+          "image": "/assets/typescript/ts_classes/02-parameter-properties.png",
+          "content": "# Use Parameter Properties & Access Modifiers\n\n## 1. Access Modifiers (`public` and `private`)\nIn a large application, you don't want outside code randomly altering an object's internal state. TypeScript introduces **Access Modifiers** to protect your data:\n* `public`: (Default) The field can be read and modified from anywhere.\n* `private`: The field can ONLY be read or modified from *inside* the class where it was defined.\n\n```ts\nclass User {\n  public name: string;\n  private age: number; // 💡 Protected from outside access!\n\n  constructor(n: string, a: number) {\n    this.name = n;\n    this.age = a;\n  }\n}\n```\n\n## 2. Parameter Properties Shortcut\nIn the previous example, we had to declare `name` at the top of the class, accept it as a constructor parameter, and then manually assign it using `this.name = n;`. Doing this for every single field is incredibly repetitive. TypeScript offers a brilliant shortcut: **Parameter Properties**.\n\nIf you place an access modifier (like `public` or `private`) directly in front of a constructor parameter, TypeScript automatically creates the field and assigns it for you!\n\n```ts\nclass User {\n  // 💡 This one line automatically creates the 'name' and 'age' fields AND assigns them!\n  constructor(public name: string, private age: number) {}\n}\n```\n*Note: If you omit the modifier in the constructor, it remains just a normal function parameter and does not become a class field.*\n\n## 3. Development vs. Runtime\nRemember, `private` and `public` are TypeScript features. They prevent you from making mistakes while writing code, but they are completely removed when compiled to JavaScript. (Modern JavaScript does have native `#privateFields`, but that is a different feature!).\n\n## Complete Code Snippet\n```ts\nclass User {\n  // 💡 A normal public field initialized directly\n  public hobbies: string[] = [];\n\n  // ✅ OK: Parameter properties automatically declare and assign 'name' and 'age'\n  constructor(public name: string, private age: number) {}\n\n  addHobby(hobby: string): void {\n    this.hobbies.push(hobby);\n  }\n\n  greet(): string {\n    return 'Hi, I am ' + this.name + ' and I am ' + this.age + '.';\n  }\n}\n\nconst user = new User('Max', 36);\n\n// ✅ OK: 'name' is public\nuser.name = 'Maximilian'; \nuser.addHobby('TypeScript');\n\n// ❌ Error: Property 'age' is private and only accessible within class 'User'.\n// console.log(user.age); \n\nconsole.log(user.greet(), user.hobbies);\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What is the specific trigger that tells TypeScript to turn a constructor parameter into an automatic instance field?",
+              "options": [
+                "Prefixing the parameter with an access modifier such as `public` or `private`.",
+                "Including a `return` statement in the constructor.",
+                "Using the `new` keyword when calling the constructor.",
+                "Making the parameter optional with a question mark (`?`)."
+              ],
+              "correct": 0,
+              "explanation": "Adding an access modifier inside the constructor parameters activates the Parameter Properties shorthand, automatically declaring and assigning the field."
+            },
+            {
+              "type": "mcq",
+              "question": "You declare a field as `private age: number;`. Where in your codebase is it legal to read or modify this field?",
+              "options": [
+                "Only from methods located inside the exact declaring class.",
+                "From anywhere in the module where the class is exported.",
+                "From any subclass that extends the declaring class.",
+                "Only from within an interface."
+              ],
+              "correct": 0,
+              "explanation": "The `private` modifier is strictly limited to the class in which the field is defined, preventing any outside code (even subclasses) from tampering with it."
+            }
+          ]
+        },
+        {
+          "id": "ts_classes_03",
+          "title": "Protect State with readonly, Accessors & Static Members",
+          "image": "/assets/typescript/ts_classes/03-readonly-accessors-static.png",
+          "content": "# Protect State with readonly, Accessors & Static Members\n\n## 1. The `readonly` Modifier\nSometimes `private` isn't what you want; you want a field to be public so anyone can read it, but you never want it to be reassigned after it's initialized. That's where `readonly` comes in!\n\n```ts\nclass User {\n  readonly id: string = 'USER-1';\n}\nconst u = new User();\n// ❌ Error: Cannot assign to 'id' because it is a read-only property.\n// u.id = 'USER-2';\n```\n*Warning: `readonly` is shallow! If you mark an array as readonly, you cannot point it to a new array, but you CAN still push items into the existing array!*\n\n## 2. Getters & Setters (Accessors)\nSometimes you need to run logic when a property is read or changed (like validating a name). Getters and Setters allow you to write functions that *look and act* like normal properties from the outside.\n\n```ts\nclass User {\n  private _firstName = '';\n\n  // 💡 Setter: Validates the data before saving it\n  set firstName(name: string) {\n    if (name.trim() === '') throw new Error('Invalid name.');\n    this._firstName = name;\n  }\n\n  // 💡 Getter: Computes data on the fly when requested\n  get firstName() { return this._firstName; }\n}\n// ✅ OK: Accessed like a normal property, not a function call!\nuser.firstName = 'Max'; \n```\n\n## 3. Static Members\nMost properties belong to an *instance* of a class (`new User()`). But what if you want a property or utility function attached to the class blueprint itself? You use the `static` keyword.\n\n```ts\nclass User {\n  static readonly entityType = 'USER_MODEL';\n  static describeModel() { return 'A user in our system'; }\n}\n// ✅ OK: Called directly on the class itself!\nconsole.log(User.entityType);\n```\n\n## Complete Code Snippet\n```ts\nclass User {\n  // 💡 Static members are attached directly to the class\n  static readonly entityId = 'USER';\n  \n  // 💡 Readonly prevents reassignment, but allows array mutations\n  readonly hobbies: string[] = [];\n  \n  // 💡 Private backing fields for our accessors\n  private _firstName = '';\n  private _lastName = '';\n\n  set firstName(name: string) {\n    if (name.trim() === '') throw new Error('Invalid first name.');\n    this._firstName = name;\n  }\n\n  set lastName(name: string) {\n    if (name.trim() === '') throw new Error('Invalid last name.');\n    this._lastName = name;\n  }\n\n  get fullName(): string {\n    return this._firstName + ' ' + this._lastName;\n  }\n\n  static greet(): string {\n    return 'Hello from the User type.';\n  }\n}\n\nconst max = new User();\n// 💡 These look like property assignments, but they actually trigger the 'set' methods!\nmax.firstName = 'Max';\nmax.lastName = 'Schwarz';\nmax.hobbies.push('Coding'); // ✅ OK: Readonly arrays can still be mutated\n\n// 💡 Calling static members directly on the class\nconsole.log(User.entityId, User.greet());\nconsole.log(max.fullName, max.hobbies);\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "You have a field defined as `readonly hobbies: string[] = [];`. Why does TypeScript allow you to successfully run `user.hobbies.push('Coding')`?",
+              "options": [
+                "Because `readonly` only protects the property binding (preventing you from reassigning it to a completely different array). It does not freeze the internal contents of the mutable array.",
+                "Because the `.push()` method creates a brand new class under the hood.",
+                "Because arrays completely ignore TypeScript rules.",
+                "Because the member was implicitly marked as `static`."
+              ],
+              "correct": 0,
+              "explanation": "The `readonly` modifier in TypeScript is shallow. It prevents variable reassignment, but deep mutations (like pushing to an array or changing a nested object's properties) are still permitted."
+            },
+            {
+              "type": "mcq",
+              "question": "If you define a getter method inside a class using `get fullName(): string { ... }`, how must you access it on an instance named `user`?",
+              "options": [
+                "By accessing it like a standard property: `user.fullName`",
+                "By executing it like a standard function: `user.fullName()`",
+                "By calling it statically on the class: `User.fullName`",
+                "By using the new keyword: `new fullName()`"
+              ],
+              "correct": 0,
+              "explanation": "Getters (and setters) expose computed logic through standard property syntax. You do not use parentheses to execute them."
+            }
+          ]
+        },
+        {
+          "id": "ts_classes_04",
+          "title": "Build Inheritance with super & protected",
+          "image": "/assets/typescript/ts_classes/04-inheritance-protected.png",
+          "content": "# Build Inheritance with super & protected\n\n## 1. The `extends` Keyword\nOften, multiple classes share the exact same logic. Instead of duplicating code, you can use **Inheritance**. The `extends` keyword allows a new subclass to inherit all accessible fields and methods from a base class.\n\n```ts\nclass Employee extends User {\n  // Employee inherits everything from User, and can add its own specific logic!\n}\n```\n\n## 2. Using `super()`\nIf your subclass has its own `constructor`, you are strictly required to call `super()` before using `this`. \n\nCalling `super(...)` executes the base class's constructor. You must pass it any arguments that the base class requires to initialize its portion of the object.\n\n```ts\nclass Employee extends User {\n  constructor(name: string, public jobTitle: string) {\n    // 💡 Passes 'name' up to the User constructor to handle\n    super(name);\n  }\n}\n```\n\n## 3. The `protected` Modifier\nEarlier, we learned about `public` and `private`. But what if a base class has data that it wants to share with its subclasses, but hide from the rest of the world? \n\nEnter `protected`. A protected member is invisible to outside code, but perfectly accessible to any class that `extends` it.\n\n## Complete Code Snippet\n```ts\nclass User {\n  constructor(\n    public name: string,\n    // 💡 Protected: Hidden from the outside, but visible to Employee!\n    protected readonly internalId: string,\n  ) {}\n\n  describe(): string {\n    return this.name + ' [' + this.internalId + ']';\n  }\n}\n\nclass Employee extends User {\n  constructor(name: string, id: string, public jobTitle: string) {\n    // ✅ OK: We must execute the base constructor first!\n    super(name, id);\n  }\n\n  work(): string {\n    // ✅ OK: We can access 'this.internalId' because it is protected, not private.\n    return this.name + ' works as ' + this.jobTitle +\n      ' with internal id ' + this.internalId;\n  }\n}\n\nconst employee = new Employee('Max', 'EMP-01', 'Developer');\nconsole.log(employee.describe());\nconsole.log(employee.work());\n\n// ❌ Error: Property 'internalId' is protected and only accessible within class 'User' and its subclasses.\n// console.log(employee.internalId); \n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "If a subclass (`Employee`) declares its own constructor, why does TypeScript strictly require you to call `super()` inside of it?",
+              "options": [
+                "Because the base class (`User`) must initialize its portion of the inherited instance before the subclass is allowed to modify the object using `this`.",
+                "Because calling `super()` automatically makes all inherited fields public.",
+                "Because interfaces cannot be compiled without it.",
+                "Because `super()` creates a static utility method."
+              ],
+              "correct": 0,
+              "explanation": "When inheriting, the base class's setup logic must run first to ensure the object is properly constructed before the subclass applies its specific changes."
+            },
+            {
+              "type": "mcq",
+              "question": "When designing a base class, what is the specific advantage of making a field `protected` instead of `private`?",
+              "options": [
+                "It keeps the field hidden from external callers, while still allowing derived subclasses to access and collaborate with it.",
+                "It makes the field visible to all callers globally.",
+                "It forces the field to be utilized inside an interface.",
+                "It restricts the field to static methods only."
+              ],
+              "correct": 0,
+              "explanation": "The `protected` modifier serves as a middle ground: it hides data from public use, but permits trusted, inheriting subclasses to read or modify it."
+            }
+          ]
+        },
+        {
+          "id": "ts_classes_05",
+          "title": "Design Abstract Base Classes",
+          "image": "/assets/typescript/ts_classes/05-abstract-classes.png",
+          "content": "# Design Abstract Base Classes\n\n## 1. What is an Abstract Class?\nSometimes, you want to create a base class that shares common logic, but you **never** want anyone to instantiate it directly. For example, a generic `UIElement` shouldn't be created on its own; it should only exist as a base for a `Button` or a `Dropdown`.\n\nBy adding the `abstract` keyword to a class, you create a blueprint that *cannot be constructed directly*. It only exists to be extended by concrete subclasses.\n\n```ts\nabstract class UIElement {\n  constructor(public identifier: string) {}\n}\n\n// ❌ Error: Cannot create an instance of an abstract class.\n// const el = new UIElement('base'); \n```\n\n## 2. Abstract Methods\nAbstract classes become incredibly powerful when you add **abstract methods**. An abstract method dictates the name and return type of a function, but provides *no implementation body*. \n\nIt forces any subclass that extends it to write their own specific implementation of that method!\n\n```ts\nabstract class UIElement {\n  // 💡 Forces subclasses to provide their own specific 'open' logic!\n  abstract open(): string; \n}\n```\n\n*Note: Just like types and interfaces, abstract classes are a TypeScript-only feature. The `abstract` keywords are stripped away when compiled to JavaScript.*\n\n## Complete Code Snippet\n```ts\nabstract class UIElement {\n  constructor(public identifier: string) {}\n\n  // 💡 A concrete method: inherited exactly as is by all subclasses\n  clone(targetLocation: string): string {\n    return this.identifier + ' cloned into ' + targetLocation;\n  }\n\n  // 💡 An abstract method: subclasses MUST implement this themselves!\n  abstract open(): string;\n}\n\n// ✅ OK: A concrete subclass extending the abstract base\nclass SideDrawerElement extends UIElement {\n  constructor(\n    identifier: string,\n    public position: 'left' | 'right',\n  ) {\n    // 💡 Fulfilling the base class's constructor requirements\n    super(identifier);\n  }\n\n  // ✅ OK: We are strictly required to implement 'open' here\n  open(): string {\n    return this.identifier + ' opens from the ' + this.position;\n  }\n}\n\nconst drawer = new SideDrawerElement('main-drawer', 'left');\nconsole.log(drawer.open());\nconsole.log(drawer.clone('#mobile-shell'));\n\n// ❌ Error: Cannot create an instance of an abstract class.\n// const base = new UIElement('base'); \n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What is the primary architectural purpose of marking a base class as `abstract`?",
+              "options": [
+                "To centralize shared implementation logic while strictly preventing developers from instantiating it directly, forcing them to construct a concrete subclass instead.",
+                "To automatically generate JSON serialization at runtime.",
+                "To completely replace the need for interfaces.",
+                "To force all fields within the class to behave as static properties."
+              ],
+              "correct": 0,
+              "explanation": "Abstract classes serve as foundational blueprints. They provide shared behavior but are intentionally incomplete, requiring a concrete subclass to fill in the missing pieces (like abstract methods) before instantiation."
+            },
+            {
+              "type": "mcq",
+              "question": "When `SideDrawerElement` extends the abstract `UIElement` class, what happens if it fails to implement an `abstract open(): string;` method defined in the base class?",
+              "options": [
+                "TypeScript will throw a compile-time error demanding that the concrete subclass implements all inherited abstract members.",
+                "TypeScript will automatically generate an empty `open` method.",
+                "The code will compile perfectly, but crash at runtime.",
+                "The `SideDrawerElement` will silently convert into an interface."
+              ],
+              "correct": 0,
+              "explanation": "Abstract methods represent a strict contract. Any concrete subclass is legally obligated to provide a full implementation for every abstract method defined by its parent."
+            }
+          ]
+        },
+        {
+          "id": "ts_classes_06",
+          "title": "Define & Use Interface Object Contracts",
+          "image": "/assets/typescript/ts_classes/06-interface-contracts.png",
+          "content": "# Define & Use Interface Object Contracts\n\n## 1. What is an Interface?\nAn `interface` is one of TypeScript's most powerful features. It describes the exact shape an object must take, without providing any actual values or logic. \n\nThink of it like a job description: it states what skills are required, but it doesn't do the actual work.\n\n```ts\ninterface Authenticatable {\n  email: string;\n  password: string;\n  \n  // 💡 A method signature: defines parameters and return types, but no implementation body!\n  login(): void;\n  logout(): void;\n}\n```\n\n## 2. Using Interfaces as Types\nOnce you define an interface, you can use it to strictly type an object. \n\nThe concrete object you create is forced to supply **every single property and method** promised by the interface. If you miss a property, misspell a key, or return the wrong type from a method, TypeScript will immediately flag an error.\n\n```ts\nlet user: Authenticatable;\n\n// ✅ OK: This object perfectly matches the interface contract\nuser = {\n  email: 'test@example.com',\n  password: 'abc1',\n  login() { /* create a session */ },\n  logout() { /* clear the session */ },\n};\n```\n\n## Complete Code Snippet\n```ts\n// 💡 The Interface: Defining the required shape and behaviors\ninterface Authenticatable {\n  email: string;\n  password: string;\n  login(): void;\n  logout(): void;\n}\n\n// ✅ OK: The Object: Providing the actual data and logic\nconst user: Authenticatable = {\n  email: 'test@example.com',\n  password: 'abc1',\n  \n  login() {\n    console.log('Session created for ' + this.email);\n  },\n  \n  logout() {\n    console.log('Session cleared for ' + this.email);\n  },\n};\n\nuser.login();\nuser.logout();\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "When defining a method inside an interface (e.g., `login(): void;`), what information must you provide?",
+              "options": [
+                "Only the method's signature (its parameter types and return type), without providing any implementation body.",
+                "The complete logic linking it to a database.",
+                "A constructor implementation.",
+                "The generated JavaScript output."
+              ],
+              "correct": 0,
+              "explanation": "Interfaces exist purely to describe behavior contracts. They dictate what a method must look like, but they never dictate how the method actually performs its job."
+            },
+            {
+              "type": "mcq",
+              "question": "If you annotate an object variable with an interface (e.g., `let user: Authenticatable`), what is strictly required of that object?",
+              "options": [
+                "It must supply an implementation or value for every single property and method required by the interface.",
+                "It only needs to provide one of the listed properties.",
+                "It can only contain static members.",
+                "It is forbidden from holding any runtime values."
+              ],
+              "correct": 0,
+              "explanation": "TypeScript uses structural typing. If an object claims to satisfy an interface, it must physically possess every single piece of data and behavior that the interface demands."
+            }
+          ]
+        },
+        {
+          "id": "ts_classes_07",
+          "title": "Compare Interfaces, Type Aliases & Callable Contracts",
+          "image": "/assets/typescript/ts_classes/07-interfaces-aliases.png",
+          "content": "# Compare Interfaces, Type Aliases & Callable Contracts\n\n## 1. Interfaces vs. Type Aliases\nBoth `type` aliases and `interface` declarations can describe the shape of an object. So which should you use?\n* **Type Aliases** are highly flexible. They can describe objects, but they can also describe unions (`type ID = string | number`) and primitives.\n* **Interfaces** specialize entirely in object shapes and classes. \n\n## 2. Declaration Merging (Interfaces Only!)\nA unique feature of Interfaces is **Declaration Merging**. If you declare two interfaces with the exact same name, TypeScript will automatically merge them into a single, combined contract!\n\n```ts\ninterface Session { token: string; }\ninterface Session { expiresAt: Date; }\n\n// ✅ OK: The Session object must now have BOTH token and expiresAt!\nconst session: Session = {\n  token: 'abc',\n  expiresAt: new Date(),\n};\n```\n*Warning: Type aliases do not support this. If you try to declare two types with the same name, you will get a compiler error.*\n\n## 3. Callable Contracts\nBoth Types and Interfaces can describe the shape of a function (a \"callable contract\"). However, function `type` aliases are generally cleaner and much more common in modern codebases.\n\n```ts\n// 💡 Cleaner: Function Type Alias\ntype SumFn = (a: number, b: number) => number;\n\n// 💡 Clunkier: Interface representing a function\ninterface SumInterface { (a: number, b: number): number; }\n```\n\n## Complete Code Snippet\n```ts\n// 💡 Demonstration of Interface Declaration Merging\ninterface Session {\n  token: string;\n}\n\ninterface Session {\n  expiresAt: Date;\n}\n\n// 💡 Function typed with an Alias\ntype SumFn = (a: number, b: number) => number;\n\n// 💡 Function typed with an Interface\ninterface SumInterface {\n  (a: number, b: number): number;\n}\n\n// ✅ OK: The object satisfies the merged interface requirements\nconst session: Session = {\n  token: 'abc',\n  expiresAt: new Date(Date.now() + 60_000),\n};\n\nconst sumWithAlias: SumFn = (a, b) => a + b;\nconst sumWithInterface: SumInterface = (a, b) => a + b;\n\nconsole.log(session.token, sumWithAlias(2, 3), sumWithInterface(4, 5));\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What is \"Declaration Merging\" in the context of TypeScript interfaces?",
+              "options": [
+                "A feature where TypeScript automatically combines multiple interface declarations sharing the exact same name into one unified contract.",
+                "A tool that concatenates multiple JavaScript files into a single bundle.",
+                "A process that runs both constructors simultaneously.",
+                "A command that converts an interface directly into a class."
+              ],
+              "correct": 0,
+              "explanation": "Declaration merging is unique to interfaces. It allows libraries and developers to augment existing interface contracts by declaring them again with additional properties."
+            },
+            {
+              "type": "mcq",
+              "question": "If you need to describe the signature of a standalone callback function, which syntax is more commonly preferred and easier to read?",
+              "options": [
+                "A function type alias (e.g., `type Callback = () => void;`).",
+                "An abstract class with a static execution method.",
+                "A namespace containing an anonymous function.",
+                "A private class constructor."
+              ],
+              "correct": 0,
+              "explanation": "While interfaces can technically model callable signatures, function type aliases are significantly cleaner and are the standard convention for typing functions in modern TypeScript."
+            }
+          ]
+        },
+        {
+          "id": "ts_classes_08",
+          "title": "Implement Interfaces & Depend on Minimum Shapes",
+          "image": "/assets/typescript/ts_classes/08-implements-minimum.png",
+          "content": "# Implement Interfaces & Depend on Minimum Shapes\n\n## 1. The `implements` Keyword\nInterfaces are exceptionally powerful when combined with classes. By using the `implements` keyword, you ask TypeScript to strictly verify that your class fulfills the contract promised by the interface.\n\n```ts\n// 💡 This class is forced to include 'email', 'password', 'login()', and 'logout()'\nclass AuthenticatableUser implements Authenticatable {\n  // Implementation goes here...\n}\n```\n\nYou can even implement multiple interfaces by separating them with commas (e.g., `implements Authenticatable, Logger`). \n\n*Note: An interface establishes a **minimum requirement**. Your class is completely free to add extra fields or methods that the interface didn't ask for.*\n\n## 2. Depending on Abstractions\nWhy go through this trouble? Because it allows you to decouple your functions from specific classes! \n\nIf a function requires an argument to be of type `Authenticatable`, it doesn't care if you pass it an `AuthenticatableUser`, an `AdminUser`, or a plain object. As long as the object has the minimum required shape, the function accepts it. This makes your code highly flexible and incredibly easy to test.\n\n## Complete Code Snippet\n```ts\ninterface Authenticatable {\n  email: string;\n  password: string;\n  login(): void;\n  logout(): void;\n}\n\n// ✅ OK: Class fulfills all requirements of the Authenticatable interface\nclass AuthenticatableUser implements Authenticatable {\n  // 💡 Adding 'userName' which is an extra, non-required field!\n  constructor(\n    public userName: string,\n    public email: string,\n    public password: string,\n  ) {}\n\n  login(): void {\n    console.log(this.userName + ' logged in.');\n  }\n\n  logout(): void {\n    console.log(this.userName + ' logged out.');\n  }\n}\n\n// 💡 This function depends on the INTERFACE, not the specific CLASS\nfunction authenticate(user: Authenticatable): void {\n  user.login();\n}\n\nconst max = new AuthenticatableUser('Max', 'max@example.com', 'secret');\n\n// ✅ OK: 'max' fulfills the Authenticatable shape, so it is accepted!\nauthenticate(max);\nmax.logout();\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "If a class `implements` an interface, is it allowed to include additional properties and methods that are not listed in the interface?",
+              "options": [
+                "Yes, `implements` enforces a minimum structural shape, but it does not forbid the class from adding additional, specific behaviors.",
+                "No, the class must perfectly mirror the interface with no additions.",
+                "Yes, but the extra members must be marked as `private`.",
+                "Yes, but it is limited to exactly one extra method."
+              ],
+              "correct": 0,
+              "explanation": "An interface establishes a baseline contract. As long as the class fulfills all the minimum requirements of that contract, it is free to extend itself with extra capabilities."
+            },
+            {
+              "type": "mcq",
+              "question": "In the `authenticate` function, why is it considered a best practice to type the parameter as `(user: Authenticatable)` instead of `(user: AuthenticatableUser)`?",
+              "options": [
+                "It accepts any object or instance that fulfills the required interface capabilities, decoupling the function from a specific rigid class implementation.",
+                "It permanently disables type checking for that parameter.",
+                "It transforms the `login` method into a static function.",
+                "It emits the interface into the compiled JavaScript runtime."
+              ],
+              "correct": 0,
+              "explanation": "Depending on an abstraction (the interface) rather than a concrete implementation (the class) makes your functions much more flexible and easier to supply with mock data during testing."
+            }
+          ]
+        },
+        {
+          "id": "ts_classes_09",
+          "title": "Extend Interfaces & Understand Type Erasure",
+          "image": "/assets/typescript/ts_classes/09-extend-erase.png",
+          "content": "# Extend Interfaces & Understand Type Erasure\n\n## 1. Extending Interfaces\nJust like classes can inherit from other classes using `extends`, an Interface can inherit from other Interfaces! \n\nThis creates a brand new, highly specific contract that combines the requirements of the base interface with new, specific requirements. This is completely different from \"Declaration Merging\" (which alters the original interface).\n\n```ts\n// 💡 Inherits everything from Authenticatable, and adds a 'role'\ninterface AuthenticatableAdmin extends Authenticatable {\n  role: 'admin' | 'super-admin';\n}\n```\nAn interface can even extend multiple interfaces simultaneously (e.g., `extends Authenticatable, HasPermissions`).\n\n## 2. The Illusion of TypeScript (Type Erasure)\nAs you build complex architectures with interfaces, `implements`, and `extends`, it is absolutely vital to remember **Type Erasure**.\n\nJavaScript has no native concept of an \"Interface\". Therefore, when you compile your code using `tsc`, **every single interface disappears completely**.\n\nInterfaces exist solely to improve your development-time experience by catching errors in your editor. They are **not** runtime validators. If you fetch JSON from a database and assign it to an `AuthenticatableAdmin` interface, TypeScript will happily assume it's true, but there are zero runtime protections guaranteeing the data is actually shaped correctly!\n\n## Complete Code Snippet\n```ts\ninterface Authenticatable {\n  email: string;\n  login(): void;\n}\n\ninterface HasPermissions {\n  permissions: string[];\n}\n\n// 💡 This interface requires the traits of both bases, plus its own 'role'\ninterface AuthenticatableAdmin extends Authenticatable, HasPermissions {\n  role: 'admin' | 'super-admin';\n}\n\nconst admin: AuthenticatableAdmin = {\n  email: 'admin@example.com',\n  role: 'admin',\n  permissions: ['courses:write'],\n  login() {\n    console.log(this.email + ' logged in as ' + this.role);\n  },\n};\n\nadmin.login();\nconsole.log(admin.permissions);\n\n// 💡 If you compile this file, you'll see the 'admin' object, but ALL interfaces will be erased!\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "How does using the `extends` keyword on an interface differ from \"Declaration Merging\"?",
+              "options": [
+                "`extends` creates a brand new derived interface incorporating the base requirements, while Declaration Merging silently alters the original interface.",
+                "`extends` rewrites and deletes the original interface entirely.",
+                "`extends` emits runtime validation checks into the JavaScript.",
+                "There is no difference; they are exactly the same concept."
+              ],
+              "correct": 0,
+              "explanation": "Extending an interface generates a new contract for specialized use cases, leaving the base contract clean and untouched. Merging actively changes the base contract."
+            },
+            {
+              "type": "mcq",
+              "question": "When you compile your TypeScript code into JavaScript, what happens to your `interface` declarations and the `implements` keywords on your classes?",
+              "options": [
+                "They are completely erased. JavaScript has no native concept of interfaces, so they exist only at compile-time for developer tooling.",
+                "They are transformed into JavaScript Classes.",
+                "They are converted into runtime JSON schemas for data validation.",
+                "They are hoisted and executed before the main application logic."
+              ],
+              "correct": 0,
+              "explanation": "TypeScript is fundamentally a compile-time tool. All advanced typing constructs (like interfaces and generics) are erased from the final emitted JavaScript."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Section 7 · Advanced Types",
+      "subtopics": [
+        {
+          "id": "ts_advanced_01",
+          "title": "Compose Shapes with Intersection Types",
+          "image": "/assets/typescript/ts_advanced/01-intersections.png",
+          "content": "# Compose Shapes with Intersection Types\n\n## 1. What is an Intersection Type?\nAn Intersection Type allows you to combine multiple distinct types into one single, unified type. \n\nWhile a Union (`|`) says \"this value can be type A *OR* type B\", an Intersection (`&`) demands \"this value must perfectly satisfy type A *AND* type B simultaneously!\"\n\n```ts\ntype FileData = { path: string; content: string };\ntype Status = { isOpen: boolean; errorMessage?: string };\n\n// 💡 The resulting type requires EVERY field from both FileData and Status\ntype AccessedFileData = FileData & Status;\n```\n\n## 2. Why Use Intersections?\nIntersection types are ideal for composing objects from highly reusable, smaller data sources. If multiple parts of your application share a `Status` object, you can easily staple it onto other shapes without writing duplicate fields.\n\n*Note: If you were using `interfaces` instead of `types`, you could achieve this exact same result using `interface AccessedFileData extends FileData, Status`.*\n\n## Complete Code Snippet\n```ts\ntype FileData = {\n  path: string;\n  content: string;\n};\n\ntype DatabaseData = {\n  connectionUrl: string;\n  credentials: string;\n};\n\ntype Status = {\n  isOpen: boolean;\n  errorMessage?: string;\n};\n\n// 💡 Combining shapes using the '&' intersection operator\ntype AccessedFileData = FileData & Status;\ntype AccessedDatabaseData = DatabaseData & Status;\n\n// ✅ OK: Must contain fields from both FileData and Status\nconst file: AccessedFileData = {\n  path: '/files/course.md',\n  content: '# TypeScript',\n  isOpen: true,\n};\n\nconst database: AccessedDatabaseData = {\n  connectionUrl: 'postgres://localhost/course',\n  credentials: 'local-dev',\n  isOpen: false,\n  errorMessage: 'Connection closed',\n};\n\nconsole.log(file, database);\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "If you create a type `type AccessedFileData = FileData & Status`, what fields must an object of this type contain?",
+              "options": [
+                "It must contain every single field from both the `FileData` and the `Status` objects combined.",
+                "It must contain only the overlapping fields that both objects share.",
+                "It must contain fields from `FileData` OR fields from `Status`, but not necessarily both.",
+                "It must contain a class constructor."
+              ],
+              "correct": 0,
+              "explanation": "An intersection (`&`) merges types together, demanding that the resulting object satisfies all the requirements of every type combined."
+            },
+            {
+              "type": "mcq",
+              "question": "If you wanted to achieve the exact same structural combination using `interfaces` instead of `types`, what syntax would you use?",
+              "options": [
+                "Interface inheritance: `interface AccessedFileData extends FileData, Status {}`",
+                "A private field: `private fields = FileData & Status;`",
+                "A function overload.",
+                "A const assertion: `as const`."
+              ],
+              "correct": 0,
+              "explanation": "Interface inheritance (extending multiple interfaces) achieves the exact same structural combination as intersecting multiple object types."
+            }
+          ]
+        },
+        {
+          "id": "ts_advanced_02",
+          "title": "Narrow Union Objects with Type Guards",
+          "image": "/assets/typescript/ts_advanced/02-in-guards.png",
+          "content": "# Narrow Union Objects with Type Guards\n\n## 1. The Problem with Unions\nWhen a function accepts a Union type (`Source = FileSource | DBSource`), TypeScript restricts you. You are only allowed to access properties that exist on *both* types! \n\nIf you want to access a property unique to `FileSource`, you must prove to TypeScript that the object is actually a file. You do this using a **Type Guard**.\n\n## 2. The `in` Operator\nThe `in` operator is a native JavaScript feature that checks if a property exists on an object at runtime. TypeScript is smart enough to understand this control flow and narrow the type automatically!\n\n```ts\nfunction loadData(source: Source) {\n  // 💡 Using 'in' as a Type Guard to check for a unique property\n  if ('path' in source) {\n    // ✅ OK: TypeScript has safely narrowed the type down to FileSource!\n    console.log(source.path);\n    return; \n  }\n}\n```\n*Note: Don't use `typeof source === 'object'` here. Both branches of the union are objects, so that check proves nothing!*\n\n## 3. Control-Flow Analysis\nBecause we placed a `return` statement inside the `if` block, TypeScript applies Control-Flow Analysis. Any code executing after that `if` block *must* be the other half of the union (`DBSource`), because the `FileSource` branch has already exited!\n\n## Complete Code Snippet\n```ts\ntype FileSource = {\n  path: string;\n};\n\ntype DBSource = {\n  connectionUrl: string;\n};\n\n// 💡 The Union Type\ntype Source = FileSource | DBSource;\n\nfunction loadData(source: Source): string {\n  // 💡 Type Guard using the 'in' operator\n  if ('path' in source) {\n    // ✅ OK: source is strictly inferred as FileSource here\n    return 'Opening file at ' + source.path;\n  }\n\n  // ✅ OK: Because of the early return above, source is strictly inferred as DBSource here!\n  return 'Connecting to ' + source.connectionUrl;\n}\n\nconst fileSource: FileSource = { path: '/data/file.csv' };\nconst dbSource: DBSource = { connectionUrl: 'db://courses' };\n\nconsole.log(loadData(fileSource));\nconsole.log(loadData(dbSource));\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "Why do we use the `in` operator (e.g., `if ('path' in source)`) when dealing with Union types containing objects?",
+              "options": [
+                "It provides a concrete runtime check that proves the property exists, allowing TypeScript to safely narrow the union down to a specific branch.",
+                "It automatically converts the generic object into a physical file on the disk.",
+                "It globally adds the `path` property to every object in the application.",
+                "It disables strict mode checking for that block of code."
+              ],
+              "correct": 0,
+              "explanation": "The `in` operator checks for property existence at runtime. TypeScript's control-flow analyzer understands this check and confidently narrows the type for you."
+            },
+            {
+              "type": "mcq",
+              "question": "In the `loadData` function, why does TypeScript allow you to safely access `source.connectionUrl` after the `if` block?",
+              "options": [
+                "Because the `if` block for the `FileSource` contained an early return, so control-flow analysis guarantees the remaining path must be the database branch.",
+                "Because every object in TypeScript natively has a `connectionUrl` property.",
+                "Because an explicit type cast (`as DBSource`) was silently added by the compiler.",
+                "Because the union was transformed into an intersection."
+              ],
+              "correct": 0,
+              "explanation": "Control-flow analysis traces execution. Since the first type exited the function early, the compiler logically deduces that only the alternative type remains."
+            }
+          ]
+        },
+        {
+          "id": "ts_advanced_03",
+          "title": "Model Exhaustive Branches with Discriminated Unions",
+          "image": "/assets/typescript/ts_advanced/03-discriminated-unions.png",
+          "content": "# Model Exhaustive Branches with Discriminated Unions\n\n## 1. The Pattern\nUsing the `in` operator to probe objects for random properties (like checking for `'path'`) works, but it's fragile. What if someone renames the property later? \n\nA more robust pattern is the **Discriminated Union**. You give every object in the union a shared \"tag\" property (often named `type` or `kind`), but give it a distinctly different **literal string value**.\n\n```ts\ntype FileSource = { type: 'file'; path: string };\ntype DBSource = { type: 'db'; connectionUrl: string };\n\ntype Source = FileSource | DBSource;\n```\nBecause both objects share the `type` field, TypeScript allows you to check it without any errors. Once you check the tag using a `switch` or `if` statement, TypeScript instantly narrows the object!\n\n## 2. Exhaustiveness Checking\nDiscriminated unions enable a superpower: **Exhaustiveness Checking**. \n\nBy adding a `default` case to your switch statement that throws an error taking a parameter of type `never`, you force the compiler to warn you if you ever add a new object to the union but forget to handle it in the switch statement!\n\n## Complete Code Snippet\n```ts\n// 💡 Adding a literal 'type' tag to each object\ntype FileSource = {\n  type: 'file';\n  path: string;\n};\n\ntype DBSource = {\n  type: 'db';\n  connectionUrl: string;\n};\n\ntype Source = FileSource | DBSource;\n\n// 💡 This function expects 'never'. It should technically be unreachable!\nfunction assertNever(value: never): never {\n  throw new Error('Unhandled source: ' + JSON.stringify(value));\n}\n\nfunction loadData(source: Source): string {\n  // 💡 Switching on the shared tag\n  switch (source.type) {\n    case 'file':\n      // ✅ OK: Narrowed to FileSource\n      return 'Opening ' + source.path;\n    case 'db':\n      // ✅ OK: Narrowed to DBSource\n      return 'Connecting to ' + source.connectionUrl;\n    default:\n      // 💡 Exhaustiveness Check: If we add a new Source later, this line will throw a compiler error!\n      return assertNever(source);\n  }\n}\n\nconsole.log(loadData({ type: 'file', path: '/data.json' }));\nconsole.log(loadData({ type: 'db', connectionUrl: 'db://local' }));\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What architectural detail makes a Union \"Discriminated\"?",
+              "options": [
+                "Every member of the union has a shared property (like `type`), but each member is assigned a distinct literal string value for that property.",
+                "Every member of the union is built from a class.",
+                "All the fields in the union members are marked as `private`.",
+                "The union relies on an index signature."
+              ],
+              "correct": 0,
+              "explanation": "The common literal tag connects runtime branching directly to static type narrowing, making it incredibly easy to discriminate between union members."
+            },
+            {
+              "type": "mcq",
+              "question": "Why do we pass `source` into the `assertNever` function inside the `default` block of the switch statement?",
+              "options": [
+                "To trigger a compile-time error if we later add a new member to the union but forget to handle it, thus ensuring our code is exhaustively checked.",
+                "To force all application branches to throw an exception at runtime.",
+                "To automatically convert incoming strings into numerical values.",
+                "To merge multiple interfaces together into a single schema."
+              ],
+              "correct": 0,
+              "explanation": "Because `assertNever` expects an argument of type `never`, passing a newly unhandled union member into it will cause the compiler to immediately throw an error, preventing production bugs."
+            }
+          ]
+        },
+        {
+          "id": "ts_advanced_04",
+          "title": "Reuse instanceof & Custom Type Predicates",
+          "image": "/assets/typescript/ts_advanced/04-instanceof-predicates.png",
+          "content": "# Reuse instanceof & Custom Type Predicates\n\n## 1. The `instanceof` Operator\nIf your union is made of actual **Classes** (not plain object interfaces), you don't need a `type` tag or an `in` operator. You can use the native JavaScript `instanceof` operator. \n\nBecause `instanceof` checks the actual prototype chain at runtime, TypeScript will automatically narrow the type based on the result.\n\n```ts\nif (entity instanceof User) {\n  // ✅ OK: TypeScript knows this is the User class\n  entity.join(); \n}\n```\n\n## 2. Custom Type Predicates\nIf you have a complex narrowing check (like checking a `type` tag on an interface), you might want to move it into a reusable helper function. But if you just return a `boolean`, TypeScript loses the narrowing capability in the caller function!\n\nTo solve this, you define a **Custom Type Predicate** as the return type: `source is FileSource`.\n\n```ts\n// 💡 The return type 'source is FileSource' is a Type Predicate\nfunction isFile(source: Source): source is FileSource {\n  return source.type === 'file';\n}\n```\nThis tells TypeScript: *\"If this function returns true, you can confidently narrow the 'source' argument to 'FileSource'.\"* \n\n## Complete Code Snippet\n```ts\nclass User {\n  constructor(public name: string) {}\n  join(): string { return this.name + ' joined.'; }\n}\n\nclass Admin {\n  constructor(public permissions: string[]) {}\n  scan(): string { return 'Scanned: ' + this.permissions.join(', '); }\n}\n\ntype Entity = User | Admin;\n\nfunction initialize(entity: Entity): string {\n  // 💡 Type Guard using instanceof for Classes\n  if (entity instanceof User) return entity.join();\n  return entity.scan();\n}\n\ntype FileSource = { type: 'file'; path: string };\ntype DBSource = { type: 'db'; connectionUrl: string };\ntype Source = FileSource | DBSource;\n\n// 💡 Custom Type Predicate function for Interfaces/Types\nfunction isFile(source: Source): source is FileSource {\n  return source.type === 'file';\n}\n\nfunction describe(source: Source): string {\n  // ✅ OK: The caller understands the narrowing due to the type predicate!\n  return isFile(source) ? source.path : source.connectionUrl;\n}\n\nconsole.log(initialize(new User('Max')));\nconsole.log(initialize(new Admin(['users:read'])));\nconsole.log(describe({ type: 'file', path: '/notes.txt' }));\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "When is it appropriate and highly effective to use the `instanceof` type guard?",
+              "options": [
+                "When the alternatives in your union are actual class instances (which have a prototype chain), rather than arbitrary plain objects or interfaces.",
+                "When you need to validate arbitrary interface-only objects from a JSON response.",
+                "Only when you are comparing numerical types.",
+                "Only during compile time, as `instanceof` doesn't exist in JavaScript."
+              ],
+              "correct": 0,
+              "explanation": "`instanceof` is a real JavaScript operator that checks the prototype chain, making it perfect for narrowing unions composed of instantiated classes."
+            },
+            {
+              "type": "mcq",
+              "question": "What specifically does the return type `source is FileSource` accomplish on a custom function?",
+              "options": [
+                "It acts as a Type Predicate, telling TypeScript that if the function returns true, the compiler can safely narrow the argument's type to `FileSource`.",
+                "It physically constructs a new file on the local machine.",
+                "It permanently mutates the `Source` interface globally.",
+                "It automatically runs validation on all objects passed into the application."
+              ],
+              "correct": 0,
+              "explanation": "A type predicate attaches critical narrowing information to a simple Boolean result, allowing helper functions to participate in control-flow analysis."
+            }
+          ]
+        },
+        {
+          "id": "ts_advanced_05",
+          "title": "Map Inputs to Outputs with Function Overloads",
+          "image": "/assets/typescript/ts_advanced/05-overloads.png",
+          "content": "# Map Inputs to Outputs with Function Overloads\n\n## 1. The Lost Relationship\nImagine a utility function `getLength` that takes either a `string` or an `any[]` array. \n* If passed a string, it returns a string like `'3 words'`.\n* If passed an array, it returns a number.\n\nIf you simply type it as `(value: string | any[]) => string | number`, TypeScript loses the relationship. If you pass an array in, TypeScript still thinks it *might* return a string, forcing the user to manually cast the result!\n\n## 2. Function Overloads to the Rescue\n**Function Overloads** allow you to write multiple distinct function signatures that map exactly which input leads to which output. You place these overload signatures immediately above the actual implementation function.\n\n```ts\n// 💡 Overload 1: Array in, Number out\nfunction getLength(value: any[]): number;\n// 💡 Overload 2: String in, String out\nfunction getLength(value: string): string;\n\n// 💡 The Implementation Signature (must be broad enough to handle all overloads)\nfunction getLength(value: string | any[]) { /* logic here */ }\n```\nNow, when callers use this function, TypeScript provides incredibly precise result types based on exactly what they passed in. \n\n*Warning: Only use overloads when the return type dynamically changes based on the input. If the function always returns the exact same type, overloads are unnecessary!*\n\n## Complete Code Snippet\n```ts\n// 💡 The Overload Signatures\nfunction getLength(value: unknown[]): number;\nfunction getLength(value: string): string;\n\n// 💡 The actual Implementation\nfunction getLength(value: string | unknown[]): string | number {\n  if (typeof value === 'string') {\n    const numberOfWords = value.trim().split(/\\s+/).length;\n    return numberOfWords + ' words';\n  }\n\n  return value.length;\n}\n\n// ✅ OK: TypeScript knows this is strictly a string, so we can call string methods!\nconst numberOfWords = getLength('does this work?');\nconsole.log(numberOfWords.toUpperCase()); \n\n// ✅ OK: TypeScript knows this is strictly a number, so we can call number methods!\nconst numberOfItems = getLength(['Sports', 'Cookies']);\nconsole.log(numberOfItems.toFixed(0));\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What specific problem do Function Overloads solve?",
+              "options": [
+                "They preserve the strict relationship between specific input forms and their precise output types, preventing the loss of information caused by broad union returns.",
+                "They allow the runtime application to save data to a database state.",
+                "They create private class fields securely.",
+                "They automatically compile modern CSS properties."
+              ],
+              "correct": 0,
+              "explanation": "Overloads map distinct argument patterns to exact return types, saving developers from having to manually cast their results when calling highly dynamic utility functions."
+            },
+            {
+              "type": "mcq",
+              "question": "If you write three Overload Signatures for a function, how many actual implementation bodies are you allowed to provide?",
+              "options": [
+                "Exactly one implementation body that uses broad enough types to handle all the overload scenarios.",
+                "One implementation body per overload signature.",
+                "None; overloads require the logic to be handled by a class.",
+                "Exactly four bodies."
+              ],
+              "correct": 0,
+              "explanation": "TypeScript uses a single shared implementation to process the logic, while the multiple overload signatures simply provide the strict typing contracts for the outside callers."
+            }
+          ]
+        },
+        {
+          "id": "ts_advanced_06",
+          "title": "Model Dynamic Keys with Index Signatures & Record",
+          "image": "/assets/typescript/ts_advanced/06-index-record.png",
+          "content": "# Model Dynamic Keys with Index Signatures & Record\n\n## 1. Index Signatures\nSometimes you need to build a flexible dictionary object where you don't know the property names in advance (like caching API responses or a dynamic configuration object), but you do know the *types* of values they must hold.\n\nAn **Index Signature** models this exact scenario.\n\n```ts\n// 💡 The '[property: string]' allows any string key name!\ntype DataStore = {\n  [property: string]: number | boolean;\n};\n\nconst store: DataStore = {};\nstore.id = 5; // ✅ OK\n// store.name = 'Max'; // ❌ Error: The value must be a number or boolean!\n```\n*Note: The name `property` in the brackets is just a placeholder for documentation. You can name it `key` or `id` instead.*\n\n## 2. The Built-in `Record` Utility\nWriting out the bracket syntax can be clunky. TypeScript provides a built-in utility type called `Record` that does the exact same thing in a cleaner format: `Record<KeyType, ValueType>`.\n\n```ts\n// 💡 Identical to the Index Signature above, but cleaner!\nconst metrics: Record<string, number | boolean> = {\n  lessons: 42,\n  published: true,\n};\n```\n*Warning: Use dynamic dictionaries only when keys are truly open-ended. If you know the exact keys you need, a normal object type is much safer!*\n\n## Complete Code Snippet\n```ts\n// 💡 Using the manual Index Signature\ntype DataStore = {\n  [property: string]: number | boolean;\n};\n\nconst store: DataStore = {};\nstore.id = 5;\nstore.isOpen = false;\n\n// 💡 Using the built-in Record utility\nconst metrics: Record<string, number | boolean> = {\n  lessons: 42,\n  published: true,\n};\n\nfunction printStore(values: Record<string, number | boolean>): void {\n  for (const [key, value] of Object.entries(values)) {\n    console.log(key + ': ' + value);\n  }\n}\n\nprintStore(store);\nprintStore(metrics);\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What exactly does the Index Signature syntax `[property: string]: number | boolean` allow you to do?",
+              "options": [
+                "It allows the object to accept any string-based property key name, as long as its corresponding value is either a number or a boolean.",
+                "It requires the object to contain a single property that is literally named 'property'.",
+                "It permits the object to hold absolutely any value type, essentially disabling TypeScript.",
+                "It restricts the object to only functioning as a numerical array."
+              ],
+              "correct": 0,
+              "explanation": "The bracketed text acts as a dynamic placeholder for strings, turning the object into a flexible dictionary while still enforcing strict value types."
+            },
+            {
+              "type": "mcq",
+              "question": "Which of the following built-in TypeScript utility types achieves the exact same broad dictionary contract as a string index signature?",
+              "options": [
+                "`Record<string, number | boolean>`",
+                "`Partial<number>`",
+                "`Promise<boolean>`",
+                "`ReadonlyArray<string>`"
+              ],
+              "correct": 0,
+              "explanation": "The `Record` utility type maps an allowed key type to an allowed value type, serving as a much cleaner shorthand for index signatures."
+            }
+          ]
+        },
+        {
+          "id": "ts_advanced_07",
+          "title": "Preserve Literal Values with as const",
+          "image": "/assets/typescript/ts_advanced/07-as-const.png",
+          "content": "# Preserve Literal Values with as const\n\n## 1. The Widening Problem\nWhen you declare a basic array like `const roles = ['admin', 'guest'];`, TypeScript automatically \"widens\" the type to `string[]`. It assumes you might want to push more strings into the array later. \n\nBut what if this is a strict configuration array, and you want TypeScript to lock in those exact literal strings?\n\n## 2. The `as const` Assertion\nBy appending `as const` to a value, you are demanding that TypeScript apply the **narrowest possible inference**.\n\n```ts\n// 💡 The array becomes a completely frozen, readonly tuple of exact string literals!\nconst roles = ['admin', 'guest', 'editor'] as const;\n\n// ❌ Error: Property 'push' does not exist on type 'readonly [\"admin\", \"guest\", \"editor\"]'\n// roles.push('author'); \n```\n\n## 3. Stronger than a `const` Variable\nDon't confuse `as const` with a `const` variable declaration!\n* `const variable = ...` prevents the variable from being reassigned.\n* `... as const` reaches deep into the object or array, marking every nested property as `readonly` and locking every primitive down to its exact literal type.\n\nThis is incredibly useful for defining fixed configurations, permissions, and discriminant values without having to write out massive custom types manually.\n\n## Complete Code Snippet\n```ts\n// 💡 Narrowing an array into a readonly tuple of literals\nconst roles = ['admin', 'guest', 'editor'] as const;\n\n// 💡 A slick trick to extract a Union type directly from the array values!\ntype Role = (typeof roles)[number];\n\n// 💡 Deeply freezing an entire configuration object\nconst permissions = {\n  admin: ['read', 'write', 'delete'],\n  guest: ['read'],\n  editor: ['read', 'write'],\n} as const;\n\nfunction canWrite(role: Role): boolean {\n  // ✅ OK: permissions[role] is strictly typed as a readonly array of literals\n  const allowed: readonly string[] = permissions[role];\n  return allowed.includes('write');\n}\n\nconst firstRole = roles[0];\nconsole.log(firstRole, canWrite('admin'), canWrite('guest'));\n\n// ❌ Error: Cannot push to a readonly tuple.\n// roles.push('author'); \n\n// ❌ Error: Cannot push to a deeply frozen readonly array.\n// permissions.guest.push('write'); \n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What is the inferred type of `roles[0]` after initializing the array as `const roles = ['admin', 'guest'] as const;`?",
+              "options": [
+                "The exact string literal type `'admin'`.",
+                "The generic `string` type.",
+                "The `unknown` type.",
+                "The `never` type."
+              ],
+              "correct": 0,
+              "explanation": "A const assertion stops TypeScript from widening strings. It preserves the exact literal values and positional information within a tuple."
+            },
+            {
+              "type": "mcq",
+              "question": "How does using the `as const` assertion differ from simply using a `const` variable declaration?",
+              "options": [
+                "A `const` declaration prevents variable reassignment, while `as const` deeply freezes the object's inferred type, narrowing literals and making nested properties readonly.",
+                "It physically alters the runtime variables to be immutable.",
+                "It only functions properly when applied directly to classes.",
+                "There is no difference; they are redundant features."
+              ],
+              "correct": 0,
+              "explanation": "The `const` keyword handles reassignment at the JavaScript level, but `as const` is a TypeScript feature that alters how the compiler infers the internal structure and mutability of your data."
+            }
+          ]
+        },
+        {
+          "id": "ts_advanced_08",
+          "title": "Validate Contracts without Losing Inference",
+          "image": "/assets/typescript/ts_advanced/08-satisfies.png",
+          "content": "# Validate Contracts without Losing Inference\n\n## 1. The Annotation Trade-off\nWhen you use a direct type annotation (e.g., `: Record<string, number>`), you are telling TypeScript to validate your object. However, there is a major trade-off: **you lose all the specific information about your object!**\n\n```ts\nconst annotated: Record<string, number> = {\n  entry1: 0.51,\n  entry2: -1.23,\n};\n\n// ❌ Silent Bug: The compiler allows this because the 'Record' type accepts ANY string key, even though entry3 doesn't exist!\nannotated.entry3; \n```\n\n## 2. Enter the `satisfies` Operator\nThe `satisfies` operator was introduced in TypeScript 4.9. It acts as a \"checker\". \n\nIt checks that your value successfully fulfills a target contract, but instead of widening the type to match the contract, it **retains the exact, highly-specific inferred shape of your original object!**\n\n```ts\nconst dataEntries = {\n  entry1: 0.51,\n  entry2: -1.23,\n} satisfies Record<string, number>;\n\n// ✅ OK: TypeScript knows entry2 exists\ndataEntries.entry2;\n// ❌ Error: TypeScript catches this immediately because the specific shape was preserved!\n// dataEntries.entry3; \n```\n\n## 3. When to Use It\n`satisfies` is phenomenal for library configuration (like an array of routing objects). You can ensure your config strictly matches the library's `RouteConfig` rules, while still allowing autocomplete to know the *exact* literal paths you typed!\n\n*Note: `satisfies` only performs compile-time validation. It does not manipulate data or enforce safety at runtime!*\n\n## Complete Code Snippet\n```ts\ntype RouteConfig = {\n  path: string;\n  component: 'home' | 'courses' | 'lesson';\n  requiresAuth?: boolean;\n};\n\n// 💡 Validates against Record, but keeps exact keys (entry1, entry2)\nconst dataEntries = {\n  entry1: 0.51,\n  entry2: -1.23,\n} satisfies Record<string, number>;\n\n// 💡 Validates against RouteConfig, but remembers the exact literal paths for autocomplete!\nconst routes = [\n  { path: '/', component: 'home' },\n  { path: '/courses', component: 'courses', requiresAuth: true },\n  { path: '/lesson/:id', component: 'lesson', requiresAuth: true },\n] satisfies RouteConfig[];\n\nconsole.log(dataEntries.entry1);\nconsole.log(routes.map(route => route.path));\n\n// ❌ Error: Property 'entry3' does not exist.\n// dataEntries.entry3; \n\n// ❌ Error: Fails the RouteConfig validation (missing required component/invalid path etc).\n// routes.push({ path: '/bad', component: 'missing' });\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What critical information does the `satisfies` operator preserve that a standard broad type annotation (like `: Record<string, number>`) destroys?",
+              "options": [
+                "It preserves the value's highly specific inferred keys and literal properties, rather than wiping them out with a generic structural type.",
+                "It preserves runtime encryption data.",
+                "It preserves private class fields across modules.",
+                "It preserves compiled interface interfaces."
+              ],
+              "correct": 0,
+              "explanation": "A broad annotation \"widens\" your object, making TypeScript forget your specific keys. `satisfies` validates the shape but lets you keep your precise keys for autocompletion and safety."
+            },
+            {
+              "type": "mcq",
+              "question": "Does the `satisfies` operator transform or validate your data at runtime when running in the browser?",
+              "options": [
+                "No, it is purely a compile-time compatibility check executed by TypeScript.",
+                "Yes, it actively parses and strips invalid fields from every object.",
+                "It only performs runtime validation in Node.js environments.",
+                "It only validates variables declared as arrays."
+              ],
+              "correct": 0,
+              "explanation": "Like all TypeScript type syntax, `satisfies` is completely erased during compilation. It provides strict developer safety but performs zero validation at runtime."
             }
           ]
         }

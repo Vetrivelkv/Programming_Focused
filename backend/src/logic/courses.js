@@ -13,7 +13,7 @@ export const COURSE_DEFINITIONS = {
     questions: "typescript_questions.json",
     accent: "teal",
     createdAt: "2026-08-21",
-    updatedAt: "2026-09-01",
+    updatedAt: "2026-09-06",
   },
 };
 

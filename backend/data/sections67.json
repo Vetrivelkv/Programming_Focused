@@ -1,0 +1,550 @@
+{
+  "s6": [
+    {
+      "id": "ts_classes_01",
+      "title": "Create Classes, Fields & Instances",
+      "image": "/assets/typescript/ts_classes/01-class-blueprints.png",
+      "content": "# Create Classes, Fields & Instances\n\nA class is a reusable blueprint for objects. TypeScript requires instance fields to be declared, so assigning `this.name` in a constructor before declaring `name` produces a useful error.\n\n```ts\nclass User {\n  name: string;\n  age: number;\n\n  constructor(n: string, a: number) {\n    this.name = n;\n    this.age = a;\n  }\n}\n```\n\nConstructor parameter names are local implementation details; they do not have to match the field names. `new User(...)` allocates a separate instance and runs the constructor for that instance.\n\n```ts\nconst max = new User('Max', 36);\nconst fred = new User('Fred', 29);\nconsole.log(max, fred);\n```\n\nWhen TypeScript compiles the class, type annotations disappear. The emitted JavaScript retains the runtime class and constructor assignments because those are JavaScript behavior, not type metadata.\n\n## Complete subclass code — `classes.ts`\n\n```ts\nclass User {\n  name: string;\n  age: number;\n\n  constructor(displayName: string, yearsOld: number) {\n    this.name = displayName;\n    this.age = yearsOld;\n  }\n\n  describe(): string {\n    return this.name + ' is ' + this.age + ' years old.';\n  }\n}\n\nconst max = new User('Max', 36);\nconst fred = new User('Fred', 29);\n\nconsole.log(max.describe());\nconsole.log(fred.describe());\n```",
+      "questions": [
+        {
+          "type": "mcq",
+          "question": "Why declare name before assigning this.name?",
+          "options": [
+            "It gives every User instance a checked name field",
+            "It creates a database column",
+            "It makes the class abstract",
+            "It hides the field at runtime"
+          ],
+          "correct": 0,
+          "explanation": "The class declaration establishes the instance shape that constructor assignments must satisfy."
+        },
+        {
+          "type": "mcq",
+          "question": "What does new User('Max', 36) do?",
+          "options": [
+            "Creates an instance and runs its constructor",
+            "Creates a type alias",
+            "Compiles the whole project",
+            "Merges two interfaces"
+          ],
+          "correct": 0,
+          "explanation": "The new operator allocates an object linked to the class and invokes its constructor."
+        }
+      ]
+    },
+    {
+      "id": "ts_classes_02",
+      "title": "Use Parameter Properties & Access Modifiers",
+      "image": "/assets/typescript/ts_classes/02-parameter-properties.png",
+      "content": "# Use Parameter Properties & Access Modifiers\n\nTypeScript can combine a constructor parameter and its assignment into one parameter property. Adding an access modifier is what activates the shortcut.\n\n```ts\nclass User {\n  constructor(public name: string, private age: number) {}\n}\n```\n\n`public` members are available through an instance. `private` members are only available inside the declaring class. A normal field without an explicit modifier is public, but an unmodified constructor parameter is only a parameter—it does not become a field.\n\n```ts\nclass User {\n  public hobbies: string[] = [];\n\n  constructor(public name: string, private age: number) {}\n\n  greet() {\n    return 'Hi, I am ' + this.age + ' years old.';\n  }\n}\n```\n\nTypeScript's modifier checks happen during development. Native JavaScript `#privateField` syntax is a different runtime feature.\n\n## Complete subclass code — `classes.ts`\n\n```ts\nclass User {\n  public hobbies: string[] = [];\n\n  constructor(public name: string, private age: number) {}\n\n  addHobby(hobby: string): void {\n    this.hobbies.push(hobby);\n  }\n\n  greet(): string {\n    return 'Hi, I am ' + this.name + ' and I am ' + this.age + '.';\n  }\n}\n\nconst user = new User('Max', 36);\nuser.name = 'Maximilian';\nuser.addHobby('TypeScript');\n\nconsole.log(user.greet(), user.hobbies);\n// console.log(user.age); // Error: age is private.\n```",
+      "questions": [
+        {
+          "type": "mcq",
+          "question": "What turns a constructor parameter into an instance field?",
+          "options": [
+            "An access modifier such as public or private",
+            "A return statement",
+            "The new keyword",
+            "A static method"
+          ],
+          "correct": 0,
+          "explanation": "A modifier on a constructor parameter activates TypeScript's parameter-property shorthand."
+        },
+        {
+          "type": "mcq",
+          "question": "Where may a private age field be read?",
+          "options": [
+            "Inside the declaring class",
+            "From every module",
+            "Only in HTML",
+            "Only in an interface"
+          ],
+          "correct": 0,
+          "explanation": "Private members are checked so only their declaring class can access them."
+        }
+      ]
+    },
+    {
+      "id": "ts_classes_03",
+      "title": "Protect State with readonly, Accessors & Static Members",
+      "image": "/assets/typescript/ts_classes/03-readonly-accessors-static.png",
+      "content": "# Protect State with readonly, Accessors & Static Members\n\n`readonly` prevents reassignment of a property binding after initialization. It is shallow: a readonly array property cannot point at another array, but the existing array can still be mutated unless its element type is also readonly.\n\n```ts\nclass User {\n  readonly hobbies: string[] = [];\n}\n\nconst user = new User();\nuser.hobbies.push('Coding');\n// user.hobbies = []; // Error\n```\n\nGetters expose computed data through property syntax. Setters validate assignments and commonly store values in private backing fields.\n\n```ts\nget fullName() { return this._firstName + ' ' + this._lastName; }\nset firstName(name: string) {\n  if (name.trim() === '') throw new Error('Invalid name.');\n  this._firstName = name;\n}\n```\n\nStatic members belong to the class itself, so call `User.greet()` rather than `user.greet()`. They are useful for identifiers and utilities that do not depend on instance state.\n\n## Complete subclass code — `classes.ts`\n\n```ts\nclass User {\n  static readonly entityId = 'USER';\n  readonly hobbies: string[] = [];\n  private _firstName = '';\n  private _lastName = '';\n\n  set firstName(name: string) {\n    if (name.trim() === '') throw new Error('Invalid first name.');\n    this._firstName = name;\n  }\n\n  set lastName(name: string) {\n    if (name.trim() === '') throw new Error('Invalid last name.');\n    this._lastName = name;\n  }\n\n  get fullName(): string {\n    return this._firstName + ' ' + this._lastName;\n  }\n\n  static greet(): string {\n    return 'Hello from the User type.';\n  }\n}\n\nconst max = new User();\nmax.firstName = 'Max';\nmax.lastName = 'Schwarz';\nmax.hobbies.push('Coding');\n\nconsole.log(User.entityId, User.greet());\nconsole.log(max.fullName, max.hobbies);\n```",
+      "questions": [
+        {
+          "type": "mcq",
+          "question": "Why can a readonly hobbies array still accept push()?",
+          "options": [
+            "readonly protects the property binding, not the mutable array contents",
+            "push creates a new class",
+            "Arrays ignore TypeScript",
+            "The member is static"
+          ],
+          "correct": 0,
+          "explanation": "Readonly is shallow unless the referenced value is also modeled as readonly."
+        },
+        {
+          "type": "mcq",
+          "question": "How is a getter named fullName accessed?",
+          "options": [
+            "user.fullName",
+            "user.fullName()",
+            "User.fullName only",
+            "new fullName()"
+          ],
+          "correct": 0,
+          "explanation": "Getter syntax exposes a computed value as a property."
+        }
+      ]
+    },
+    {
+      "id": "ts_classes_04",
+      "title": "Build Inheritance with super & protected",
+      "image": "/assets/typescript/ts_classes/04-inheritance-protected.png",
+      "content": "# Build Inheritance with super & protected\n\n`extends` creates a subclass that inherits accessible instance members. If the subclass declares a constructor, it must call `super(...)` before using `this` so the base constructor can initialize its part of the object.\n\n```ts\nclass Employee extends User {\n  constructor(public jobTitle: string) {\n    super();\n    super.firstName = 'Max';\n  }\n}\n```\n\nPass every argument required by the base constructor through `super`. A subclass can add members or override inherited behavior.\n\n`protected` sits between public and private: outside code cannot access it, but subclasses can. Use it for state that derived classes genuinely need; otherwise prefer private.\n\n## Complete subclass code — `classes.ts`\n\n```ts\nclass User {\n  constructor(\n    public name: string,\n    protected readonly internalId: string,\n  ) {}\n\n  describe(): string {\n    return this.name + ' [' + this.internalId + ']';\n  }\n}\n\nclass Employee extends User {\n  constructor(name: string, id: string, public jobTitle: string) {\n    super(name, id);\n  }\n\n  work(): string {\n    return this.name + ' works as ' + this.jobTitle +\n      ' with internal id ' + this.internalId;\n  }\n}\n\nconst employee = new Employee('Max', 'EMP-01', 'Developer');\nconsole.log(employee.describe());\nconsole.log(employee.work());\n// console.log(employee.internalId); // Error: protected.\n```",
+      "questions": [
+        {
+          "type": "mcq",
+          "question": "Why must Employee call super()?",
+          "options": [
+            "To run the base-class constructor",
+            "To make every field public",
+            "To compile interfaces",
+            "To create a static method"
+          ],
+          "correct": 0,
+          "explanation": "The base constructor must initialize the inherited portion of the instance."
+        },
+        {
+          "type": "mcq",
+          "question": "Who may access a protected member?",
+          "options": [
+            "The declaring class and its subclasses",
+            "All callers",
+            "Only interfaces",
+            "Only static methods"
+          ],
+          "correct": 0,
+          "explanation": "Protected keeps outside callers out while allowing derived classes to collaborate with the base class."
+        }
+      ]
+    },
+    {
+      "id": "ts_classes_05",
+      "title": "Design Abstract Base Classes",
+      "image": "/assets/typescript/ts_classes/05-abstract-classes.png",
+      "content": "# Design Abstract Base Classes\n\nAn abstract class captures shared state and behavior but cannot be constructed directly. It exists to be extended by concrete classes.\n\n```ts\nabstract class UIElement {\n  constructor(public identifier: string) {}\n\n  clone(targetLocation: string): void {\n    console.log('Clone to ' + targetLocation);\n  }\n}\n\n// new UIElement('base'); // Error\n```\n\nThe concrete class forwards required base data with `super(identifier)` and adds its specialized state. Abstract classes are a TypeScript-only restriction: the `abstract` keyword is erased during compilation.\n\n## Complete subclass code — `classes.ts`\n\n```ts\nabstract class UIElement {\n  constructor(public identifier: string) {}\n\n  clone(targetLocation: string): string {\n    return this.identifier + ' cloned into ' + targetLocation;\n  }\n}\n\nclass SideDrawerElement extends UIElement {\n  constructor(\n    identifier: string,\n    public position: 'left' | 'right',\n  ) {\n    super(identifier);\n  }\n\n  open(): string {\n    return this.identifier + ' opens from the ' + this.position;\n  }\n}\n\nconst drawer = new SideDrawerElement('main-drawer', 'left');\nconsole.log(drawer.open());\nconsole.log(drawer.clone('#mobile-shell'));\n// const base = new UIElement('base'); // Error: abstract class.\n```",
+      "questions": [
+        {
+          "type": "mcq",
+          "question": "What is the main purpose of an abstract class?",
+          "options": [
+            "Serve as a non-instantiable base for concrete subclasses",
+            "Create JSON at runtime",
+            "Replace every interface",
+            "Make all fields static"
+          ],
+          "correct": 0,
+          "explanation": "Abstract classes centralize shared implementation while requiring callers to construct a concrete subtype."
+        },
+        {
+          "type": "mcq",
+          "question": "What must SideDrawerElement pass to super?",
+          "options": [
+            "The identifier required by UIElement",
+            "Its entire source file",
+            "A type alias",
+            "Nothing, even when the base requires data"
+          ],
+          "correct": 0,
+          "explanation": "Subclass constructors must satisfy the base constructor's parameter contract."
+        }
+      ]
+    },
+    {
+      "id": "ts_classes_06",
+      "title": "Define & Use Interface Object Contracts",
+      "image": "/assets/typescript/ts_classes/06-interface-contracts.png",
+      "content": "# Define & Use Interface Object Contracts\n\nAn interface describes a shape without storing values or method bodies. A method signature states its parameters and return type, not its implementation.\n\n```ts\ninterface Authenticatable {\n  email: string;\n  password: string;\n  login(): void;\n  logout(): void;\n}\n```\n\nUse that interface as an object type. The concrete object must supply every required property and method, and it owns the actual login/logout logic.\n\n```ts\nlet user: Authenticatable;\nuser = {\n  email: 'test@example.com',\n  password: 'abc1',\n  login() { /* create a session */ },\n  logout() { /* clear the session */ },\n};\n```\n\n## Complete subclass code — `classes.ts`\n\n```ts\ninterface Authenticatable {\n  email: string;\n  password: string;\n  login(): void;\n  logout(): void;\n}\n\nconst user: Authenticatable = {\n  email: 'test@example.com',\n  password: 'abc1',\n  login() {\n    console.log('Session created for ' + this.email);\n  },\n  logout() {\n    console.log('Session cleared for ' + this.email);\n  },\n};\n\nuser.login();\nuser.logout();\n```",
+      "questions": [
+        {
+          "type": "mcq",
+          "question": "What belongs inside an interface method declaration?",
+          "options": [
+            "Its parameter and return types, without a body",
+            "Database logic",
+            "A constructor implementation",
+            "Generated JavaScript"
+          ],
+          "correct": 0,
+          "explanation": "Interfaces describe behavior contracts rather than implementing behavior."
+        },
+        {
+          "type": "mcq",
+          "question": "What must an object typed Authenticatable provide?",
+          "options": [
+            "Every required property and method",
+            "Only its email",
+            "Only static members",
+            "No runtime values"
+          ],
+          "correct": 0,
+          "explanation": "Structural typing checks the object's complete required shape."
+        }
+      ]
+    },
+    {
+      "id": "ts_classes_07",
+      "title": "Compare Interfaces, Type Aliases & Callable Contracts",
+      "image": "/assets/typescript/ts_classes/07-interfaces-aliases.png",
+      "content": "# Compare Interfaces, Type Aliases & Callable Contracts\n\nBoth a type alias and an interface can describe an object. Type aliases are more general because they can also name unions and primitives; interfaces specialize in extendable object and callable shapes.\n\nInterfaces support declaration merging: separate declarations with the same name combine. That can be useful when augmenting a library-owned interface, but accidental merging can also surprise you. A type alias name cannot be redeclared.\n\n```ts\ninterface Session { token: string; }\ninterface Session { expiresAt: Date; }\n\nconst session: Session = {\n  token: 'abc',\n  expiresAt: new Date(),\n};\n```\n\nAn interface can also describe a call signature, though a function type alias is more common.\n\n```ts\ntype SumFn = (a: number, b: number) => number;\ninterface SumInterface { (a: number, b: number): number; }\n```\n\n## Complete subclass code — `classes.ts`\n\n```ts\ninterface Session {\n  token: string;\n}\n\ninterface Session {\n  expiresAt: Date;\n}\n\ntype SumFn = (a: number, b: number) => number;\n\ninterface SumInterface {\n  (a: number, b: number): number;\n}\n\nconst session: Session = {\n  token: 'abc',\n  expiresAt: new Date(Date.now() + 60_000),\n};\n\nconst sumWithAlias: SumFn = (a, b) => a + b;\nconst sumWithInterface: SumInterface = (a, b) => a + b;\n\nconsole.log(session.token, sumWithAlias(2, 3), sumWithInterface(4, 5));\n```",
+      "questions": [
+        {
+          "type": "mcq",
+          "question": "What does interface declaration merging do?",
+          "options": [
+            "Combines compatible declarations with the same interface name",
+            "Concatenates JavaScript files",
+            "Runs both constructors",
+            "Converts an interface to a class"
+          ],
+          "correct": 0,
+          "explanation": "Repeated interface declarations contribute members to one resulting contract."
+        },
+        {
+          "type": "mcq",
+          "question": "Which syntax is more commonly used for a plain function contract?",
+          "options": [
+            "A function type alias",
+            "An abstract class",
+            "A namespace",
+            "A private constructor"
+          ],
+          "correct": 0,
+          "explanation": "Interfaces can be callable, but function type aliases are typically easier to recognize."
+        }
+      ]
+    },
+    {
+      "id": "ts_classes_08",
+      "title": "Implement Interfaces & Depend on Minimum Shapes",
+      "image": "/assets/typescript/ts_classes/08-implements-minimum.png",
+      "content": "# Implement Interfaces & Depend on Minimum Shapes\n\n`implements` asks TypeScript to verify that a class has at least the members promised by an interface. A class may implement multiple interfaces separated by commas and may still add extra members.\n\n```ts\nclass AuthenticatableUser implements Authenticatable {\n  constructor(\n    public userName: string,\n    public email: string,\n    public password: string,\n  ) {}\n\n  login() {}\n  logout() {}\n}\n```\n\nUse the interface at API boundaries to depend on the smallest useful capability instead of one concrete class.\n\n```ts\nfunction authenticate(user: Authenticatable) {\n  user.login();\n}\n```\n\nAny object or class instance with that shape can be passed, which keeps the function flexible and testable.\n\n## Complete subclass code — `classes.ts`\n\n```ts\ninterface Authenticatable {\n  email: string;\n  password: string;\n  login(): void;\n  logout(): void;\n}\n\nclass AuthenticatableUser implements Authenticatable {\n  constructor(\n    public userName: string,\n    public email: string,\n    public password: string,\n  ) {}\n\n  login(): void {\n    console.log(this.userName + ' logged in.');\n  }\n\n  logout(): void {\n    console.log(this.userName + ' logged out.');\n  }\n}\n\nfunction authenticate(user: Authenticatable): void {\n  user.login();\n}\n\nconst max = new AuthenticatableUser('Max', 'max@example.com', 'secret');\nauthenticate(max);\nmax.logout();\n```",
+      "questions": [
+        {
+          "type": "mcq",
+          "question": "May an implementing class have members not listed by the interface?",
+          "options": [
+            "Yes, implements enforces a minimum shape",
+            "No, never",
+            "Only private members",
+            "Only one extra method"
+          ],
+          "correct": 0,
+          "explanation": "The interface requires members but does not forbid additional class-specific behavior."
+        },
+        {
+          "type": "mcq",
+          "question": "Why type authenticate with Authenticatable instead of AuthenticatableUser?",
+          "options": [
+            "It accepts any value with the required capability",
+            "It disables type checking",
+            "It makes login static",
+            "It emits the interface at runtime"
+          ],
+          "correct": 0,
+          "explanation": "Depending on the contract decouples the function from a specific implementation."
+        }
+      ]
+    },
+    {
+      "id": "ts_classes_09",
+      "title": "Extend Interfaces & Understand Type Erasure",
+      "image": "/assets/typescript/ts_classes/09-extend-erase.png",
+      "content": "# Extend Interfaces & Understand Type Erasure\n\nInterface inheritance creates a new contract without changing the original. This differs from declaration merging, which adds members to the same interface.\n\n```ts\ninterface AuthenticatableAdmin extends Authenticatable {\n  role: 'admin' | 'super-admin';\n}\n```\n\nAn interface may extend multiple interfaces. The derived contract receives every required member and can add its own.\n\nCompile the file and inspect the JavaScript: interface declarations and `implements` checks are erased because JavaScript has no runtime interface construct. The concrete class, object, methods, and function calls remain. Interfaces improve development-time guarantees; they are not runtime validators.\n\n## Complete subclass code — `classes.ts`\n\n```ts\ninterface Authenticatable {\n  email: string;\n  login(): void;\n}\n\ninterface HasPermissions {\n  permissions: string[];\n}\n\ninterface AuthenticatableAdmin extends Authenticatable, HasPermissions {\n  role: 'admin' | 'super-admin';\n}\n\nconst admin: AuthenticatableAdmin = {\n  email: 'admin@example.com',\n  role: 'admin',\n  permissions: ['courses:write'],\n  login() {\n    console.log(this.email + ' logged in as ' + this.role);\n  },\n};\n\nadmin.login();\nconsole.log(admin.permissions);\n\n// Compile with: npx tsc classes.ts\n// The emitted JavaScript contains admin, but no interface declarations.\n```",
+      "questions": [
+        {
+          "type": "mcq",
+          "question": "How does extends differ from declaration merging here?",
+          "options": [
+            "extends creates a new derived interface",
+            "extends rewrites the original interface",
+            "extends emits runtime validation",
+            "There is no difference"
+          ],
+          "correct": 0,
+          "explanation": "The base remains unchanged while the derived interface adds or combines requirements."
+        },
+        {
+          "type": "mcq",
+          "question": "What happens to interface declarations in emitted JavaScript?",
+          "options": [
+            "They are erased",
+            "They become classes",
+            "They become JSON schemas",
+            "They run before main"
+          ],
+          "correct": 0,
+          "explanation": "Interfaces are compile-time-only TypeScript constructs."
+        }
+      ]
+    }
+  ],
+  "s7": [
+    {
+      "id": "ts_advanced_01",
+      "title": "Compose Shapes with Intersection Types",
+      "image": "/assets/typescript/ts_advanced/01-intersections.png",
+      "content": "# Compose Shapes with Intersection Types\n\nAn intersection combines every requirement from its operands. It is ideal when several data sources share reusable status information.\n\n```ts\ntype FileData = { path: string; content: string };\ntype DatabaseData = { connectionUrl: string; credentials: string };\ntype Status = { isOpen: boolean; errorMessage?: string };\n\ntype AccessedFileData = FileData & Status;\ntype AccessedDatabaseData = DatabaseData & Status;\n```\n\nAn `AccessedFileData` value must contain both file fields and status fields. With interfaces, the equivalent design uses `extends FileData, Status`. Choose the form that fits the surrounding model; the goal is to avoid duplicating shared members.\n\n## Complete subclass code — `advanced.ts`\n\n```ts\ntype FileData = {\n  path: string;\n  content: string;\n};\n\ntype DatabaseData = {\n  connectionUrl: string;\n  credentials: string;\n};\n\ntype Status = {\n  isOpen: boolean;\n  errorMessage?: string;\n};\n\ntype AccessedFileData = FileData & Status;\ntype AccessedDatabaseData = DatabaseData & Status;\n\nconst file: AccessedFileData = {\n  path: '/files/course.md',\n  content: '# TypeScript',\n  isOpen: true,\n};\n\nconst database: AccessedDatabaseData = {\n  connectionUrl: 'postgres://localhost/course',\n  credentials: 'local-dev',\n  isOpen: false,\n  errorMessage: 'Connection closed',\n};\n\nconsole.log(file, database);\n```",
+      "questions": [
+        {
+          "type": "mcq",
+          "question": "What must AccessedFileData contain?",
+          "options": [
+            "All FileData and Status members",
+            "Only the overlapping members",
+            "Only optional fields",
+            "A class constructor"
+          ],
+          "correct": 0,
+          "explanation": "An intersection combines requirements rather than choosing one branch."
+        },
+        {
+          "type": "mcq",
+          "question": "What is the interface equivalent of combining these shapes?",
+          "options": [
+            "An interface extending FileData and Status",
+            "A private field",
+            "A function overload",
+            "A const assertion"
+          ],
+          "correct": 0,
+          "explanation": "Interface inheritance can combine multiple object contracts."
+        }
+      ]
+    },
+    {
+      "id": "ts_advanced_02",
+      "title": "Narrow Union Objects with Type Guards",
+      "image": "/assets/typescript/ts_advanced/02-in-guards.png",
+      "content": "# Narrow Union Objects with Type Guards\n\nA union permits either shape, so code must establish which member it received before accessing member-specific properties. Type guards use runtime checks that TypeScript can understand.\n\n```ts\ntype Source = FileSource | DBSource;\n\nfunction loadData(source: Source) {\n  if ('path' in source) {\n    console.log(source.path);\n    return;\n  }\n  console.log(source.connectionUrl);\n}\n```\n\nThe `in` operator is a real JavaScript runtime check. A redundant `typeof source === 'object'` is unnecessary here because both union members are already known object types. The early return lets control-flow analysis narrow the remaining branch to `DBSource`.\n\n## Complete subclass code — `advanced.ts`\n\n```ts\ntype FileSource = {\n  path: string;\n};\n\ntype DBSource = {\n  connectionUrl: string;\n};\n\ntype Source = FileSource | DBSource;\n\nfunction loadData(source: Source): string {\n  if ('path' in source) {\n    return 'Opening file at ' + source.path;\n  }\n\n  return 'Connecting to ' + source.connectionUrl;\n}\n\nconst fileSource: FileSource = { path: '/data/file.csv' };\nconst dbSource: DBSource = { connectionUrl: 'db://courses' };\n\nconsole.log(loadData(fileSource));\nconsole.log(loadData(dbSource));\n```",
+      "questions": [
+        {
+          "type": "mcq",
+          "question": "Why check 'path' in source?",
+          "options": [
+            "It supplies runtime evidence that narrows to FileSource",
+            "It converts the object to a file",
+            "It adds path to every object",
+            "It disables strict mode"
+          ],
+          "correct": 0,
+          "explanation": "The in operator verifies property existence at runtime and TypeScript follows that control flow."
+        },
+        {
+          "type": "mcq",
+          "question": "Why is source.connectionUrl safe after the early return?",
+          "options": [
+            "The FileSource branch has already exited",
+            "Every object has connectionUrl",
+            "A cast was added",
+            "The union became an intersection"
+          ],
+          "correct": 0,
+          "explanation": "Control-flow analysis knows the remaining path must be the database branch."
+        }
+      ]
+    },
+    {
+      "id": "ts_advanced_03",
+      "title": "Model Exhaustive Branches with Discriminated Unions",
+      "image": "/assets/typescript/ts_advanced/03-discriminated-unions.png",
+      "content": "# Model Exhaustive Branches with Discriminated Unions\n\nA discriminated union gives every member the same tag property but a different literal value. Checking that tag is clearer and more stable than probing for incidental fields.\n\n```ts\ntype FileSource = { type: 'file'; path: string };\ntype DBSource = { type: 'db'; connectionUrl: string };\ntype Source = FileSource | DBSource;\n```\n\nInside `source.type === 'file'`, TypeScript knows `source` is `FileSource`. A `switch` scales well and a `never` assertion turns a newly added, unhandled union member into a compiler error.\n\n## Complete subclass code — `advanced.ts`\n\n```ts\ntype FileSource = {\n  type: 'file';\n  path: string;\n};\n\ntype DBSource = {\n  type: 'db';\n  connectionUrl: string;\n};\n\ntype Source = FileSource | DBSource;\n\nfunction assertNever(value: never): never {\n  throw new Error('Unhandled source: ' + JSON.stringify(value));\n}\n\nfunction loadData(source: Source): string {\n  switch (source.type) {\n    case 'file':\n      return 'Opening ' + source.path;\n    case 'db':\n      return 'Connecting to ' + source.connectionUrl;\n    default:\n      return assertNever(source);\n  }\n}\n\nconsole.log(loadData({ type: 'file', path: '/data.json' }));\nconsole.log(loadData({ type: 'db', connectionUrl: 'db://local' }));\n```",
+      "questions": [
+        {
+          "type": "mcq",
+          "question": "What makes this union discriminated?",
+          "options": [
+            "Every member has a shared type field with a distinct literal value",
+            "Every member is a class",
+            "The fields are private",
+            "It uses an index signature"
+          ],
+          "correct": 0,
+          "explanation": "The common literal tag connects runtime branching to static narrowing."
+        },
+        {
+          "type": "mcq",
+          "question": "Why call assertNever in default?",
+          "options": [
+            "To detect an unhandled future union member",
+            "To make every branch throw",
+            "To convert strings to numbers",
+            "To merge interfaces"
+          ],
+          "correct": 0,
+          "explanation": "Exhaustiveness checking fails when source is no longer never."
+        }
+      ]
+    },
+    {
+      "id": "ts_advanced_04",
+      "title": "Reuse instanceof & Custom Type Predicates",
+      "image": "/assets/typescript/ts_advanced/04-instanceof-predicates.png",
+      "content": "# Reuse instanceof & Custom Type Predicates\n\nUse `instanceof` when the alternatives are actual classes. It is a JavaScript runtime operator, and TypeScript narrows the instance inside each branch.\n\n```ts\nif (entity instanceof User) {\n  entity.join();\n  return;\n}\nentity.scan();\n```\n\nRepeated guards can be moved into a function. Modern TypeScript can infer a predicate from a simple Boolean return; an explicit `source is FileSource` return type documents the guarantee and works when inference is not available.\n\n```ts\nfunction isFile(source: Source): source is FileSource {\n  return source.type === 'file';\n}\n```\n\nA predicate is still a Boolean at runtime. Its extra meaning is a compile-time promise, so its implementation must be truthful.\n\n## Complete subclass code — `advanced.ts`\n\n```ts\nclass User {\n  constructor(public name: string) {}\n  join(): string { return this.name + ' joined.'; }\n}\n\nclass Admin {\n  constructor(public permissions: string[]) {}\n  scan(): string { return 'Scanned: ' + this.permissions.join(', '); }\n}\n\ntype Entity = User | Admin;\n\nfunction initialize(entity: Entity): string {\n  if (entity instanceof User) return entity.join();\n  return entity.scan();\n}\n\ntype FileSource = { type: 'file'; path: string };\ntype DBSource = { type: 'db'; connectionUrl: string };\ntype Source = FileSource | DBSource;\n\nfunction isFile(source: Source): source is FileSource {\n  return source.type === 'file';\n}\n\nfunction describe(source: Source): string {\n  return isFile(source) ? source.path : source.connectionUrl;\n}\n\nconsole.log(initialize(new User('Max')));\nconsole.log(initialize(new Admin(['users:read'])));\nconsole.log(describe({ type: 'file', path: '/notes.txt' }));\n```",
+      "questions": [
+        {
+          "type": "mcq",
+          "question": "When is instanceof an appropriate guard?",
+          "options": [
+            "When alternatives are class instances",
+            "For arbitrary interface-only objects",
+            "Only for numbers",
+            "Only during compilation"
+          ],
+          "correct": 0,
+          "explanation": "Instanceof checks the runtime prototype chain of class instances."
+        },
+        {
+          "type": "mcq",
+          "question": "What does source is FileSource mean?",
+          "options": [
+            "A true result tells TypeScript the argument is FileSource",
+            "It constructs a file",
+            "It changes Source permanently",
+            "It performs validation automatically"
+          ],
+          "correct": 0,
+          "explanation": "A type predicate attaches narrowing information to the Boolean result."
+        }
+      ]
+    },
+    {
+      "id": "ts_advanced_05",
+      "title": "Map Inputs to Outputs with Function Overloads",
+      "image": "/assets/typescript/ts_advanced/05-overloads.png",
+      "content": "# Map Inputs to Outputs with Function Overloads\n\nThe implementation of `getLength` returns different types: text input produces a label such as `'3 words'`, while an array produces a numeric item count. A plain union signature loses the relationship between input and output.\n\n```ts\nfunction getLength(value: string | any[]) {\n  if (typeof value === 'string') {\n    const numberOfWords = value.split(' ').length;\n    return numberOfWords + ' words';\n  }\n  return value.length;\n}\n```\n\nOverload signatures describe each supported call, followed by one compatible implementation signature and body.\n\n```ts\nfunction getLength(value: any[]): number;\nfunction getLength(value: string): string;\nfunction getLength(value: string | any[]) { /* implementation */ }\n```\n\nCallers now receive a precise result without casting. Overloads are valuable when output depends on the input form; do not use them when one union return type already tells the truth.\n\n## Complete subclass code — `advanced.ts`\n\n```ts\nfunction getLength(value: unknown[]): number;\nfunction getLength(value: string): string;\nfunction getLength(value: string | unknown[]): string | number {\n  if (typeof value === 'string') {\n    const numberOfWords = value.trim().split(/\\s+/).length;\n    return numberOfWords + ' words';\n  }\n\n  return value.length;\n}\n\nconst numberOfWords = getLength('does this work?');\nconst numberOfItems = getLength(['Sports', 'Cookies']);\n\nconsole.log(numberOfWords.toUpperCase());\nconsole.log(numberOfItems.toFixed(0));\n```",
+      "questions": [
+        {
+          "type": "mcq",
+          "question": "What information do overloads preserve?",
+          "options": [
+            "The relationship between each input form and its output type",
+            "Runtime database state",
+            "Private class fields",
+            "CSS properties"
+          ],
+          "correct": 0,
+          "explanation": "Each overload signature maps a supported argument type to a precise return type."
+        },
+        {
+          "type": "mcq",
+          "question": "How many implementation bodies may an overloaded function have?",
+          "options": [
+            "One",
+            "One per overload signature",
+            "None",
+            "Exactly four"
+          ],
+          "correct": 0,
+          "explanation": "Several visible signatures share one compatible implementation."
+        }
+      ]
+    },
+    {
+      "id": "ts_advanced_06",
+      "title": "Model Dynamic Keys with Index Signatures & Record",
+      "image": "/assets/typescript/ts_advanced/06-index-record.png",
+      "content": "# Model Dynamic Keys with Index Signatures & Record\n\nAn index signature models property names that are unknown in advance while constraining their values.\n\n```ts\ntype DataStore = {\n  [property: string]: number | boolean;\n};\n\nconst store: DataStore = {};\nstore.id = 5;\nstore.isOpen = false;\n// store.name = 'Max'; // Error\n```\n\nThe placeholder name `property` is documentation; `string` is the key type. `Record<string, number | boolean>` expresses the same broad dictionary contract with a built-in utility type.\n\nUse a dynamic dictionary only when keys really are open-ended. A normal object type is safer when the valid keys are known.\n\n## Complete subclass code — `advanced.ts`\n\n```ts\ntype DataStore = {\n  [property: string]: number | boolean;\n};\n\nconst store: DataStore = {};\nstore.id = 5;\nstore.isOpen = false;\n\nconst metrics: Record<string, number | boolean> = {\n  lessons: 42,\n  published: true,\n};\n\nfunction printStore(values: Record<string, number | boolean>): void {\n  for (const [key, value] of Object.entries(values)) {\n    console.log(key + ': ' + value);\n  }\n}\n\nprintStore(store);\nprintStore(metrics);\n```",
+      "questions": [
+        {
+          "type": "mcq",
+          "question": "What does [property: string]: number | boolean allow?",
+          "options": [
+            "Any string-compatible key whose value is number or boolean",
+            "Only a property literally named property",
+            "Any value type",
+            "Only arrays"
+          ],
+          "correct": 0,
+          "explanation": "The bracketed name is a placeholder for dynamic string keys."
+        },
+        {
+          "type": "mcq",
+          "question": "Which utility describes the same broad dictionary?",
+          "options": [
+            "Record<string, number | boolean>",
+            "Partial<number>",
+            "Promise<boolean>",
+            "ReadonlyArray<string>"
+          ],
+          "correct": 0,
+          "explanation": "Record maps an allowed key type to an allowed value type."
+        }
+      ]
+    },
+    {
+      "id": "ts_advanced_07",
+      "title": "Preserve Literal Values with as const",
+      "image": "/assets/typescript/ts_advanced/07-as-const.png",
+      "content": "# Preserve Literal Values with as const\n\nWithout context, an array such as `['admin', 'guest', 'editor']` widens to `string[]` because TypeScript assumes it may later hold other strings.\n\n`as const` asks for the narrowest practical inference. The array becomes a readonly tuple and each element keeps its literal type.\n\n```ts\nconst roles = ['admin', 'guest', 'editor'] as const;\nconst firstRole = roles[0]; // 'admin'\n// roles.push('author');    // Error: readonly\n```\n\nThis is stronger than a `const` variable alone: `const` prevents rebinding, while `as const` also narrows nested literals and marks inferred properties readonly. Use it for fixed configuration and discriminant values.\n\n## Complete subclass code — `advanced.ts`\n\n```ts\nconst roles = ['admin', 'guest', 'editor'] as const;\ntype Role = (typeof roles)[number];\n\nconst permissions = {\n  admin: ['read', 'write', 'delete'],\n  guest: ['read'],\n  editor: ['read', 'write'],\n} as const;\n\nfunction canWrite(role: Role): boolean {\n  const allowed: readonly string[] = permissions[role];\n  return allowed.includes('write');\n}\n\nconst firstRole = roles[0];\nconsole.log(firstRole, canWrite('admin'), canWrite('guest'));\n\n// roles.push('author'); // Error: readonly tuple.\n// permissions.guest.push('write'); // Error: readonly array.\n```",
+      "questions": [
+        {
+          "type": "mcq",
+          "question": "What is the inferred type of roles[0] after as const?",
+          "options": [
+            "The literal type 'admin'",
+            "string",
+            "unknown",
+            "never"
+          ],
+          "correct": 0,
+          "explanation": "A const assertion preserves positional literal information in the tuple."
+        },
+        {
+          "type": "mcq",
+          "question": "How does as const differ from a const variable declaration?",
+          "options": [
+            "It also narrows literals and makes inferred members readonly",
+            "It changes runtime values",
+            "It only works on classes",
+            "There is no difference"
+          ],
+          "correct": 0,
+          "explanation": "Const prevents rebinding; a const assertion affects the inferred type of the value."
+        }
+      ]
+    },
+    {
+      "id": "ts_advanced_08",
+      "title": "Validate Contracts without Losing Inference",
+      "image": "/assets/typescript/ts_advanced/08-satisfies.png",
+      "content": "# Validate Contracts without Losing Inference\n\nA direct annotation validates a value but may widen useful information.\n\n```ts\nconst annotated: Record<string, number> = {\n  entry1: 0.51,\n  entry2: -1.23,\n};\n\nannotated.entry3; // Allowed by the broad string-key type\n```\n\n`satisfies` checks that the value conforms to a target type while retaining the value's more specific inferred type.\n\n```ts\nconst dataEntries = {\n  entry1: 0.51,\n  entry2: -1.23,\n} satisfies Record<string, number>;\n\ndataEntries.entry2;\n// dataEntries.entry3; // Error: typo or unknown key\n```\n\nThis pattern is especially useful for library configuration. For example, a routes array can satisfy a library's route contract while keeping exact route objects available to tooling and autocomplete. It validates; it does not cast or transform the runtime value.\n\n## Complete subclass code — `advanced.ts`\n\n```ts\ntype RouteConfig = {\n  path: string;\n  component: 'home' | 'courses' | 'lesson';\n  requiresAuth?: boolean;\n};\n\nconst dataEntries = {\n  entry1: 0.51,\n  entry2: -1.23,\n} satisfies Record<string, number>;\n\nconst routes = [\n  { path: '/', component: 'home' },\n  { path: '/courses', component: 'courses', requiresAuth: true },\n  { path: '/lesson/:id', component: 'lesson', requiresAuth: true },\n] satisfies RouteConfig[];\n\nconsole.log(dataEntries.entry1);\nconsole.log(routes.map(route => route.path));\n\n// dataEntries.entry3; // Error: property does not exist.\n// routes.push({ path: '/bad', component: 'missing' }); // Error.\n```",
+      "questions": [
+        {
+          "type": "mcq",
+          "question": "What does satisfies preserve that a broad annotation can lose?",
+          "options": [
+            "The value's specific inferred keys and literals",
+            "Runtime encryption",
+            "Private fields",
+            "Compiled interfaces"
+          ],
+          "correct": 0,
+          "explanation": "Satisfies checks compatibility without replacing the expression's useful inferred type."
+        },
+        {
+          "type": "mcq",
+          "question": "Does satisfies transform or validate data at runtime?",
+          "options": [
+            "No, it is a compile-time compatibility check",
+            "Yes, it parses every value",
+            "Only in Node.js",
+            "Only for arrays"
+          ],
+          "correct": 0,
+          "explanation": "Runtime validation needs separate JavaScript logic or a validation library."
+        }
+      ]
+    }
+  ]
+}
