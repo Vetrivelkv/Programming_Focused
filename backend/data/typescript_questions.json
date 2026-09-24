@@ -1138,6 +1138,530 @@
           ]
         }
       ]
+    },
+    {
+      "name": "Section 8 · Generic Types",
+      "rounds": [
+        {
+          "round_number": 1,
+          "title": "Generic Types Mastery Challenge",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What does Array<string> describe?",
+              "options": [
+                "An array whose elements are strings",
+                "A string constructor",
+                "Any array",
+                "A tuple of one item"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: An array whose elements are strings."
+            },
+            {
+              "type": "mcq",
+              "question": "What is T in a generic definition?",
+              "options": [
+                "A type placeholder",
+                "A runtime variable",
+                "A decorator",
+                "A key name"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: A type placeholder."
+            },
+            {
+              "type": "mcq",
+              "question": "Why use merge<T, U>?",
+              "options": [
+                "To retain two possibly different input types",
+                "To force equal values",
+                "To make an array readonly",
+                "To disable inference"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: To retain two possibly different input types."
+            },
+            {
+              "type": "mcq",
+              "question": "What does extends object do in a generic?",
+              "options": [
+                "Constrains allowed type arguments",
+                "Creates inheritance at runtime",
+                "Returns an object",
+                "Adds properties"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: Constrains allowed type arguments."
+            },
+            {
+              "type": "mcq",
+              "question": "Does a generic constraint erase inference?",
+              "options": [
+                "No",
+                "Yes",
+                "Only for classes",
+                "Only for arrays"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: No."
+            },
+            {
+              "type": "mcq",
+              "question": "Can TypeScript infer new ListNode(value)'s type?",
+              "options": [
+                "Yes, from value",
+                "No",
+                "Only from a cast",
+                "Only at runtime"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: Yes, from value."
+            },
+            {
+              "type": "mcq",
+              "question": "What links save and findAll in Repository<T>?",
+              "options": [
+                "The shared T",
+                "A global variable",
+                "JSON",
+                "The interface name"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: The shared T."
+            },
+            {
+              "type": "mcq",
+              "question": "What does DataStore<boolean> reject?",
+              "options": [
+                "String values",
+                "Boolean values",
+                "String keys",
+                "Empty objects"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: String values."
+            },
+            {
+              "type": "mcq",
+              "question": "When are explicit type arguments useful?",
+              "options": [
+                "When inference lacks or needs overriding information",
+                "On every call",
+                "Never",
+                "Only in JavaScript"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: When inference lacks or needs overriding information."
+            },
+            {
+              "type": "mcq",
+              "question": "Are generic parameters emitted to JavaScript?",
+              "options": [
+                "No",
+                "Yes",
+                "Only T",
+                "Only constraints"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: No."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Section 9 · Classes & Generics Demo Project",
+      "rounds": [
+        {
+          "round_number": 1,
+          "title": "Generic Linked List Challenge",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What does a node store besides its value?",
+              "options": [
+                "An optional next-node reference",
+                "The whole list",
+                "A database",
+                "A previous array"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: An optional next-node reference."
+            },
+            {
+              "type": "mcq",
+              "question": "Why is root optional?",
+              "options": [
+                "An empty list has no root",
+                "Roots are always private",
+                "T may be undefined",
+                "Nodes compile away"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: An empty list has no root."
+            },
+            {
+              "type": "mcq",
+              "question": "What type flows through LinkedList<T> and ListNode<T>?",
+              "options": [
+                "The stored value type",
+                "The list length",
+                "The method name",
+                "The position"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: The stored value type."
+            },
+            {
+              "type": "mcq",
+              "question": "What does the first add set?",
+              "options": [
+                "Both root and tail",
+                "Only next",
+                "Only length",
+                "Nothing"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: Both root and tail."
+            },
+            {
+              "type": "mcq",
+              "question": "How is a later node appended?",
+              "options": [
+                "old tail.next = node, then tail = node",
+                "root = undefined",
+                "delete tail",
+                "copy all nodes"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: old tail.next = node, then tail = node."
+            },
+            {
+              "type": "mcq",
+              "question": "Why keep tail?",
+              "options": [
+                "To append without traversing from root",
+                "To infer T",
+                "To make root public",
+                "To print values"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: To append without traversing from root."
+            },
+            {
+              "type": "mcq",
+              "question": "How does traversal advance?",
+              "options": [
+                "current = current.next",
+                "current = root",
+                "length--",
+                "tail = root"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: current = current.next."
+            },
+            {
+              "type": "mcq",
+              "question": "What must insertion at zero update?",
+              "options": [
+                "root",
+                "only tail.next",
+                "the generic",
+                "the class name"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: root."
+            },
+            {
+              "type": "mcq",
+              "question": "What must deletion of the last node update?",
+              "options": [
+                "tail",
+                "the type alias",
+                "all values",
+                "the constructor"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: tail."
+            },
+            {
+              "type": "mcq",
+              "question": "What should an invalid position do?",
+              "options": [
+                "Fail without mutation",
+                "Corrupt links",
+                "Change T",
+                "Always throw a string"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: Fail without mutation."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Section 10 · Deriving Types From Types",
+      "rounds": [
+        {
+          "round_number": 1,
+          "title": "Derived Types Mastery Challenge",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What does typeof value do in type space?",
+              "options": [
+                "Derives its static type",
+                "Returns a runtime string",
+                "Copies it",
+                "Deletes it"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: Derives its static type."
+            },
+            {
+              "type": "mcq",
+              "question": "What does keyof T produce?",
+              "options": [
+                "A union of T's keys",
+                "T's values",
+                "An array",
+                "A class"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: A union of T's keys."
+            },
+            {
+              "type": "mcq",
+              "question": "What does T[K] represent?",
+              "options": [
+                "The value type at key K",
+                "A runtime read",
+                "A tuple length",
+                "A constructor"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: The value type at key K."
+            },
+            {
+              "type": "mcq",
+              "question": "What does ArrayType[number] extract?",
+              "options": [
+                "An element type",
+                "Only the first item",
+                "The length",
+                "A key string"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: An element type."
+            },
+            {
+              "type": "mcq",
+              "question": "What does [K in keyof T] create?",
+              "options": [
+                "A mapped type",
+                "A runtime loop",
+                "A decorator",
+                "A promise"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: A mapped type."
+            },
+            {
+              "type": "mcq",
+              "question": "What does -readonly do?",
+              "options": [
+                "Removes readonly modifiers",
+                "Adds readonly",
+                "Deletes values",
+                "Makes fields private"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: Removes readonly modifiers."
+            },
+            {
+              "type": "mcq",
+              "question": "What can template-literal types combine?",
+              "options": [
+                "String literal unions",
+                "Runtime DOM nodes",
+                "Only numbers",
+                "Classes only"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: String literal unions."
+            },
+            {
+              "type": "mcq",
+              "question": "What is a conditional type's syntax based on?",
+              "options": [
+                "T extends Pattern ? A : B",
+                "if(T)",
+                "switch(T)",
+                "T && A"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: T extends Pattern ? A : B."
+            },
+            {
+              "type": "mcq",
+              "question": "What does infer capture?",
+              "options": [
+                "A matched part of another type",
+                "A runtime value",
+                "A compiler flag",
+                "A key press"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: A matched part of another type."
+            },
+            {
+              "type": "mcq",
+              "question": "Which utility makes properties optional?",
+              "options": [
+                "Partial",
+                "ReturnType",
+                "Readonly",
+                "Omit"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: Partial."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Section 11 · ECMAScript Decorators",
+      "rounds": [
+        {
+          "round_number": 1,
+          "title": "ECMAScript Decorators Challenge",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What symbol attaches a decorator?",
+              "options": [
+                "@",
+                "#",
+                "$",
+                "&"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: @."
+            },
+            {
+              "type": "mcq",
+              "question": "When does a class decorator body run?",
+              "options": [
+                "At class definition evaluation",
+                "Only on new",
+                "On every method call",
+                "At type-check time only"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: At class definition evaluation."
+            },
+            {
+              "type": "mcq",
+              "question": "What is a class decorator target?",
+              "options": [
+                "The constructor",
+                "An instance",
+                "A field value",
+                "A module"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: The constructor."
+            },
+            {
+              "type": "mcq",
+              "question": "What may a class decorator return?",
+              "options": [
+                "A replacement constructor",
+                "Only void",
+                "Only a string",
+                "A context"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: A replacement constructor."
+            },
+            {
+              "type": "mcq",
+              "question": "What does ClassMethodDecoratorContext describe?",
+              "options": [
+                "The decorated method",
+                "The whole project",
+                "A field value only",
+                "A JSON object"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: The decorated method."
+            },
+            {
+              "type": "mcq",
+              "question": "Why use apply in a method wrapper?",
+              "options": [
+                "To preserve this and forward arguments",
+                "To compile decorators",
+                "To make it static",
+                "To infer keys"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: To preserve this and forward arguments."
+            },
+            {
+              "type": "mcq",
+              "question": "What does addInitializer enable for autobind?",
+              "options": [
+                "Per-instance setup",
+                "A runtime compiler",
+                "Type erasure",
+                "Mapped keys"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: Per-instance setup."
+            },
+            {
+              "type": "mcq",
+              "question": "Why is a field decorator target undefined?",
+              "options": [
+                "The field is not initialized at decoration time",
+                "Fields are invalid",
+                "It is private",
+                "The class was removed"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: The field is not initialized at decoration time."
+            },
+            {
+              "type": "mcq",
+              "question": "What does a field decorator's returned function receive?",
+              "options": [
+                "The initial field value",
+                "The class source",
+                "Only metadata",
+                "A key union"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: The initial field value."
+            },
+            {
+              "type": "mcq",
+              "question": "What is a decorator factory?",
+              "options": [
+                "A function returning a configured decorator",
+                "A class instance",
+                "A compiler option",
+                "A generic array"
+              ],
+              "correct_option_index": 0,
+              "explanation": "Correct: A function returning a configured decorator."
+            }
+          ]
+        }
+      ]
     }
   ]
 }

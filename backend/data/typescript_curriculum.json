@@ -1754,6 +1754,826 @@
           ]
         }
       ]
+    },
+    {
+      "name": "Section 8 · Generic Types",
+      "subtopics": [
+        {
+          "id": "ts_generics_01",
+          "title": "Recognize Generic Types",
+          "image": "/assets/typescript/ts_generics/01-generic-mental-model.png",
+          "content": "# Recognize Generic Types\n\nA generic type combines a reusable outer type with another type supplied at the point of use. `Array<string>` and `string[]` describe the same array, but the angle-bracket form makes the relationship explicit: `Array` is generic and `string` is its element type.\n\n```ts\nconst names: Array<string> = ['Max', 'Anna'];\nconst scores: Array<number> = [10, 8];\n```\n\nThe placeholder is flexible while defining a type and concrete when using it. That lets one definition preserve precise information instead of falling back to `any`.\n\n## Complete subclass code — `generics.ts`\n\n```ts\nconst names: Array<string> = ['Max', 'Anna'];\nconst scores: number[] = [10, 8];\n\nfunction first<T>(values: Array<T>): T | undefined {\n  return values[0];\n}\n\nconsole.log(first(names));\nconsole.log(first(scores));\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What does string supply in Array<string>?",
+              "options": [
+                "The array element type",
+                "The array length",
+                "A runtime constructor",
+                "A property name"
+              ],
+              "correct": 0,
+              "explanation": "The generic Array type receives string as its concrete element type."
+            },
+            {
+              "type": "mcq",
+              "question": "Why prefer a generic over any?",
+              "options": [
+                "It preserves relationships between input and output types",
+                "It disables errors",
+                "It adds runtime validation",
+                "It only supports strings"
+              ],
+              "correct": 0,
+              "explanation": "A generic keeps concrete type information available to the checker."
+            }
+          ]
+        },
+        {
+          "id": "ts_generics_02",
+          "title": "Build a Generic Data Store",
+          "image": "/assets/typescript/ts_generics/02-generic-alias.png",
+          "content": "# Build a Generic Data Store\n\nPlace a type parameter after the alias name, then reuse it wherever the caller's chosen type belongs.\n\n```ts\ntype DataStore<T> = { [property: string]: T };\n\nconst flags: DataStore<string | boolean> = {\n  name: 'Max',\n  isInstructor: true,\n};\n```\n\n`T` is a convention, not a keyword. A descriptive name is often clearer in domain code. Each use of `DataStore<...>` creates a concrete contract, so a string-only store rejects booleans.\n\n## Complete subclass code — `generics.ts`\n\n```ts\ntype DataStore<Value> = {\n  [property: string]: Value;\n};\n\nconst profile: DataStore<string | boolean> = {\n  name: 'Max',\n  isInstructor: true,\n};\n\nconst labels: DataStore<string> = {\n  primary: 'TypeScript',\n  secondary: 'Generics',\n};\n\nconsole.log(profile, labels);\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "Where is Value chosen for DataStore<Value>?",
+              "options": [
+                "When DataStore is used",
+                "At JavaScript runtime",
+                "Inside JSON",
+                "By the browser"
+              ],
+              "correct": 0,
+              "explanation": "The use site supplies the concrete type argument."
+            },
+            {
+              "type": "mcq",
+              "question": "Can DataStore<string> store true?",
+              "options": [
+                "No",
+                "Yes",
+                "Only in an array",
+                "Only when readonly"
+              ],
+              "correct": 0,
+              "explanation": "Every property value must satisfy the chosen string type."
+            }
+          ]
+        },
+        {
+          "id": "ts_generics_03",
+          "title": "Create Generic Functions & Use Inference",
+          "image": "/assets/typescript/ts_generics/03-functions-inference.png",
+          "content": "# Create Generic Functions & Use Inference\n\nA generic function can reuse the type learned from its arguments in its return type. `merge<T>(a: T, b: T)` keeps both inputs tied to one type; `merge<T, U>` allows them to differ.\n\n```ts\nfunction merge<T, U>(a: T, b: U) {\n  return [a, b];\n}\n\nconst result = merge(1, 'two'); // (string | number)[]\n```\n\nExplicit arguments such as `merge<number, string>(...)` are valid, but inference is usually shorter and equally precise.\n\n## Complete subclass code — `generics.ts`\n\n```ts\nfunction pair<T, U>(first: T, second: U): [T, U] {\n  return [first, second];\n}\n\nconst inferred = pair(1, 'two');\nconst explicit = pair<number, boolean>(2, true);\n\nconsole.log(inferred[0].toFixed());\nconsole.log(inferred[1].toUpperCase());\nconsole.log(explicit);\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "Why use two parameters T and U?",
+              "options": [
+                "The two arguments may have different types",
+                "To run twice",
+                "To create two classes",
+                "To avoid inference"
+              ],
+              "correct": 0,
+              "explanation": "Independent placeholders preserve each argument's type."
+            },
+            {
+              "type": "mcq",
+              "question": "Must callers always write generic arguments?",
+              "options": [
+                "No, TypeScript often infers them",
+                "Yes",
+                "Only for strings",
+                "Only in classes"
+              ],
+              "correct": 0,
+              "explanation": "Argument values usually provide enough information for inference."
+            }
+          ]
+        },
+        {
+          "id": "ts_generics_04",
+          "title": "Constrain Generic Object Operations",
+          "image": "/assets/typescript/ts_generics/04-constraints.png",
+          "content": "# Constrain Generic Object Operations\n\nObject spread on primitives is meaningless for this helper, so constrain the placeholders with `extends object`. Two placeholders preserve both distinct shapes and produce an intersection result.\n\n```ts\nfunction mergeObjects<T extends object, U extends object>(a: T, b: U) {\n  return { ...a, ...b };\n}\n```\n\nA constraint limits what may be substituted; it does not replace the concrete inferred type. The result still knows every member from both inputs.\n\n## Complete subclass code — `generics.ts`\n\n```ts\nfunction mergeObjects<T extends object, U extends object>(\n  first: T,\n  second: U,\n): T & U {\n  return { ...first, ...second };\n}\n\nconst course = mergeObjects(\n  { title: 'TypeScript' },\n  { lessons: 10, published: true },\n);\n\nconsole.log(course.title, course.lessons, course.published);\n// mergeObjects(1, 2); // Error: numbers do not satisfy object.\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What does T extends object enforce?",
+              "options": [
+                "T must be an object type",
+                "T becomes the global object",
+                "T is runtime-checked",
+                "T must be an array"
+              ],
+              "correct": 0,
+              "explanation": "The constraint rejects primitive substitutions at compile time."
+            },
+            {
+              "type": "mcq",
+              "question": "Why use T and U instead of one T?",
+              "options": [
+                "To retain two distinct input shapes",
+                "To disable spread",
+                "To make both inputs identical",
+                "To create a union"
+              ],
+              "correct": 0,
+              "explanation": "Independent parameters let the result contain the exact members of both objects."
+            }
+          ]
+        },
+        {
+          "id": "ts_generics_05",
+          "title": "Apply Generics to Classes & Interfaces",
+          "image": "/assets/typescript/ts_generics/05-classes-interfaces.png",
+          "content": "# Apply Generics to Classes & Interfaces\n\nClasses and interfaces use the same placeholder pattern. The concrete type can be inferred by the constructor or supplied explicitly.\n\n```ts\nclass User<Id> {\n  constructor(public id: Id) {}\n}\n\ninterface Repository<Entity> {\n  save(value: Entity): void;\n}\n```\n\nGenerics are most useful when two or more positions must agree: constructor input and field, repository input and output, or collection element and lookup result.\n\n## Complete subclass code — `generics.ts`\n\n```ts\ninterface Repository<Entity> {\n  save(value: Entity): void;\n  findAll(): Entity[];\n}\n\nclass MemoryRepository<Entity> implements Repository<Entity> {\n  private items: Entity[] = [];\n  save(value: Entity): void { this.items.push(value); }\n  findAll(): Entity[] { return [...this.items]; }\n}\n\ntype User = { id: number; name: string };\nconst users = new MemoryRepository<User>();\nusers.save({ id: 1, name: 'Max' });\nconsole.log(users.findAll());\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What relationship does Repository<Entity> preserve?",
+              "options": [
+                "save inputs and returned items use the same entity type",
+                "Every entity is any",
+                "Only IDs are stored",
+                "The interface exists at runtime"
+              ],
+              "correct": 0,
+              "explanation": "The shared parameter connects all entity-bearing members."
+            },
+            {
+              "type": "mcq",
+              "question": "Can one generic class be used with numbers and strings?",
+              "options": [
+                "Yes, in separate concrete instances",
+                "No",
+                "Only after casting to any",
+                "Only in JavaScript"
+              ],
+              "correct": 0,
+              "explanation": "Each use may choose its own valid concrete type."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Section 9 · Classes & Generics Demo Project",
+      "subtopics": [
+        {
+          "id": "ts_linked_list_01",
+          "title": "Model a Linked List with Nodes",
+          "image": "/assets/typescript/ts_linked_list/01-nodes-and-links.png",
+          "content": "# Model a Linked List with Nodes\n\nA linked list is a chain. Every node stores a value and an optional link to the next node. The list owns a private root and an explicit length because discovering the length by traversal would be repeated work.\n\n```ts\nclass ListNode<T> {\n  next?: ListNode<T>;\n  constructor(public value: T) {}\n}\n```\n\nThe empty list has no root. Private fields keep callers from breaking the chain directly.\n\n## Complete subclass code — `linked_list.ts`\n\n```ts\nclass ListNode<T> {\n  next?: ListNode<T>;\n  constructor(public value: T) {}\n}\n\nclass LinkedList<T> {\n  private root?: ListNode<T>;\n  private length = 0;\n\n  getNumberOfElements(): number { return this.length; }\n}\n\nconst numbers = new LinkedList<number>();\nconsole.log(numbers.getNumberOfElements());\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "Why is next optional?",
+              "options": [
+                "The final node has no successor",
+                "Every node is empty",
+                "It is private",
+                "Generics require it"
+              ],
+              "correct": 0,
+              "explanation": "The tail's next link is undefined."
+            },
+            {
+              "type": "mcq",
+              "question": "Why store length?",
+              "options": [
+                "To avoid traversing the whole chain for every count",
+                "To type the node",
+                "To make fields public",
+                "To sort automatically"
+              ],
+              "correct": 0,
+              "explanation": "Maintaining a count makes length lookup constant-time."
+            }
+          ]
+        },
+        {
+          "id": "ts_linked_list_02",
+          "title": "Thread One Generic Type Through the Chain",
+          "image": "/assets/typescript/ts_linked_list/02-generic-chain.png",
+          "content": "# Thread One Generic Type Through the Chain\n\n`LinkedList<T>` accepts values of `T`, constructs `ListNode<T>` objects, and stores `ListNode<T>` references. That thread prevents a number list from accidentally linking a string node.\n\n```ts\nclass LinkedList<T> {\n  private root?: ListNode<T>;\n  add(value: T) {\n    const node = new ListNode(value);\n  }\n}\n```\n\nInference can determine the node's type from `value` even though the list itself remains generic until instantiated.\n\n## Complete subclass code — `linked_list.ts`\n\n```ts\nclass ListNode<T> {\n  next?: ListNode<T>;\n  constructor(public value: T) {}\n}\n\nclass LinkedList<T> {\n  private root?: ListNode<T>;\n  add(value: T): void {\n    const node = new ListNode(value);\n    if (!this.root) this.root = node;\n  }\n}\n\nconst numberList = new LinkedList<number>();\nnumberList.add(10);\nconst nameList = new LinkedList<string>();\nnameList.add('Max');\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What prevents adding a string to LinkedList<number>?",
+              "options": [
+                "The shared T contract",
+                "The private keyword alone",
+                "The while loop",
+                "Node.js"
+              ],
+              "correct": 0,
+              "explanation": "T flows through the list, add parameter, and node."
+            },
+            {
+              "type": "mcq",
+              "question": "Why can new ListNode(value) omit <T>?",
+              "options": [
+                "The constructor argument enables inference",
+                "It becomes any",
+                "Nodes are not generic",
+                "Type arguments are invalid there"
+              ],
+              "correct": 0,
+              "explanation": "TypeScript infers the node's concrete value type from value."
+            }
+          ]
+        },
+        {
+          "id": "ts_linked_list_03",
+          "title": "Append Efficiently with a Tail Pointer",
+          "image": "/assets/typescript/ts_linked_list/03-tail-insertion.png",
+          "content": "# Append Efficiently with a Tail Pointer\n\nTraversing from root for every append is avoidable. Keep both ends: the first insertion sets root and tail; later insertions link the old tail to the new node and then advance tail.\n\n```ts\nif (!this.root || !this.tail) {\n  this.root = node;\n  this.tail = node;\n} else {\n  this.tail.next = node;\n  this.tail = node;\n}\nthis.length++;\n```\n\nThe invariant is simple: root and tail are either both absent or both present.\n\n## Complete subclass code — `linked_list.ts`\n\n```ts\nclass ListNode<T> {\n  next?: ListNode<T>;\n  constructor(public value: T) {}\n}\n\nclass LinkedList<T> {\n  private root?: ListNode<T>;\n  private tail?: ListNode<T>;\n  private length = 0;\n\n  add(value: T): void {\n    const node = new ListNode(value);\n    if (!this.root || !this.tail) {\n      this.root = node;\n      this.tail = node;\n    } else {\n      this.tail.next = node;\n      this.tail = node;\n    }\n    this.length++;\n  }\n}\n\nconst list = new LinkedList<number>();\nlist.add(10);\nlist.add(5);\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What must happen before tail becomes the new node?",
+              "options": [
+                "The old tail.next must point to it",
+                "Root must be deleted",
+                "Length must reset",
+                "The node must become any"
+              ],
+              "correct": 0,
+              "explanation": "Link first, then move the tail reference."
+            },
+            {
+              "type": "mcq",
+              "question": "What is the empty-list invariant?",
+              "options": [
+                "Both root and tail are absent",
+                "Only tail exists",
+                "Length is undefined",
+                "Every node points to itself"
+              ],
+              "correct": 0,
+              "explanation": "Both endpoint references describe the same empty/non-empty state."
+            }
+          ]
+        },
+        {
+          "id": "ts_linked_list_04",
+          "title": "Traverse, Inspect & Run the List",
+          "image": "/assets/typescript/ts_linked_list/04-inspect-and-run.png",
+          "content": "# Traverse, Inspect & Run the List\n\nExpose behavior instead of public mutable links. A count method returns the private length. A print or iterator-style method starts at root, consumes the current value, and advances to `current.next` until it becomes undefined.\n\n```ts\nlet current = this.root;\nwhile (current) {\n  console.log(current.value);\n  current = current.next;\n}\n```\n\nAfter compilation, TypeScript annotations and generic parameters disappear; the JavaScript class and traversal remain.\n\n## Complete subclass code — `linked_list.ts`\n\n```ts\nclass ListNode<T> {\n  next?: ListNode<T>;\n  constructor(public value: T) {}\n}\n\nclass LinkedList<T> {\n  private root?: ListNode<T>;\n  private tail?: ListNode<T>;\n  private length = 0;\n\n  add(value: T): void {\n    const node = new ListNode(value);\n    if (!this.root || !this.tail) this.root = this.tail = node;\n    else { this.tail.next = node; this.tail = node; }\n    this.length++;\n  }\n\n  getNumberOfElements(): number { return this.length; }\n  toArray(): T[] {\n    const values: T[] = [];\n    let current = this.root;\n    while (current) { values.push(current.value); current = current.next; }\n    return values;\n  }\n}\n\nconst list = new LinkedList<number>();\n[10, 5, -3].forEach(value => list.add(value));\nconsole.log(list.getNumberOfElements(), list.toArray());\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "When does traversal stop?",
+              "options": [
+                "When current becomes undefined",
+                "When length is private",
+                "After one node",
+                "When T changes"
+              ],
+              "correct": 0,
+              "explanation": "The last node's optional next link ends the chain."
+            },
+            {
+              "type": "mcq",
+              "question": "What remains after compiling generics?",
+              "options": [
+                "Runtime classes and logic, not type parameters",
+                "Generic metadata objects",
+                "Interfaces",
+                "Only comments"
+              ],
+              "correct": 0,
+              "explanation": "Type annotations are erased while JavaScript behavior remains."
+            }
+          ]
+        },
+        {
+          "id": "ts_linked_list_05",
+          "title": "Insert & Delete without Breaking Links",
+          "image": "/assets/typescript/ts_linked_list/05-insert-delete.png",
+          "content": "# Insert & Delete without Breaking Links\n\nPosition-based operations traverse to the affected node and rewire neighboring `next` references. Insertion makes the previous node point at the new node and the new node at the former successor. Deletion skips the removed node.\n\nAlways update edge state: inserting/deleting position zero changes root; changing the final node changes tail; every successful mutation changes length. Invalid positions should return a clear failure without mutating the list.\n\n## Complete subclass code — `linked_list.ts`\n\n```ts\nclass ListNode<T> {\n  next?: ListNode<T>;\n  constructor(public value: T) {}\n}\n\nclass LinkedList<T> {\n  private root?: ListNode<T>;\n  private tail?: ListNode<T>;\n  private length = 0;\n\n  add(value: T): void { this.insertAt(value, this.length); }\n\n  insertAt(value: T, position: number): boolean {\n    if (position < 0 || position > this.length) return false;\n    const node = new ListNode(value);\n    if (position === 0) {\n      node.next = this.root;\n      this.root = node;\n      if (!this.tail) this.tail = node;\n    } else {\n      let previous = this.root!;\n      for (let index = 1; index < position; index++) previous = previous.next!;\n      node.next = previous.next;\n      previous.next = node;\n      if (position === this.length) this.tail = node;\n    }\n    this.length++;\n    return true;\n  }\n\n  deleteAt(position: number): T | undefined {\n    if (position < 0 || position >= this.length || !this.root) return undefined;\n    let removed: ListNode<T>;\n    if (position === 0) { removed = this.root; this.root = this.root.next; }\n    else {\n      let previous = this.root;\n      for (let index = 1; index < position; index++) previous = previous.next!;\n      removed = previous.next!;\n      previous.next = removed.next;\n      if (position === this.length - 1) this.tail = previous;\n    }\n    this.length--;\n    if (this.length === 0) this.tail = undefined;\n    return removed.value;\n  }\n\n  toArray(): T[] {\n    const values: T[] = [];\n    let current = this.root;\n    while (current) { values.push(current.value); current = current.next; }\n    return values;\n  }\n}\n\nconst list = new LinkedList<string>();\nlist.add('A');\nlist.add('C');\nlist.insertAt('B', 1);\nconsole.log(list.toArray(), list.deleteAt(1), list.toArray());\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "How is a middle node deleted?",
+              "options": [
+                "The previous node points to the removed node's successor",
+                "The root is always cleared",
+                "All nodes are rebuilt",
+                "The generic type changes"
+              ],
+              "correct": 0,
+              "explanation": "Skipping one link removes that node from the reachable chain."
+            },
+            {
+              "type": "mcq",
+              "question": "Which state may change at list edges?",
+              "options": [
+                "root or tail as well as length",
+                "Only the generic",
+                "The class name",
+                "No state"
+              ],
+              "correct": 0,
+              "explanation": "Endpoint mutations must preserve root/tail invariants."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Section 10 · Deriving Types From Types",
+      "subtopics": [
+        {
+          "id": "ts_derived_01",
+          "title": "Derive Types from Values with typeof",
+          "image": "/assets/typescript/ts_derived/01-typeof.png",
+          "content": "# Derive Types from Values with typeof\n\nJavaScript's runtime `typeof value` returns a string. In a TypeScript type position, `typeof value` instead captures the static type of an existing value.\n\n```ts\nconst settings = { difficulty: 'easy', minLevel: 10, didStart: false };\ntype Settings = typeof settings;\nfunction loadData(input: typeof settings) {}\n```\n\nA `const` primitive produces a literal type while a reassignable `let` usually widens. Function types can also be reused: `type SumFn = typeof sum`.\n\n## Complete subclass code — `derived.ts`\n\n```ts\nconst settings = {\n  difficulty: 'easy',\n  minLevel: 10,\n  didStart: false,\n  players: ['John', 'Jane'],\n};\n\ntype Settings = typeof settings;\n\nfunction loadData(input: Settings): void {\n  console.log(input.difficulty, input.players.length);\n}\n\nfunction sum(a: number, b: number): number { return a + b; }\ntype SumFn = typeof sum;\nconst performMathAction = (callback: SumFn) => callback(10, 5);\n\nloadData(settings);\nconsole.log(performMathAction(sum));\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What does typeof settings mean in a type position?",
+              "options": [
+                "The static shape of settings",
+                "The runtime string 'object'",
+                "A JSON copy",
+                "Any"
+              ],
+              "correct": 0,
+              "explanation": "TypeScript's type query derives a type from the declared value."
+            },
+            {
+              "type": "mcq",
+              "question": "What can typeof sum preserve?",
+              "options": [
+                "Its full function signature",
+                "Only its name",
+                "Its source code text",
+                "Its latest result"
+              ],
+              "correct": 0,
+              "explanation": "A function value has a callable static type that can be reused."
+            }
+          ]
+        },
+        {
+          "id": "ts_derived_02",
+          "title": "Extract Valid Keys with keyof",
+          "image": "/assets/typescript/ts_derived/02-keyof.png",
+          "content": "# Extract Valid Keys with keyof\n\n`keyof` works on a type and produces a union of its property keys. Combine it with generics to reject misspelled or unrelated keys.\n\n```ts\nfunction getProp<T extends object, K extends keyof T>(object: T, key: K) {\n  return object[key];\n}\n```\n\nUnlike `typeof`, `keyof` is TypeScript-only. The constraint links the second argument to the exact shape inferred for the first.\n\n## Complete subclass code — `derived.ts`\n\n```ts\ntype User = { name: string; age: number };\ntype UserKey = keyof User; // 'name' | 'age'\n\nfunction getProp<T extends object, K extends keyof T>(object: T, key: K): T[K] {\n  const value = object[key];\n  if (value === undefined || value === null) {\n    throw new Error('Accessing undefined or null value.');\n  }\n  return value;\n}\n\nconst user: User = { name: 'Max', age: 36 };\nconsole.log(getProp(user, 'name').toUpperCase());\nconsole.log(getProp(user, 'age').toFixed());\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What is keyof User for name and age?",
+              "options": [
+                "'name' | 'age'",
+                "string",
+                "User[]",
+                "never"
+              ],
+              "correct": 0,
+              "explanation": "Keyof collects the declared property names as literal types."
+            },
+            {
+              "type": "mcq",
+              "question": "Why constrain K extends keyof T?",
+              "options": [
+                "Only valid keys of the supplied object are accepted",
+                "K becomes a value",
+                "T becomes any",
+                "It adds runtime properties"
+              ],
+              "correct": 0,
+              "explanation": "The constraint connects the key argument to the object shape."
+            }
+          ]
+        },
+        {
+          "id": "ts_derived_03",
+          "title": "Look Inside Types with Indexed Access",
+          "image": "/assets/typescript/ts_derived/03-indexed-access.png",
+          "content": "# Look Inside Types with Indexed Access\n\nUse bracket notation on types to extract a property's value type. Use `[number]` on an array type to extract one element type.\n\n```ts\ntype Permissions = AppUser['permissions'];\ntype Permission = Permissions[number];\n```\n\nThese are type-level operations only; a file containing only aliases compiles to essentially empty JavaScript.\n\n## Complete subclass code — `derived.ts`\n\n```ts\ntype AppUser = {\n  name: string;\n  permissions: Array<{\n    id: string;\n    title: string;\n    description: string;\n  }>;\n};\n\ntype Permissions = AppUser['permissions'];\ntype Permission = Permissions[number];\ntype PermissionTitle = Permission['title'];\n\nconst permission: Permission = {\n  id: 'courses:write',\n  title: 'Edit courses',\n  description: 'May update curriculum content',\n};\n\nconsole.log(permission.title satisfies PermissionTitle);\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What does Permissions[number] produce?",
+              "options": [
+                "The type of one array element",
+                "The array length",
+                "Only index zero",
+                "A runtime lookup"
+              ],
+              "correct": 0,
+              "explanation": "Number represents the possible numeric indexes of the array type."
+            },
+            {
+              "type": "mcq",
+              "question": "Does AppUser['permissions'] run property access?",
+              "options": [
+                "No, it is a type-level lookup",
+                "Yes",
+                "Only in Node",
+                "Only with decorators"
+              ],
+              "correct": 0,
+              "explanation": "Indexed access types are erased during compilation."
+            }
+          ]
+        },
+        {
+          "id": "ts_derived_04",
+          "title": "Transform Object Shapes with Mapped Types",
+          "image": "/assets/typescript/ts_derived/04-mapped-types.png",
+          "content": "# Transform Object Shapes with Mapped Types\n\nA mapped type iterates over `keyof T` and emits a property for every key.\n\n```ts\ntype Results<T> = { [Key in keyof T]: number };\n```\n\nProperty modifiers are preserved by default. Add `?` or `readonly`, or remove inherited modifiers with `-?` and `-readonly`. This is the machinery behind utilities such as `Partial` and `Required`.\n\n## Complete subclass code — `derived.ts`\n\n```ts\ntype Operations = {\n  readonly add?: (a: number, b: number) => number;\n  readonly subtract?: (a: number, b: number) => number;\n};\n\ntype RequiredMutableResults<T> = {\n  -readonly [Key in keyof T]-?: number;\n};\n\nconst results: RequiredMutableResults<Operations> = {\n  add: 3,\n  subtract: 2,\n};\n\nresults.add = 10;\nconsole.log(results);\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What does Key in keyof T do?",
+              "options": [
+                "Iterates over every key in T",
+                "Runs a for loop",
+                "Selects one random key",
+                "Creates an array"
+              ],
+              "correct": 0,
+              "explanation": "Mapped types project each key into a new object type."
+            },
+            {
+              "type": "mcq",
+              "question": "What does -? do in a mapped type?",
+              "options": [
+                "Removes optionality",
+                "Adds optionality",
+                "Deletes the property",
+                "Makes it private"
+              ],
+              "correct": 0,
+              "explanation": "The minus modifier removes the optional flag inherited from the source."
+            }
+          ]
+        },
+        {
+          "id": "ts_derived_05",
+          "title": "Generate String Contracts with Template Literals",
+          "image": "/assets/typescript/ts_derived/05-template-literals.png",
+          "content": "# Generate String Contracts with Template Literals\n\nTemplate-literal types combine literal unions. Injecting two unions creates every valid combination.\n\n```ts\ntype FilePermission = `\\${ReadPermission}-\\${WritePermission}`;\ntype DataFileEventName = `\\${keyof DataFile}Changed`;\n```\n\nThe generated event-name union can drive a mapped type, ensuring the handler object stays synchronized with the source keys.\n\n## Complete subclass code — `derived.ts`\n\n```ts\ntype ReadPermission = 'no-read' | 'read';\ntype WritePermission = 'no-write' | 'write';\ntype FilePermission = `\\${ReadPermission}-\\${WritePermission}`;\n\ntype DataFile = {\n  data: string;\n  permissions: FilePermission;\n};\n\ntype DataFileEventName = `\\${keyof DataFile}Changed`;\ntype DataFileEvents = {\n  [Key in DataFileEventName]: () => void;\n};\n\nconst handlers: DataFileEvents = {\n  dataChanged: () => console.log('Data changed'),\n  permissionsChanged: () => console.log('Permissions changed'),\n};\n\nhandlers.permissionsChanged();\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What happens when two literal unions are interpolated?",
+              "options": [
+                "All valid combinations are generated",
+                "They become any",
+                "Only the first values remain",
+                "A runtime loop runs"
+              ],
+              "correct": 0,
+              "explanation": "Template-literal types form the Cartesian combinations of their literal inputs."
+            },
+            {
+              "type": "mcq",
+              "question": "Why derive event names from keyof DataFile?",
+              "options": [
+                "Handlers stay aligned with source properties",
+                "To mutate DataFile",
+                "To emit events automatically",
+                "To create numbers"
+              ],
+              "correct": 0,
+              "explanation": "Changing the source keys updates the expected event-name union."
+            }
+          ]
+        },
+        {
+          "id": "ts_derived_06",
+          "title": "Branch on Types with Conditional Types",
+          "image": "/assets/typescript/ts_derived/06-conditional-types.png",
+          "content": "# Branch on Types with Conditional Types\n\nConditional types use `T extends Pattern ? TrueType : FalseType`. They choose a result type, not a runtime value.\n\n```ts\ntype GetElementType<T> = T extends any[] ? T[number] : never;\n```\n\nUse `never` when the unsupported branch should not produce a usable value. A function can also expose a conditional return contract, though its runtime checks must still uphold that promise.\n\n## Complete subclass code — `derived.ts`\n\n```ts\ntype GetElementType<T> = T extends readonly unknown[] ? T[number] : never;\n\ntype FullNameOrNothing<T> = T extends {\n  firstName: string;\n  lastName: string;\n} ? string : never;\n\nfunction getFullName<T extends object>(person: T): FullNameOrNothing<T> {\n  if (\n    'firstName' in person && 'lastName' in person &&\n    person.firstName && person.lastName\n  ) {\n    return `\\${person.firstName} \\${person.lastName}` as FullNameOrNothing<T>;\n  }\n  throw new Error('No first name and/or last name found.');\n}\n\ntype Tag = GetElementType<readonly ['new', 'done']>;\nconst name = getFullName({ firstName: 'Max', lastName: 'Schwarz' });\nconsole.log(name, null as unknown as Tag);\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "When does GetElementType<T> yield never?",
+              "options": [
+                "When T is not an array type",
+                "When T is a string array",
+                "Always",
+                "At runtime only"
+              ],
+              "correct": 0,
+              "explanation": "Its false branch is never."
+            },
+            {
+              "type": "mcq",
+              "question": "Are conditional types runtime if statements?",
+              "options": [
+                "No, they select static types",
+                "Yes",
+                "Only in browsers",
+                "Only for classes"
+              ],
+              "correct": 0,
+              "explanation": "They exist in TypeScript's type system and are erased."
+            }
+          ]
+        },
+        {
+          "id": "ts_derived_07",
+          "title": "Capture Type Parts with infer",
+          "image": "/assets/typescript/ts_derived/07-infer.png",
+          "content": "# Capture Type Parts with infer\n\nInside a conditional type's pattern, `infer` names a part of the matched type so the true branch can reuse it.\n\n```ts\ntype ReturnValue<T> =\n  T extends (...args: any[]) => infer Result ? Result : never;\n```\n\nThe placeholder is inferred from the return slot rather than passed by the caller. This same combination of conditional types, mapped types, and inference powers many built-in utilities.\n\n## Complete subclass code — `derived.ts`\n\n```ts\nfunction add(a: number, b: number) {\n  return a + b;\n}\n\nfunction createCourse() {\n  return { title: 'TypeScript', lessons: 11 };\n}\n\ntype ReturnValue<T> =\n  T extends (...args: any[]) => infer Result ? Result : never;\n\ntype AddResult = ReturnValue<typeof add>;\ntype CourseResult = ReturnValue<typeof createCourse>;\n\nconst total: AddResult = add(2, 3);\nconst course: CourseResult = createCourse();\nconsole.log(total, course.title);\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "Where may infer be introduced?",
+              "options": [
+                "Inside a conditional type pattern",
+                "In any variable declaration",
+                "Only in classes",
+                "Only at runtime"
+              ],
+              "correct": 0,
+              "explanation": "Infer captures a matched subtype in the extends pattern."
+            },
+            {
+              "type": "mcq",
+              "question": "What does ReturnValue<typeof add> produce?",
+              "options": [
+                "number",
+                "the add function",
+                "any[]",
+                "never"
+              ],
+              "correct": 0,
+              "explanation": "The inferred return slot of add is number."
+            }
+          ]
+        },
+        {
+          "id": "ts_derived_08",
+          "title": "Use Built-in Utility Types First",
+          "image": "/assets/typescript/ts_derived/08-utility-types.png",
+          "content": "# Use Built-in Utility Types First\n\nTypeScript already ships utility types built from the techniques in this section. `ReturnType<F>` extracts a function result, `Partial<T>` makes properties optional, `Required<T>` removes optionality, `Readonly<T>` protects assignments, and `Pick`/`Omit` select keys.\n\nUnderstand the mechanisms so you can build domain-specific helpers, but check the standard utilities before reinventing a common transform.\n\n## Complete subclass code — `derived.ts`\n\n```ts\ntype Course = {\n  id: string;\n  title: string;\n  published: boolean;\n};\n\nfunction createCourse(): Course {\n  return { id: 'ts', title: 'TypeScript', published: false };\n}\n\ntype CreatedCourse = ReturnType<typeof createCourse>;\ntype CoursePatch = Partial<Pick<Course, 'title' | 'published'>>;\ntype PublicCourse = Readonly<Omit<Course, 'published'>>;\n\nconst patch: CoursePatch = { published: true };\nconst publicCourse: PublicCourse = { id: 'ts', title: 'TypeScript' };\nconst created: CreatedCourse = createCourse();\n\nconsole.log(created, patch, publicCourse);\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "Which utility extracts a function's return type?",
+              "options": [
+                "ReturnType",
+                "Partial",
+                "Readonly",
+                "Omit"
+              ],
+              "correct": 0,
+              "explanation": "ReturnType uses conditional inference internally."
+            },
+            {
+              "type": "mcq",
+              "question": "What does Partial<T> do?",
+              "options": [
+                "Makes every property optional",
+                "Deletes T",
+                "Runs validation",
+                "Makes T a class"
+              ],
+              "correct": 0,
+              "explanation": "Partial is a mapped utility that adds optional modifiers."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Section 11 · ECMAScript Decorators",
+      "subtopics": [
+        {
+          "id": "ts_decorators_01",
+          "title": "Understand ECMAScript Decorators",
+          "image": "/assets/typescript/ts_decorators/01-ecmascript-foundation.png",
+          "content": "# Understand ECMAScript Decorators\n\nDecorators are functions attached with `@name` that can observe, replace, or initialize class-related code. They apply to classes, methods, fields, getters, and setters—not standalone functions or variables.\n\nTypeScript supports current ECMAScript decorators and an older experimental system. This section uses the standard ECMAScript form: do not enable `experimentalDecorators` for these signatures. TypeScript can downlevel the syntax for older runtimes.\n\n## Complete subclass code — `decorators.ts`\n\n```ts\nfunction logger(\n  target: Function,\n  context: ClassDecoratorContext,\n): void {\n  console.log('Decorating', context.kind, context.name);\n  console.log(target);\n}\n\n@logger\nclass Person {\n  name = 'Max';\n}\n\nconsole.log(new Person());\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "Where can ECMAScript decorators be attached?",
+              "options": [
+                "Class-related declarations",
+                "Any standalone variable",
+                "JSON keys",
+                "CSS selectors"
+              ],
+              "correct": 0,
+              "explanation": "Decorators are an object-oriented, class-focused feature."
+            },
+            {
+              "type": "mcq",
+              "question": "Should this section enable experimentalDecorators?",
+              "options": [
+                "No, it uses the modern ECMAScript form",
+                "Yes, always",
+                "Only for fields",
+                "Only in Node"
+              ],
+              "correct": 0,
+              "explanation": "The older flag selects the legacy decorator API."
+            }
+          ]
+        },
+        {
+          "id": "ts_decorators_02",
+          "title": "Build a Class Decorator",
+          "image": "/assets/typescript/ts_decorators/02-class-context.png",
+          "content": "# Build a Class Decorator\n\nA class decorator receives the class constructor as its target and a `ClassDecoratorContext` describing the decorated declaration. The context exposes `kind`, `name`, metadata, and `addInitializer`.\n\nDecorator code runs when the class definition is evaluated—even if the class is never instantiated. That timing is different from constructor or instance initializer work.\n\n## Complete subclass code — `decorators.ts`\n\n```ts\nfunction inspectClass<T extends abstract new (...args: any[]) => object>(\n  target: T,\n  context: ClassDecoratorContext,\n): void {\n  console.log({\n    kind: context.kind,\n    name: context.name,\n    constructor: target,\n  });\n}\n\n@inspectClass\nclass Course {\n  constructor(public title: string) {}\n}\n\nconst course = new Course('Understanding TypeScript');\nconsole.log(course.title);\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What is the target of a class decorator?",
+              "options": [
+                "The class constructor",
+                "A class instance",
+                "The source file",
+                "The first field"
+              ],
+              "correct": 0,
+              "explanation": "The class itself is the decorated value."
+            },
+            {
+              "type": "mcq",
+              "question": "When does the decorator body run?",
+              "options": [
+                "When the class definition is evaluated",
+                "On every method call",
+                "Only after new",
+                "During JSON parsing"
+              ],
+              "correct": 0,
+              "explanation": "Definition-time decoration happens before instance creation."
+            }
+          ]
+        },
+        {
+          "id": "ts_decorators_03",
+          "title": "Replace or Extend a Decorated Class",
+          "image": "/assets/typescript/ts_decorators/03-replace-class.png",
+          "content": "# Replace or Extend a Decorated Class\n\nA class decorator may return a replacement constructor. Constrain the target as constructable, extend it, forward every constructor argument through `super(...args)`, and add behavior.\n\n```ts\nreturn class extends target {\n  age = 35;\n  constructor(...args: any[]) {\n    super(...args);\n  }\n};\n```\n\nThe decorator body runs once at definition time; the returned constructor runs once per instance.\n\n## Complete subclass code — `decorators.ts`\n\n```ts\ntype Constructor = new (...args: any[]) => object;\n\nfunction withCreationLog<T extends Constructor>(\n  target: T,\n  context: ClassDecoratorContext,\n) {\n  console.log('Decorating ' + String(context.name));\n  return class extends target {\n    createdAt = new Date();\n    constructor(...args: any[]) {\n      super(...args);\n      console.log('Created', this);\n    }\n  };\n}\n\n@withCreationLog\nclass Person {\n  constructor(public name: string) {}\n}\n\nnew Person('Max');\nnew Person('Anna');\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "Why call super(...args) in the replacement?",
+              "options": [
+                "To initialize the original class state",
+                "To run the decorator twice",
+                "To remove the base class",
+                "To infer fields"
+              ],
+              "correct": 0,
+              "explanation": "The subclass must forward construction to the original constructor."
+            },
+            {
+              "type": "mcq",
+              "question": "Which log runs once per new instance?",
+              "options": [
+                "The returned subclass constructor log",
+                "The outer decorator log",
+                "The context name",
+                "None"
+              ],
+              "correct": 0,
+              "explanation": "The replacement constructor participates in every instantiation."
+            }
+          ]
+        },
+        {
+          "id": "ts_decorators_04",
+          "title": "Decorate Methods & Preserve this",
+          "image": "/assets/typescript/ts_decorators/04-method-context.png",
+          "content": "# Decorate Methods & Preserve this\n\nA method decorator receives the original function plus `ClassMethodDecoratorContext`. A replacement function wraps the method, but must forward the receiver, arguments, and return value.\n\n```ts\nreturn function (this: This, ...args: Args): Result {\n  return target.apply(this, args);\n};\n```\n\nCalling `target()` directly loses the instance receiver. `apply(this, args)` preserves JavaScript's method semantics.\n\n## Complete subclass code — `decorators.ts`\n\n```ts\nfunction traced<This, Args extends unknown[], Result>(\n  target: (this: This, ...args: Args) => Result,\n  context: ClassMethodDecoratorContext<This, (this: This, ...args: Args) => Result>,\n) {\n  return function (this: This, ...args: Args): Result {\n    console.log('Calling ' + String(context.name), args);\n    const result = target.apply(this, args);\n    console.log('Completed ' + String(context.name), result);\n    return result;\n  };\n}\n\nclass Calculator {\n  constructor(private factor: number) {}\n  @traced\n  multiply(value: number): number { return value * this.factor; }\n}\n\nconsole.log(new Calculator(3).multiply(4));\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "Why use target.apply(this, args)?",
+              "options": [
+                "To preserve the instance receiver and arguments",
+                "To make the method static",
+                "To call the decorator",
+                "To erase the return type"
+              ],
+              "correct": 0,
+              "explanation": "Apply invokes the original method with the wrapper's receiver."
+            },
+            {
+              "type": "mcq",
+              "question": "What may a method decorator return?",
+              "options": [
+                "A replacement method",
+                "Only a class",
+                "Only metadata",
+                "A CSS rule"
+              ],
+              "correct": 0,
+              "explanation": "Returning a compatible function replaces the original method."
+            }
+          ]
+        },
+        {
+          "id": "ts_decorators_05",
+          "title": "Autobind Detached Methods with addInitializer",
+          "image": "/assets/typescript/ts_decorators/05-autobind.png",
+          "content": "# Autobind Detached Methods with addInitializer\n\n`const greet = person.greet; greet()` loses its receiver because the function is no longer called through `person`. A method decorator can register per-instance setup with `context.addInitializer` and bind the named method after the instance is created.\n\nUse a normal function for the initializer so JavaScript supplies the new instance as `this`. An arrow function would capture the decorator's surrounding `this` instead.\n\n## Complete subclass code — `decorators.ts`\n\n```ts\nfunction autobind<This, Args extends unknown[], Result>(\n  _target: (this: This, ...args: Args) => Result,\n  context: ClassMethodDecoratorContext<This, (this: This, ...args: Args) => Result>,\n): void {\n  context.addInitializer(function (this: This) {\n    const instance = this as Record<PropertyKey, unknown>;\n    const method = instance[context.name] as Function;\n    instance[context.name] = method.bind(this);\n  });\n}\n\nclass Person {\n  constructor(public name: string) {}\n  @autobind\n  greet(): string { return 'Hi, I am ' + this.name; }\n}\n\nconst max = new Person('Max');\nconst detachedGreet = max.greet;\nconsole.log(detachedGreet());\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What problem does autobind solve?",
+              "options": [
+                "Detached methods losing their instance receiver",
+                "Missing type aliases",
+                "Slow compilation",
+                "Array indexing"
+              ],
+              "correct": 0,
+              "explanation": "Binding fixes this even when the method reference is passed elsewhere."
+            },
+            {
+              "type": "mcq",
+              "question": "Why is the initializer a normal function?",
+              "options": [
+                "It receives the new instance as this",
+                "Arrow functions cannot return",
+                "Decorators ban arrows",
+                "It runs at compile time"
+              ],
+              "correct": 0,
+              "explanation": "A normal function gets the intended dynamic receiver."
+            }
+          ]
+        },
+        {
+          "id": "ts_decorators_06",
+          "title": "Transform Field Initial Values",
+          "image": "/assets/typescript/ts_decorators/06-field-decorator.png",
+          "content": "# Transform Field Initial Values\n\nA field decorator's target is `undefined` because the field value does not exist when the class definition is decorated. Its `ClassFieldDecoratorContext` contains the field name, visibility/static flags, access helpers, and `addInitializer`.\n\nReturn an initializer function to receive and replace each instance's initial value. The function runs during instance initialization, unlike the outer decorator body.\n\n## Complete subclass code — `decorators.ts`\n\n```ts\nfunction trimField(\n  _target: undefined,\n  context: ClassFieldDecoratorContext<object, string>,\n) {\n  return function (this: object, initialValue: string): string {\n    console.log('Initializing ' + String(context.name));\n    return initialValue.trim();\n  };\n}\n\nclass Course {\n  @trimField\n  title = '  Understanding TypeScript  ';\n}\n\nconst course = new Course();\nconsole.log(course.title);\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "Why is a field decorator target undefined?",
+              "options": [
+                "The value is not initialized at decoration time",
+                "Fields are invalid",
+                "The class is private",
+                "TypeScript erased it early"
+              ],
+              "correct": 0,
+              "explanation": "Definition-time decoration precedes per-instance field initialization."
+            },
+            {
+              "type": "mcq",
+              "question": "What must the returned field initializer produce?",
+              "options": [
+                "The value to store in the field",
+                "A class constructor",
+                "A method context",
+                "A key union"
+              ],
+              "correct": 0,
+              "explanation": "Its return value replaces the original initial field value."
+            }
+          ]
+        },
+        {
+          "id": "ts_decorators_07",
+          "title": "Configure Decorators with Factories",
+          "image": "/assets/typescript/ts_decorators/07-factories.png",
+          "content": "# Configure Decorators with Factories\n\nA decorator factory is an ordinary function that accepts configuration and returns the actual decorator. That is why usage includes a call: `@replaceWith('')`.\n\nThe outer factory runs to create a configured decorator; JavaScript then invokes the returned decorator with target and context. Factories work for class, method, field, getter, and setter decorators.\n\n## Complete subclass code — `decorators.ts`\n\n```ts\nfunction replaceWith<Value>(replacement: Value) {\n  return function (\n    _target: undefined,\n    context: ClassFieldDecoratorContext<object, Value>,\n  ) {\n    return function (_initialValue: Value): Value {\n      console.log('Replacing ' + String(context.name));\n      return replacement;\n    };\n  };\n}\n\nclass Person {\n  @replaceWith('Anonymous')\n  name = 'Max';\n\n  @replaceWith(18)\n  age = 35;\n}\n\nconst person = new Person();\nconsole.log(person.name, person.age);\n```",
+          "questions": [
+            {
+              "type": "mcq",
+              "question": "What does a decorator factory return?",
+              "options": [
+                "The actual decorator function",
+                "A compiled file",
+                "Only metadata",
+                "A class instance"
+              ],
+              "correct": 0,
+              "explanation": "The wrapper captures configuration and returns the signature JavaScript will invoke."
+            },
+            {
+              "type": "mcq",
+              "question": "Why write @replaceWith('Anonymous') with parentheses?",
+              "options": [
+                "To execute the factory and obtain a configured decorator",
+                "To call the field",
+                "To enable experimental decorators",
+                "To instantiate the class"
+              ],
+              "correct": 0,
+              "explanation": "The call produces the decorator that is attached to the field."
+            }
+          ]
+        }
+      ]
     }
   ]
 }

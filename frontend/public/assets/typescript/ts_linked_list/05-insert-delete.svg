@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#06101d"/><stop offset=".55" stop-color="#111f38"/><stop offset="1" stop-color="#192e49"/></linearGradient>
+    <linearGradient id="glow"><stop stop-color="#7fe47d"/><stop offset="1" stop-color="#20bdad"/></linearGradient>
+    <filter id="shadow"><feDropShadow dy="20" stdDeviation="20" flood-opacity=".45"/></filter>
+  </defs>
+  <rect width="1280" height="720" rx="34" fill="url(#bg)"/>
+  <circle cx="1135" cy="90" r="295" fill="#7fe47d" opacity=".09"/><circle cx="65" cy="700" r="245" fill="#20bdad" opacity=".08"/>
+  <path d="M70 72h235" stroke="url(#glow)" stroke-width="6" stroke-linecap="round"/>
+  <text x="70" y="119" fill="#7fe47d" font-size="17" font-weight="700" letter-spacing="2.4" font-family="Arial, sans-serif">GENERIC LINKED LIST · 05</text>
+  <text x="70" y="215" fill="#f7f9ff" font-size="49" font-weight="700" font-family="Arial, sans-serif">Rewire neighbors,</text>
+<text x="70" y="273" fill="#f7f9ff" font-size="49" font-weight="700" font-family="Arial, sans-serif">preserve invariants</text>
+  <rect x="70" y="430" width="520" height="145" rx="24" fill="#10243b" stroke="#304d69"/>
+  <text x="104" y="471" fill="#829bb4" font-size="15" letter-spacing="2" font-family="Arial, sans-serif">WHY IT MATTERS</text>
+  <text x="104" y="515" fill="#dce8f5" font-size="21" font-weight="400" font-family="Arial, sans-serif">Every mutation keeps root, tail, and length</text>
+<text x="104" y="544" fill="#dce8f5" font-size="21" font-weight="400" font-family="Arial, sans-serif">consistent.</text>
+  <g filter="url(#shadow)">
+    <rect x="645" y="143" width="569" height="432" rx="28" fill="#060d19" stroke="#3a5774"/>
+    <rect x="645" y="143" width="569" height="66" rx="28" fill="#11243c"/>
+    <circle cx="686" cy="176" r="7" fill="#ff718f"/><circle cx="711" cy="176" r="7" fill="#ffca62"/><circle cx="736" cy="176" r="7" fill="#55e6a5"/>
+    <text x="775" y="183" fill="#839db5" font-size="17" font-family="Consolas, monospace">section-09.ts</text>
+    <text x="696" y="326" fill="#7fe47d" font-size="27" font-weight="700" font-family="Arial, sans-serif">previous.next = successor</text>
+    <rect x="696" y="389" width="452" height="2" fill="#2d465f"/>
+    <text x="696" y="438" fill="#8aa2b8" font-size="17" font-family="Consolas, monospace">derive → constrain → verify</text>
+    <rect x="696" y="482" width="180" height="42" rx="21" fill="url(#glow)"/>
+    <text x="728" y="509" fill="#07111f" font-size="16" font-weight="700" font-family="Arial, sans-serif">SECTION 09</text>
+  </g>
+  <text x="70" y="655" fill="#627d96" font-size="16" letter-spacing="1.35" font-family="Arial, sans-serif">PROGRAMMING FOCUSED  /  ORIGINAL LESSON VISUAL</text>
+  </svg>
